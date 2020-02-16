@@ -5,6 +5,12 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
+import DropdownAlert from 'react-native-dropdownalert';
+import Routes from './routes';
+import DropDownHolder from './helpers/DropDownHolder';
+
+require('./config/reactotronConfig');
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -35,6 +41,19 @@ const client = new ApolloClient({
   }
 });
 
-const App = () => <ApolloProvider client={client} />;
+const App = () => (
+  <ApolloProvider client={client}>
+    <NavigationContainer>
+      <Routes />
+      <DropdownAlert
+        ref={ref => DropDownHolder.setDropDown(ref)}
+        closeInterval={3000}
+        translucent={false}
+        activeStatusBarStyle="light-content"
+        messageNumOfLines={3}
+      />
+    </NavigationContainer>
+  </ApolloProvider>
+);
 
 export default App;
