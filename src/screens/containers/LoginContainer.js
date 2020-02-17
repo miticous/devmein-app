@@ -13,8 +13,8 @@ const style = {
 
 const LoginContainer = ({ navigation }) => {
   const [state, setState] = useState({
-    email: '',
-    password: ''
+    email: 'murilo@gmail.com',
+    password: '123123'
   });
 
   const { email, password } = state;

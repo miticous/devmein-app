@@ -33,7 +33,6 @@ const client = new ApolloClient({
   link: authLink.concat(link),
   name: 'react-web-client',
   version: '1.3',
-  queryDeduplication: false,
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-and-network'
