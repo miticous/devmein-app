@@ -13,7 +13,7 @@ const AuthContainer = ({ navigation }) => {
         if (!token) {
           return navigation.replace('Login');
         }
-        return navigation.replace('CreateProfile');
+        return navigation.replace('Chat');
       })
       .catch(() => navigation.navigate('Login'));
   }, []);

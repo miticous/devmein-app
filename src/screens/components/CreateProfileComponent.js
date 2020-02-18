@@ -25,7 +25,6 @@ const CreateProfileComponent = ({
             style={{ width: '100%', height: '100%' }}
           />
         </View>
-
         <Button onPress={onPressUpload} title="Upload" />
         <Button onPress={onPressSubmit} title="Submit" />
       </>

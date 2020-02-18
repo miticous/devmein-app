@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { Button, FlatList, Image, Text, View, ActivityIndicator } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
+import DropDownHolder from '../../helpers/DropDownHolder';
 
 const GET_USER = gql`
   query {
@@ -32,15 +32,18 @@ const CREATE_PROFILE = gql`
   }
 `;
 
-const CreateProfileContainer = navigation => {
+const CreateProfileContainer = ({ navigation }) => {
   const [state, setState] = useState({
     birthday: '07-03-1994 08:45:00',
     file: null,
-    avatar: ''
+    avatar: '//'
   });
+
   const { birthday, file } = state;
   const { loading: queryLoading, data } = useQuery(GET_USER);
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
+    onCompleted: () => navigation.replace('Chat'),
+    onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
     refetchQueries: [{ query: GET_USER, variables: { v: Math.random() } }]
   });
   const options = {

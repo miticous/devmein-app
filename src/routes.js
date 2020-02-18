@@ -5,6 +5,7 @@ import AuthContainer from './screens/containers/AuthContainer';
 import LoginContainer from './screens/containers/LoginContainer';
 import SignUpContainer from './screens/containers/SignUpContainer';
 import CreateProfileContainer from './screens/containers/CreateProfileContainer';
+import ChatContainer from './screens/containers/ChatContainer';
 
 const Stack = createStackNavigator();
 
@@ -16,9 +17,10 @@ const Routes = () => (
     <Stack.Screen
       name="CreateProfile"
       component={CreateProfileContainer}
-      options={{ title: 'Create Profile' }}
+      options={{ title: 'Profile' }}
     />
     <Stack.Screen name="Home" component={HomeContainer} options={{ title: 'Home' }} />
+    <Stack.Screen name="Chat" component={ChatContainer} options={{ title: 'Chat' }} />
   </Stack.Navigator>
 );
 

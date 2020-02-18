@@ -5,7 +5,7 @@ import DropDownHolder from '../helpers/DropDownHolder';
 export const login = async ({ email, password, navigation }) => {
   try {
     const {
-      data: { token }
+      data: { token, hasProfile, _id }
     } = await axios({
       method: 'post',
       url: 'http://localhost:4000/users/login',
@@ -15,14 +15,17 @@ export const login = async ({ email, password, navigation }) => {
       }
     });
 
-    await AsyncStorage.setItem('@jintou:token', token);
+    await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
+    if (hasProfile) {
+      return navigation.navigate('Chat');
+    }
     return navigation.navigate('CreateProfile');
   } catch ({
     response: {
       data: { error }
     }
   }) {
-    DropDownHolder.show('error', '', error);
+    return DropDownHolder.show('error', '', error);
   }
 };
 
@@ -44,6 +47,6 @@ export const signUp = async ({ name, email, password, navigation }) => {
       data: { error }
     }
   }) {
-    DropDownHolder.show('error', '', error);
+    return DropDownHolder.show('error', '', error);
   }
 };
