@@ -24,8 +24,8 @@ const CHAT_SUB = gql`
   }
 `;
 const GET_CHAT = gql`
-  query GET_CHAT($targetUserId: String) {
-    chat(targetUserId: $targetUserId) {
+  query GET_CHAT($matchId: String) {
+    chat(matchId: $matchId) {
       participants {
         _id
         name
@@ -41,8 +41,8 @@ const GET_CHAT = gql`
   }
 `;
 const SEND_MESSAGE = gql`
-  mutation($targetUserId: String, $message: String) {
-    sendMessage(targetUserId: $targetUserId, message: $message) {
+  mutation($matchId: String!, $message: String!) {
+    sendMessage(matchId: $matchId, message: $message) {
       participants {
         _id
         name
@@ -58,13 +58,14 @@ const SEND_MESSAGE = gql`
   }
 `;
 
-const ChatContainer = ({ navigation }) => {
+const ChatContainer = ({ navigation, route: { params } }) => {
   const [state, setState] = useState({});
+  const { matchId } = params;
 
   useQuery(GET_CHAT, {
     onCompleted: ({ chat }) => setState({ ...state, chat: { ...chat } }),
     variables: {
-      targetUserId: '5e4b9a07b7ed304118ae2372'
+      matchId
     }
   });
 
@@ -86,7 +87,7 @@ const ChatContainer = ({ navigation }) => {
     });
   }, []);
   const { chat, userId } = state;
-  reactotron.log(state);
+
   // const { name } = chat ? chat.participants.find(participant => participant._id !== userId) : '';
 
   return (
@@ -100,7 +101,7 @@ const ChatContainer = ({ navigation }) => {
       onSubmit={() => {
         sendMessage({
           variables: {
-            targetUserId: '5e4b9a07b7ed304118ae2372',
+            matchId,
             message: state.inputValue
           }
         });

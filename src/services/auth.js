@@ -17,7 +17,7 @@ export const login = async ({ email, password, navigation }) => {
 
     await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
     if (hasProfile) {
-      return navigation.navigate('Chat');
+      return navigation.navigate('Home');
     }
     return navigation.navigate('CreateProfile');
   } catch ({
