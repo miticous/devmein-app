@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import reactotron from 'reactotron-react-native';
+import { validate } from '../../services/auth';
 
 const AuthContainer = ({ navigation }) => {
   useEffect(() => {
@@ -13,7 +14,7 @@ const AuthContainer = ({ navigation }) => {
         if (!token) {
           return navigation.replace('Login');
         }
-        return navigation.replace('Home');
+        return validate({ navigation, token });
       })
       .catch(() => navigation.navigate('Login'));
   }, []);

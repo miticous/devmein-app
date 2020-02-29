@@ -36,8 +36,10 @@ const CreateProfileContainer = ({ navigation }) => {
   const [state, setState] = useState({
     birthday: '07-03-1994 08:45:00',
     file: null,
-    avatar: '//'
+    avatar: undefined
   });
+  const [time, setTime] = useState(new Date());
+  const [date, setDate] = useState(new Date());
 
   const { birthday, file } = state;
   const { loading: queryLoading, data } = useQuery(GET_USER);
@@ -46,23 +48,30 @@ const CreateProfileContainer = ({ navigation }) => {
     onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
     refetchQueries: [{ query: GET_USER, variables: { v: Math.random() } }]
   });
-
+  reactotron.log(date, time);
   const options = {
-    title: 'Select Avatar',
-    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    title: 'Selecione uma foto',
     storageOptions: {
       skipBackup: true,
       path: 'images',
       cameraRoll: true,
       waitUntilSaved: true
-    }
+    },
+    takePhotoButtonTitle: 'Tirar foto',
+    chooseFromLibraryButtonTitle: 'Escolher na galeria',
+    cancelButtonTitle: 'Cancelar'
   };
 
-  const picker = () =>
+  const openPicker = () =>
     ImagePicker.showImagePicker(options, response => {
       const path = response.uri;
-      reactotron.log(path);
-      setState({
+      if (response.didCancel) {
+        return true;
+      }
+      if (response.error) {
+        return true;
+      }
+      return setState({
         ...state,
         file: response.data,
         avatar: path.replace('file//', '')
@@ -83,7 +92,11 @@ const CreateProfileContainer = ({ navigation }) => {
           }
         })
       }
-      onPressUpload={() => picker()}
+      date={date}
+      time={time}
+      onChangeDate={(_, selectedDate) => setDate(selectedDate)}
+      onChangeTime={(_, selectedTime) => setTime(selectedTime)}
+      onPressUpload={() => openPicker()}
       user={user}
       profile={profile}
       image={state.avatar}

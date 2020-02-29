@@ -56,3 +56,22 @@ export const signUp = async ({ name, email, password, navigation }) => {
     return DropDownHolder.show('error', '', error);
   }
 };
+
+export const validate = async ({ navigation, token }) => {
+  try {
+    const {
+      data: { userHasProfile }
+    } = await axios({
+      method: 'get',
+      url: 'http://localhost:4000/users/auth',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (userHasProfile) {
+      return navigation.navigate('Home');
+    }
+    return navigation.navigate('CreateProfile');
+  } catch (error) {
+    return navigation.navigate('Login');
+  }
+};

@@ -32,7 +32,7 @@ const formLoginSchema = yup.object().shape({
 const LoginContainer = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  reactotron.log(navigation);
+
   const formLoginInitialSchema = {
     email: 'murilo@gmail.com',
     password: '123123'
