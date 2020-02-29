@@ -1,47 +1,56 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import React from 'react';
+import PropTypes from 'prop-types';
+import * as yup from 'yup';
 import { signUp } from '../../services/auth';
+import SignUpComponent from '../components/SignUpComponent';
 
-const style = {
-  input: {
-    backgroundColor: 'yellow',
-    width: '100%',
-    textAlign: 'center',
-    padding: 20
+yup.setLocale({
+  mixed: {
+    default: 'Verifique os valores informados'
+  },
+  string: {
+    // eslint-disable-next-line no-template-curly-in-string
+    min: 'Deve conter no mínimo ${min} caracteres',
+    matches: 'Verifique os valores informados'
   }
+});
+
+const formSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(10)
+    .required('Seu nome nao pode conter menos de 10 caracteres'),
+  email: yup
+    .string()
+    .email()
+    .required('Digite um email válido'),
+  password: yup
+    .string()
+    .required('Digite uma senha válida')
+    .min(6),
+  passwordConfirm: yup
+    .string()
+    .oneOf([yup.ref('password'), 'KASDKOKOSA', 'dkasodokas'])
+    .required('É necessário confirmar sua senha')
+});
+
+const formInitialSchema = {
+  name: '',
+  email: '',
+  password: '',
+  passwordConfirm: ''
 };
 
-const SignUpContainer = ({ navigation }) => {
-  const [state, setState] = useState({
-    name: '',
-    email: '',
-    password: ''
-  });
-  const { name, password, email } = state;
+const SignUpContainer = ({ navigation }) => (
+  <SignUpComponent
+    formLoginSchema={formSchema}
+    formLoginInitialSchema={{ ...formInitialSchema }}
+    onPressSignUp={async values => signUp({ ...values, navigation })}
+  />
+);
 
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TextInput
-        value={name}
-        placeholder="Nome"
-        onChangeText={name => setState({ ...state, name })}
-        style={style.input}
-      />
-      <TextInput
-        value={email}
-        placeholder="E-mail"
-        onChangeText={email => setState({ ...state, email })}
-        style={style.input}
-      />
-      <TextInput
-        value={password}
-        placeholder="Senha"
-        onChangeText={password => setState({ ...state, password })}
-        style={style.input}
-      />
-      <Button onPress={async () => signUp({ ...state, navigation })} title="Criar conta" />
-    </View>
-  );
+SignUpContainer.propTypes = {
+  navigation: PropTypes.shape({}).isRequired
 };
 
 export default SignUpContainer;

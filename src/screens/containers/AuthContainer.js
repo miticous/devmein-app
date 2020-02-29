@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import reactotron from 'reactotron-react-native';
 
@@ -18,7 +18,11 @@ const AuthContainer = ({ navigation }) => {
       .catch(() => navigation.navigate('Login'));
   }, []);
 
-  return <View />;
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
 };
 
 export default AuthContainer;

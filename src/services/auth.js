@@ -2,8 +2,10 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import DropDownHolder from '../helpers/DropDownHolder';
 
-export const login = async ({ email, password, navigation }) => {
+export const login = async ({ email, password, navigation, setFieldError, setIsLoading }) => {
   try {
+    setIsLoading(true);
+
     const {
       data: { token, hasProfile, _id }
     } = await axios({
@@ -25,6 +27,10 @@ export const login = async ({ email, password, navigation }) => {
       data: { error }
     }
   }) {
+    setIsLoading(false);
+    setFieldError('password', 'Usuário e/ou senha inválidos');
+    setFieldError('email', ' ');
+
     return DropDownHolder.show('error', '', error);
   }
 };

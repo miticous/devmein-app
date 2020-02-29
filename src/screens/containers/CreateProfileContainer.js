@@ -46,6 +46,7 @@ const CreateProfileContainer = ({ navigation }) => {
     onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
     refetchQueries: [{ query: GET_USER, variables: { v: Math.random() } }]
   });
+
   const options = {
     title: 'Select Avatar',
     customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
