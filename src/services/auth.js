@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import reactotron from 'reactotron-react-native';
 import DropDownHolder from '../helpers/DropDownHolder';
 
 export const login = async ({ email, password, navigation, setFieldError, setIsLoading }) => {
@@ -59,18 +60,16 @@ export const signUp = async ({ name, email, password, navigation }) => {
 
 export const validate = async ({ navigation, token }) => {
   try {
-    const {
-      data: { userHasProfile }
-    } = await axios({
+    const { data } = await axios({
       method: 'get',
       url: 'http://localhost:4000/users/auth',
       headers: { Authorization: `Bearer ${token}` }
     });
-
-    if (userHasProfile) {
-      return navigation.navigate('Home');
+    reactotron.log(data);
+    if (data) {
+      return navigation.replace('Home');
     }
-    return navigation.navigate('CreateProfile');
+    return navigation.replace('CreateProfile');
   } catch (error) {
     return navigation.navigate('Login');
   }

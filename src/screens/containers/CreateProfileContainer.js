@@ -21,8 +21,8 @@ const GET_USER = gql`
 `;
 
 const CREATE_PROFILE = gql`
-  mutation($file: String, $name: String, $birthday: String) {
-    createProfile(file: $file, name: $name, birthday: $birthday) {
+  mutation($file: String, $name: String, $birthday: String, $input: BirthplaceInput) {
+    createProfile(file: $file, name: $name, birthday: $birthday, input: $input) {
       _id
       images {
         _id
@@ -34,21 +34,24 @@ const CREATE_PROFILE = gql`
 
 const CreateProfileContainer = ({ navigation }) => {
   const [state, setState] = useState({
-    birthday: '07-03-1994 08:45:00',
+    birthday: new Date(),
     file: null,
-    avatar: undefined
+    avatar: undefined,
+    birthplace: {
+      placeId: null,
+      description: null,
+      lat: null,
+      lng: null
+    }
   });
-  const [time, setTime] = useState(new Date());
-  const [date, setDate] = useState(new Date());
 
-  const { birthday, file } = state;
   const { loading: queryLoading, data } = useQuery(GET_USER);
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
-    onCompleted: () => navigation.replace('Chat'),
+    onCompleted: () => navigation.replace('Home'),
     onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
     refetchQueries: [{ query: GET_USER, variables: { v: Math.random() } }]
   });
-  reactotron.log(date, time);
+
   const options = {
     title: 'Selecione uma foto',
     storageOptions: {
@@ -77,7 +80,7 @@ const CreateProfileContainer = ({ navigation }) => {
         avatar: path.replace('file//', '')
       });
     });
-
+  reactotron.log(state);
   const { user, profile } = data || {};
 
   return (
@@ -87,15 +90,29 @@ const CreateProfileContainer = ({ navigation }) => {
         createProfile({
           variables: {
             name: data.user.name,
-            birthday,
-            file
+            birthday: state.birthday,
+            file: state.file,
+            input: {
+              ...state.birthplace
+            }
           }
         })
       }
-      date={date}
-      time={time}
-      onChangeDate={(_, selectedDate) => setDate(selectedDate)}
-      onChangeTime={(_, selectedTime) => setTime(selectedTime)}
+      date={state.birthday}
+      onSelectBirthPlace={(
+        { description, id },
+        {
+          geometry: {
+            location: { lat, lng }
+          }
+        }
+      ) =>
+        setState({
+          ...state,
+          birthplace: { description, placeId: id, lat: lat.toString(), lng: lng.toString() }
+        })
+      }
+      onChangeDate={(_, selectedDate) => setState({ ...state, birthday: selectedDate })}
       onPressUpload={() => openPicker()}
       user={user}
       profile={profile}

@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  Button,
-  Image,
-  ActivityIndicator,
-  TouchableOpacity
-} from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../assets/styles';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { COLORS } from '../../assets/styles/colors';
 import DefaultUserImage from '../../assets/images/default_user_image.jpg';
+import Button from '../../assets/components/Button';
 
 const CreateProfileComponent = ({
   onPressSubmit,
@@ -25,7 +18,7 @@ const CreateProfileComponent = ({
   time,
   date,
   onChangeDate,
-  onChangeTime
+  onSelectBirthPlace
 }) => (
   <View style={{ flex: 1 }}>
     {isLoading ? (
@@ -36,7 +29,7 @@ const CreateProfileComponent = ({
       <>
         <View
           style={{
-            flex: 0.5,
+            flex: 1,
             justifyContent: 'center',
             alignItems: 'center'
           }}
@@ -84,7 +77,7 @@ const CreateProfileComponent = ({
         <Text style={{ textAlign: 'center', color: COLORS.textSecondaryColor, fontSize: 16 }}>
           Data de nascimento
         </Text>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ flex: 1.2, flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>
             <DateTimePicker
               testID="dateTimePicker"
@@ -104,13 +97,55 @@ const CreateProfileComponent = ({
               testID="dateTimePicker"
               mode="time"
               timeZoneOffsetInMinutes={0}
-              value={time}
+              value={date}
               is24Hour={false}
               display="default"
               locale="pt-BR"
-              onChange={onChangeTime}
+              onChange={onChangeDate}
             />
           </View>
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{ flex: 0.5, justifyContent: 'center' }}>
+            <Text style={{ textAlign: 'center', color: COLORS.textSecondaryColor, fontSize: 16 }}>
+              Local de nascimento
+            </Text>
+          </View>
+          <View style={{ flex: 3, justifyContent: 'center' }}>
+            <GooglePlacesAutocomplete
+              placeholder="Pesquisar"
+              minLength={3}
+              autoFocus={false}
+              returnKeyType="search"
+              keyboardAppearance="light"
+              listViewDisplayed="auto"
+              fetchDetails
+              renderDescription={row => row.description}
+              onPress={(data, details) => {
+                onSelectBirthPlace(data, details);
+              }}
+              getDefaultValue={() => ''}
+              query={{
+                key: 'AIzaSyAsceWUlXxulQJohZddfRPstfcNl7FcE2s',
+                language: 'pt-BR',
+                types: '(cities)',
+                sessionToken: '12381247512'
+              }}
+              nearbyPlacesAPI="GooglePlacesSearch"
+              GooglePlacesSearchQuery={{
+                rankby: 'distance',
+                type: 'cafe'
+              }}
+              GooglePlacesDetailsQuery={{
+                fields: 'geometry'
+              }}
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
+              debounce={1000}
+            />
+          </View>
+        </View>
+        <View style={{ flex: 0.3 }}>
+          <Button text="Criar perfil" action={onPressSubmit} />
         </View>
       </>
     )}
