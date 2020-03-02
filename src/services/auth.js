@@ -20,9 +20,9 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
 
     await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
     if (hasProfile) {
-      return navigation.navigate('Home');
+      return navigation.replace('Home');
     }
-    return navigation.navigate('CreateProfile');
+    return navigation.replace('CreateProfile');
   } catch ({
     response: {
       data: { error }

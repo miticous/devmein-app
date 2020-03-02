@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
@@ -69,6 +69,16 @@ const LoginComponent = ({
     <StatusBar color={COLORS.backgroundColor} barStyle="dark-content" />
     <ContentHeader>
       <Icon name="ArrowLove" width={96} height={96} fill={COLORS.primaryColor} />
+      <Text
+        style={{
+          fontSize: 20,
+          color: COLORS.secondaryColor,
+          fontWeight: 'bold',
+          marginTop: 20
+        }}
+      >
+        Jiantou
+      </Text>
     </ContentHeader>
     <ContentBody>
       <LoginTitle>Login</LoginTitle>
