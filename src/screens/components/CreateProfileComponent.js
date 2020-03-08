@@ -15,6 +15,7 @@ import { SCREEN_WIDTH } from '../../assets/styles';
 import { SwitcherItem, Switcher } from '../../assets/components/Switcher';
 import Icon from '../../assets/components/Icon';
 import TextInput from '../../assets/components/TextInput';
+import ModalPicker from '../../assets/components/ModalPicker';
 
 const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -41,7 +42,10 @@ const CreateProfileComponent = ({
   switcherRef,
   formSchema,
   formInitialSchema,
-  switcherItemsMap
+  switcherItemsMap,
+  modalDataCities,
+  showCitiesModal,
+  onDismissCitiesModal
 }) => (
   <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
     {isLoading ? (
@@ -99,13 +103,20 @@ const CreateProfileComponent = ({
                   />
                 </SwitcherItem>
                 <SwitcherItem title="Eu nasci na cidade de">
-                  <TextInput name="city" />
+                  <TextInput name="birthplaceDescription" />
                 </SwitcherItem>
               </Switcher>
             )}
           </Formik>
         </SwitcherContainer>
       </Content>
+    )}
+    {showCitiesModal && (
+      <ModalPicker
+        data={modalDataCities}
+        visible={showCitiesModal}
+        onPressCancel={onDismissCitiesModal}
+      />
     )}
   </View>
 );

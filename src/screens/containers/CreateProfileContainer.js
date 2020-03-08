@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import ImagePicker from 'react-native-image-picker';
@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import moment from 'moment';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
+import { getCitiesByName } from '../../services/google-apis';
 
 const GET_USER = gql`
   query {
@@ -36,7 +37,8 @@ const CREATE_PROFILE = gql`
 
 const switcherItemsMap = {
   0: 'name',
-  1: 'birthdate'
+  1: 'birthdate',
+  2: 'birthplaceDescription'
 };
 
 const CreateProfileContainer = ({ navigation }) => {
@@ -53,6 +55,10 @@ const CreateProfileContainer = ({ navigation }) => {
   });
 
   const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const [searchCity, setSearchCity] = useState('');
+  const [findedCities, setFindedCities] = useState([]);
+  const [showCitiesModal, setShowCitiesModal] = useState(false);
+
   const switcherRef = useRef(null);
 
   const { loading: queryLoading, data } = useQuery(GET_USER);
@@ -100,14 +106,22 @@ const CreateProfileContainer = ({ navigation }) => {
       .string()
       .min(16, 'Ops! Digite data e hora de nascimento.')
       .test('TST', 'error', values => moment(new Date(values)).isValid())
-      .required('Digite uma data válida')
+      .required('Digite uma data válida'),
+    birthplaceDescription: yup.string()
   });
 
   const formInitialSchema = {
-    name: '',
-    birthdate: ''
+    name: 'Murilo',
+    birthdate: '07/03/1994 00:20',
+    birthplaceDescription: ''
   };
 
+  useEffect(() => {
+    if (searchCity.length >= 4) {
+      getCitiesByName({ name: searchCity, setFindedCities, setShowCitiesModal });
+    }
+  }, [searchCity]);
+  reactotron.log(searchCity);
   const { user, profile } = data || {};
 
   return (
@@ -141,15 +155,22 @@ const CreateProfileContainer = ({ navigation }) => {
           birthplace: { description, placeId: id, lat: lat.toString(), lng: lng.toString() }
         })
       }
+      showCitiesModal={showCitiesModal}
       activeItemIndex={activeItemIndex}
       switcherItemsMap={switcherItemsMap}
+      onDismissCitiesModal={() => setShowCitiesModal(false)}
       onSubmitItemButton={() => {
         const nextActiveItemIndex = activeItemIndex + 1;
         const itemsAmount = switcherRef.current.childrensAmount;
-        const { error } = switcherRef.current.formValues[1];
+        const { error, value } = switcherRef.current.formValues[1];
 
         if (Object.keys(error).includes(switcherItemsMap[activeItemIndex])) {
           return false;
+        }
+
+        if (activeItemIndex === 2 && value[switcherItemsMap[activeItemIndex]].length >= 4) {
+          reactotron.log('hEERE');
+          return setSearchCity(value[switcherItemsMap[activeItemIndex]]);
         }
         if (nextActiveItemIndex < itemsAmount) {
           return setActiveItemIndex(1 + activeItemIndex);
@@ -164,6 +185,7 @@ const CreateProfileContainer = ({ navigation }) => {
         }
         return false;
       }}
+      modalDataCities={findedCities}
       onChangeDate={(_, selectedDate) => setState({ ...state, birthday: selectedDate })}
       onPressUpload={() => openPicker()}
       user={user}
