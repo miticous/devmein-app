@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import { SafeAreaView } from 'react-native';
 import Routes from './routes';
 import DropDownHolder from './helpers/DropDownHolder';
 
@@ -62,16 +63,18 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <NavigationContainer>
-      <Routes />
-      <DropdownAlert
-        ref={ref => DropDownHolder.setDropDown(ref)}
-        closeInterval={3000}
-        translucent={false}
-        activeStatusBarStyle="light-content"
-        messageNumOfLines={3}
-      />
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Routes />
+        <DropdownAlert
+          ref={ref => DropDownHolder.setDropDown(ref)}
+          closeInterval={3000}
+          translucent={false}
+          activeStatusBarStyle="light-content"
+          messageNumOfLines={3}
+        />
+      </NavigationContainer>
+    </SafeAreaView>
   </ApolloProvider>
 );
 

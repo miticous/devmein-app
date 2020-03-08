@@ -1,12 +1,28 @@
 import React from 'react';
+import styled from 'styled-components/native';
 import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import LinearGradient from 'react-native-linear-gradient';
+import { Formik } from 'formik';
+import reactotron from 'reactotron-react-native';
 import { COLORS } from '../../assets/styles/colors';
 import DefaultUserImage from '../../assets/images/default_user_image.jpg';
 import Button from '../../assets/components/Button';
+import { SCREEN_WIDTH } from '../../assets/styles';
+import { SwitcherItem, Switcher } from '../../assets/components/Switcher';
+import Icon from '../../assets/components/Icon';
+import TextInput from '../../assets/components/TextInput';
+
+const Content = styled.View`
+  background-color: ${COLORS.backgroundColor};
+  flex: 1;
+`;
+const SwitcherContainer = styled.View`
+  flex: 1;
+`;
 
 const CreateProfileComponent = ({
   onPressSubmit,
@@ -18,136 +34,78 @@ const CreateProfileComponent = ({
   time,
   date,
   onChangeDate,
-  onSelectBirthPlace
+  onSelectBirthPlace,
+  activeItemIndex,
+  onSubmitItemButton,
+  onPressBack,
+  switcherRef,
+  formSchema,
+  formInitialSchema,
+  switcherItemsMap
 }) => (
-  <View style={{ flex: 1 }}>
+  <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
     {isLoading ? (
       <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
         <ActivityIndicator size="large" />
       </View>
     ) : (
-      <>
+      <Content>
+        <LinearGradient
+          start={{ x: 0.0, y: 0.5 }}
+          end={{ x: 0.8, y: 1.0 }}
+          colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
+          style={{ height: 6, width: SCREEN_WIDTH }}
+        />
         <View
           style={{
-            flex: 1,
+            flex: 0.1,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'flex-start',
+            marginHorizontal: 10
           }}
         >
-          <View style={{ alignItems: 'center' }}>
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={onPressUpload}
-              style={{
-                borderRadius: 100,
-                width: 100,
-                height: 100,
-                overflow: 'hidden'
-              }}
-            >
-              <Image
-                style={{ width: '100%', height: '100%' }}
-                resizeMode="cover"
-                source={
-                  image
-                    ? {
-                        uri: image
-                      }
-                    : DefaultUserImage
-                }
-              />
-            </TouchableOpacity>
-
-            <Text
-              style={{
-                lineHeight: 40,
-                fontSize: 22,
-                color: COLORS.textPrimaryColor,
-                letterSpacing: 0.12
-              }}
-            >
-              {user.name &&
-                user.name
-                  .split(' ')
-                  .slice(0, -2)
-                  .join(' ')}
-            </Text>
-          </View>
+          <TouchableOpacity activeOpacity={1} onPress={onPressBack}>
+            <Icon name="ArrowBack" width={30} height={30} fill={COLORS.textSecondaryColor} />
+          </TouchableOpacity>
         </View>
-        <Text style={{ textAlign: 'center', color: COLORS.textSecondaryColor, fontSize: 16 }}>
-          Data de nascimento
-        </Text>
-        <View style={{ flex: 1.2, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <DateTimePicker
-              testID="dateTimePicker"
-              maximumDate={moment()
-                .subtract(18, 'years')
-                .toDate()}
-              timeZoneOffsetInMinutes={0}
-              value={date}
-              is24Hour={false}
-              display="default"
-              locale="pt-BR"
-              onChange={onChangeDate}
-            />
-          </View>
-          <View style={{ flex: 0.5 }}>
-            <DateTimePicker
-              testID="dateTimePicker"
-              mode="time"
-              timeZoneOffsetInMinutes={0}
-              value={date}
-              is24Hour={false}
-              display="default"
-              locale="pt-BR"
-              onChange={onChangeDate}
-            />
-          </View>
-        </View>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <View style={{ flex: 0.5, justifyContent: 'center' }}>
-            <Text style={{ textAlign: 'center', color: COLORS.textSecondaryColor, fontSize: 16 }}>
-              Local de nascimento
-            </Text>
-          </View>
-          <View style={{ flex: 3, justifyContent: 'center' }}>
-            <GooglePlacesAutocomplete
-              placeholder="Pesquisar"
-              minLength={3}
-              autoFocus={false}
-              returnKeyType="search"
-              keyboardAppearance="light"
-              listViewDisplayed="auto"
-              fetchDetails
-              renderDescription={row => row.description}
-              onPress={(data, details) => {
-                onSelectBirthPlace(data, details);
-              }}
-              getDefaultValue={() => ''}
-              query={{
-                key: 'AIzaSyAsceWUlXxulQJohZddfRPstfcNl7FcE2s',
-                language: 'pt-BR',
-                types: '(cities)',
-                sessionToken: '12381247512'
-              }}
-              nearbyPlacesAPI="GooglePlacesSearch"
-              GooglePlacesSearchQuery={{
-                rankby: 'distance',
-                type: 'cafe'
-              }}
-              GooglePlacesDetailsQuery={{
-                fields: 'geometry'
-              }}
-              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
-              debounce={1000}
-            />
-          </View>
-        </View>
-        <View style={{ flex: 0.3 }}>
-          <Button text="Criar perfil" action={onPressSubmit} />
-        </View>
-      </>
+        <SwitcherContainer>
+          <Formik
+            initialValues={formInitialSchema}
+            validationSchema={formSchema}
+            onSubmit={values => reactotron.log(values)}
+          >
+            {({ setFieldTouched }) => (
+              <Switcher
+                activeIndex={activeItemIndex}
+                onPressSubmit={() => {
+                  setFieldTouched(switcherItemsMap[activeItemIndex]);
+                  onSubmitItemButton();
+                }}
+                ref={switcherRef}
+              >
+                <SwitcherItem title="Meu primeiro nome é">
+                  <TextInput
+                    name="name"
+                    placeholder="Nome"
+                    textInfo="Este será seu nome no Jiantou"
+                  />
+                </SwitcherItem>
+                <SwitcherItem title="A data e a hora do meu nascimento foi">
+                  <TextInput
+                    centralized
+                    name="birthdate"
+                    placeholder="01/01/2000 00:45"
+                    textInfo="Sua idade será visível para todos"
+                  />
+                </SwitcherItem>
+                <SwitcherItem title="Eu nasci na cidade de">
+                  <TextInput name="city" />
+                </SwitcherItem>
+              </Switcher>
+            )}
+          </Formik>
+        </SwitcherContainer>
+      </Content>
     )}
   </View>
 );

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import ImagePicker from 'react-native-image-picker';
 import reactotron from 'reactotron-react-native';
+import * as yup from 'yup';
+import moment from 'moment';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 
@@ -32,6 +34,11 @@ const CREATE_PROFILE = gql`
   }
 `;
 
+const switcherItemsMap = {
+  0: 'name',
+  1: 'birthdate'
+};
+
 const CreateProfileContainer = ({ navigation }) => {
   const [state, setState] = useState({
     birthday: new Date(),
@@ -44,6 +51,9 @@ const CreateProfileContainer = ({ navigation }) => {
       lng: null
     }
   });
+
+  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const switcherRef = useRef(null);
 
   const { loading: queryLoading, data } = useQuery(GET_USER);
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
@@ -80,7 +90,24 @@ const CreateProfileContainer = ({ navigation }) => {
         avatar: path.replace('file//', '')
       });
     });
-  reactotron.log(state);
+
+  const formSchema = yup.object().shape({
+    name: yup
+      .string()
+      .min(4)
+      .required('Seu nome nao pode conter menos de 4 caracteres'),
+    birthdate: yup
+      .string()
+      .min(16, 'Ops! Digite data e hora de nascimento.')
+      .test('TST', 'error', values => moment(new Date(values)).isValid())
+      .required('Digite uma data válida')
+  });
+
+  const formInitialSchema = {
+    name: '',
+    birthdate: ''
+  };
+
   const { user, profile } = data || {};
 
   return (
@@ -98,6 +125,8 @@ const CreateProfileContainer = ({ navigation }) => {
           }
         })
       }
+      formSchema={formSchema}
+      formInitialSchema={formInitialSchema}
       date={state.birthday}
       onSelectBirthPlace={(
         { description, id },
@@ -112,6 +141,29 @@ const CreateProfileContainer = ({ navigation }) => {
           birthplace: { description, placeId: id, lat: lat.toString(), lng: lng.toString() }
         })
       }
+      activeItemIndex={activeItemIndex}
+      switcherItemsMap={switcherItemsMap}
+      onSubmitItemButton={() => {
+        const nextActiveItemIndex = activeItemIndex + 1;
+        const itemsAmount = switcherRef.current.childrensAmount;
+        const { error } = switcherRef.current.formValues[1];
+
+        if (Object.keys(error).includes(switcherItemsMap[activeItemIndex])) {
+          return false;
+        }
+        if (nextActiveItemIndex < itemsAmount) {
+          return setActiveItemIndex(1 + activeItemIndex);
+        }
+        return false;
+      }}
+      switcherRef={switcherRef}
+      onPressBack={() => {
+        const nextActiveItemIndex = activeItemIndex - 1;
+        if (nextActiveItemIndex >= 0) {
+          return setActiveItemIndex(nextActiveItemIndex);
+        }
+        return false;
+      }}
       onChangeDate={(_, selectedDate) => setState({ ...state, birthday: selectedDate })}
       onPressUpload={() => openPicker()}
       user={user}

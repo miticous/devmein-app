@@ -38,6 +38,7 @@
     "react-native-gesture-handler": "^1.6.0",
     "react-native-google-places-autocomplete": "^1.4.1",
     "react-native-image-picker": "^2.3.0",
+    "react-native-linear-gradient": "react-native-community/react-native-linear-gradient",
     "react-native-masked-text": "^1.13.0",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.7.3",
@@ -47,6 +48,7 @@
     "rn-fetch-blob": "^0.12.0",
     "styled-components": "^5.0.1",
     "subscriptions-transport-ws": "^0.9.16",
+    "vanilla-masker": "^1.2.0",
     "yup": "^0.28.1"
   },
   "devDependencies": {

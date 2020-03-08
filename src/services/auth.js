@@ -65,7 +65,7 @@ export const validate = async ({ navigation, token }) => {
       url: 'http://localhost:4000/users/auth',
       headers: { Authorization: `Bearer ${token}` }
     });
-    reactotron.log(data);
+
     if (data) {
       return navigation.replace('Home');
     }

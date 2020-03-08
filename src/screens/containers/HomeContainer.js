@@ -87,7 +87,7 @@ const HomeContainer = ({ navigation }) => {
     },
     refetchQueries: [{ query: GET_HOME }]
   });
-  reactotron.log(state);
+
   const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
     onCompleted: () => setState({ ...state, geolocationSent: true })
   });

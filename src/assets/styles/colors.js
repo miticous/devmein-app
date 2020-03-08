@@ -1,9 +1,11 @@
 export const COLORS = {
   // ========== PRIMARY COLORS ============= //
 
-  primaryColor: '#BC61FA',
+  primaryColor: '#D25890',
 
-  secondaryColor: '#e6b3fc',
+  secondaryColor: '#A84F7E',
+
+  tertiaryColor: '#74396F',
 
   // ========== UI COLORS ============= //
 
@@ -12,7 +14,7 @@ export const COLORS = {
   black: '#000000',
   white: '#FFFFFF',
   iceColor: '#E5E9F2',
-  backgroundColor: '#F5F6F7',
+  backgroundColor: '#fafafa',
   lightning: 'rgba(0,0,0, 0.2)',
   lighter: '#FAFAFA',
 

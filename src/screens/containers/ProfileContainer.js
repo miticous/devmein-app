@@ -36,8 +36,6 @@ const ProfileContainer = () => {
       })
   });
 
-  reactotron.log(state);
-
   return <ProfileComponent profile={state.profile} loading={loadingQuery} />;
 };
 
