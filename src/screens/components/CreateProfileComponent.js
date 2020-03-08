@@ -54,12 +54,19 @@ const CreateProfileComponent = ({
       </View>
     ) : (
       <Content>
-        <LinearGradient
-          start={{ x: 0.0, y: 0.5 }}
-          end={{ x: 0.8, y: 1.0 }}
-          colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
-          style={{ height: 6, width: SCREEN_WIDTH }}
-        />
+        <View style={{ height: 6, width: SCREEN_WIDTH }}>
+          <LinearGradient
+            start={{ x: 0.0, y: 0.5 }}
+            end={{ x: 0.8, y: 1.0 }}
+            colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
+            style={{
+              height: 6,
+              width: `${(activeItemIndex / Object.keys(switcherItemsMap).length) * 100}%`,
+              position: 'absolute',
+              overflow: 'hidden'
+            }}
+          />
+        </View>
         <View
           style={{
             flex: 0.1,
@@ -103,7 +110,11 @@ const CreateProfileComponent = ({
                   />
                 </SwitcherItem>
                 <SwitcherItem title="Eu nasci na cidade de">
-                  <TextInput name="birthplaceDescription" />
+                  <TextInput
+                    name="birthplaceDescription"
+                    placeholder="Ex: Sāo Paulo"
+                    textInfo="Outros usuários nāo poderāo visualizar esta informaçāo, ela será usada apenas para o calculo do mapa astral"
+                  />
                 </SwitcherItem>
               </Switcher>
             )}

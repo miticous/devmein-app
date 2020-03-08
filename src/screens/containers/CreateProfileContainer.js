@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import ImagePicker from 'react-native-image-picker';
@@ -111,8 +111,8 @@ const CreateProfileContainer = ({ navigation }) => {
   });
 
   const formInitialSchema = {
-    name: 'Murilo',
-    birthdate: '07/03/1994 00:20',
+    name: '',
+    birthdate: '',
     birthplaceDescription: ''
   };
 
@@ -121,7 +121,7 @@ const CreateProfileContainer = ({ navigation }) => {
       getCitiesByName({ name: searchCity, setFindedCities, setShowCitiesModal });
     }
   }, [searchCity]);
-  reactotron.log(searchCity);
+
   const { user, profile } = data || {};
 
   return (
