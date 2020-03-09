@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, Modal, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Modal, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { not, isEmpty, isNil } from 'ramda';
 import reactotron from 'reactotron-react-native';
 import { COLORS } from '../styles/colors';
@@ -10,7 +10,7 @@ const Container = styled.View`
   margin-top: 20px;
   justify-content: center;
   height: ${SCREEN_HEIGHT};
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: ${COLORS.shadowBackground};
 `;
 const Separator = styled.View`
   height: 1px;
@@ -31,7 +31,7 @@ const renderItems = ({ data, onSelectItem }) => {
       const { id, label } = item;
 
       return (
-        <TouchableOpacity key={id.toString()} onPress={onSelectItem}>
+        <TouchableOpacity key={id.toString()} onPress={() => onSelectItem({ id, label })}>
           <Text
             style={{
               textAlign: 'center',
@@ -59,7 +59,7 @@ const ModalPicker = ({ data, onSelectItem, visible, onPressCancel }) => (
             marginHorizontal: 20,
             height: SCREEN_HEIGHT * 0.65,
             borderRadius: 10,
-            backgroundColor: COLORS.shadowBackground,
+            backgroundColor: COLORS.white,
             paddingHorizontal: 20,
             paddingTop: 20
           }}
@@ -76,7 +76,7 @@ const ModalPicker = ({ data, onSelectItem, visible, onPressCancel }) => (
           style={{
             flex: 0.3,
             borderRadius: 10,
-            backgroundColor: COLORS.shadowBackground,
+            backgroundColor: COLORS.white,
             margin: 20,
             justifyContent: 'center',
             alignItems: 'center'
@@ -88,5 +88,4 @@ const ModalPicker = ({ data, onSelectItem, visible, onPressCancel }) => (
     </Modal>
   </View>
 );
-
 export default ModalPicker;

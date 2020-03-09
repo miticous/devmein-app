@@ -16,6 +16,7 @@ import { SwitcherItem, Switcher } from '../../assets/components/Switcher';
 import Icon from '../../assets/components/Icon';
 import TextInput from '../../assets/components/TextInput';
 import ModalPicker from '../../assets/components/ModalPicker';
+import ModalLoading from '../../assets/components/ModalLoading';
 
 const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -24,20 +25,28 @@ const Content = styled.View`
 const SwitcherContainer = styled.View`
   flex: 1;
 `;
+const ImagePickerArea = styled.TouchableOpacity`
+  flex: 1;
+  background-color: ${COLORS.iceColor};
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
 
 const CreateProfileComponent = ({
   onPressSubmit,
   onPressUpload,
   user,
   profile,
-  image,
+  imageToUpload,
   isLoading,
   time,
   date,
   onChangeDate,
   onSelectBirthPlace,
   activeItemIndex,
-  onSubmitItemButton,
+  onSubmitSwitcherButton,
   onPressBack,
   switcherRef,
   formSchema,
@@ -45,90 +54,101 @@ const CreateProfileComponent = ({
   switcherItemsMap,
   modalDataCities,
   showCitiesModal,
-  onDismissCitiesModal
+  onDismissCitiesModal,
+  onSelectCity,
+  buttonSwitcherTitle,
+  onPressImagePicker
 }) => (
   <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
-    {isLoading ? (
-      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <ActivityIndicator size="large" />
-      </View>
-    ) : (
-      <Content>
-        <View style={{ height: 6, width: SCREEN_WIDTH }}>
-          <LinearGradient
-            start={{ x: 0.0, y: 0.5 }}
-            end={{ x: 0.8, y: 1.0 }}
-            colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
-            style={{
-              height: 6,
-              width: `${(activeItemIndex / Object.keys(switcherItemsMap).length) * 100}%`,
-              position: 'absolute',
-              overflow: 'hidden'
-            }}
-          />
-        </View>
-        <View
+    <Content>
+      <View style={{ height: 6, width: SCREEN_WIDTH }}>
+        <LinearGradient
+          start={{ x: 0.0, y: 0.5 }}
+          end={{ x: 0.8, y: 1.0 }}
+          colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
           style={{
-            flex: 0.1,
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            marginHorizontal: 10
+            height: 6,
+            width: `${((activeItemIndex + 1) / Object.keys(switcherItemsMap).length) * 100}%`,
+            position: 'absolute',
+            overflow: 'hidden'
           }}
-        >
-          <TouchableOpacity activeOpacity={1} onPress={onPressBack}>
-            <Icon name="ArrowBack" width={30} height={30} fill={COLORS.textSecondaryColor} />
-          </TouchableOpacity>
-        </View>
-        <SwitcherContainer>
-          <Formik
-            initialValues={formInitialSchema}
-            validationSchema={formSchema}
-            onSubmit={values => reactotron.log(values)}
-          >
-            {({ setFieldTouched }) => (
-              <Switcher
-                activeIndex={activeItemIndex}
-                onPressSubmit={() => {
-                  setFieldTouched(switcherItemsMap[activeItemIndex]);
-                  onSubmitItemButton();
-                }}
-                ref={switcherRef}
-              >
-                <SwitcherItem title="Meu primeiro nome é">
-                  <TextInput
-                    name="name"
-                    placeholder="Nome"
-                    textInfo="Este será seu nome no Jiantou"
-                  />
-                </SwitcherItem>
-                <SwitcherItem title="A data e a hora do meu nascimento foi">
-                  <TextInput
-                    centralized
-                    name="birthdate"
-                    placeholder="01/01/2000 00:45"
-                    textInfo="Sua idade será visível para todos"
-                  />
-                </SwitcherItem>
-                <SwitcherItem title="Eu nasci na cidade de">
-                  <TextInput
-                    name="birthplaceDescription"
-                    placeholder="Ex: Sāo Paulo"
-                    textInfo="Outros usuários nāo poderāo visualizar esta informaçāo, ela será usada apenas para o calculo do mapa astral"
-                  />
-                </SwitcherItem>
-              </Switcher>
-            )}
-          </Formik>
-        </SwitcherContainer>
-      </Content>
-    )}
+        />
+      </View>
+      <View
+        style={{
+          flex: 0.1,
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          marginHorizontal: 10
+        }}
+      >
+        <TouchableOpacity activeOpacity={1} onPress={onPressBack}>
+          <Icon name="ArrowBack" width={30} height={30} fill={COLORS.textSecondaryColor} />
+        </TouchableOpacity>
+      </View>
+      <SwitcherContainer>
+        <Formik initialValues={formInitialSchema} validationSchema={formSchema}>
+          {({ setFieldTouched, ...props }) => (
+            <Switcher
+              {...props}
+              buttonTitle={buttonSwitcherTitle}
+              activeIndex={activeItemIndex}
+              onPressSubmit={() => {
+                setFieldTouched(switcherItemsMap[activeItemIndex]);
+                onSubmitSwitcherButton();
+              }}
+              ref={switcherRef}
+            >
+              <SwitcherItem title="Meu primeiro nome é">
+                <TextInput
+                  name="name"
+                  placeholder="Nome"
+                  textInfo="Este será seu nome no Jiantou"
+                />
+              </SwitcherItem>
+              <SwitcherItem title="A data e a hora do meu nascimento foi">
+                <TextInput
+                  centralized
+                  name="birthdate"
+                  placeholder="01/01/2000 00:45"
+                  textInfo="Sua idade será visível para todos"
+                />
+              </SwitcherItem>
+              <SwitcherItem title="Eu nasci na cidade de">
+                <TextInput
+                  name="birthplaceDescription"
+                  placeholder="Ex: Sāo Paulo"
+                  textInfo="Outros usuários nāo poderāo visualizar esta informaçāo, ela será usada apenas para o calculo do mapa astral"
+                />
+              </SwitcherItem>
+              <SwitcherItem title="Minha melhor foto é">
+                <ImagePickerArea onPress={onPressImagePicker} activeOpacity={1}>
+                  {imageToUpload ? (
+                    <Image
+                      style={{ width: '100%', height: '100%' }}
+                      resizeMode="cover"
+                      source={{ uri: imageToUpload }}
+                    />
+                  ) : (
+                    <Icon name="Plus" fill={COLORS.primaryColor} />
+                  )}
+                </ImagePickerArea>
+              </SwitcherItem>
+            </Switcher>
+          )}
+        </Formik>
+      </SwitcherContainer>
+    </Content>
+
     {showCitiesModal && (
       <ModalPicker
         data={modalDataCities}
         visible={showCitiesModal}
         onPressCancel={onDismissCitiesModal}
+        onSelectItem={onSelectCity}
       />
     )}
+    {isLoading && <ModalLoading visible={isLoading} />}
   </View>
 );
 CreateProfileComponent.defaultProps = {

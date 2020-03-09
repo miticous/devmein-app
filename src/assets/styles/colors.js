@@ -25,7 +25,7 @@ export const COLORS = {
   services: '#009432',
   changes: '#346bac',
   oceanGreen: '#6ec9cc',
-  shadowBackground: '#EFEFF4',
+  shadowBackground: 'rgba(0, 0, 0, 0.8)',
   payment: '#2ed573',
   tips: '#BC61FA',
   budget: '#e55039',

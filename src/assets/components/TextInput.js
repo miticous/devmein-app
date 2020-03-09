@@ -9,8 +9,9 @@ import { COLORS } from '../styles/colors';
 const maskedDate = text => VMasker.toPattern(text, '99/99/9999 99:99');
 
 const TextInput = props => {
-  const { centralized, placeholder, textInfo } = props;
-  const [field, meta, helpers] = useField(props);
+  const { centralized, placeholder, textInfo, name } = props;
+
+  const [field, meta, helpers] = useField(name);
 
   return (
     <>

@@ -24,10 +24,6 @@ const SignUpContainer = ({ navigation }) => {
   });
 
   const formSchema = yup.object().shape({
-    name: yup
-      .string()
-      .min(10)
-      .required('Seu nome nao pode conter menos de 10 caracteres'),
     email: yup
       .string()
       .email()

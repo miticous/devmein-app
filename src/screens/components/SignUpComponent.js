@@ -27,20 +27,6 @@ const SignUpComponent = ({ formLoginInitialSchema, formLoginSchema, onPressSignU
       {({ values, handleChange, errors, setFieldTouched, touched, submitForm }) => (
         <>
           <InputBox
-            label="Nome"
-            showLabel={not(isEmpty(values.name))}
-            isValid={!errors.name && touched.name}
-            hasError={errors.name && touched.name}
-            errorMessage={errors.name}
-            value={values.name}
-            onType={handleChange('name')}
-            large
-            placeholder="Nome"
-            onFocusOut={() => {
-              setFieldTouched('name');
-            }}
-          />
-          <InputBox
             label="E-mail"
             autoCompleteType="email"
             textContentType="emailAddress"
