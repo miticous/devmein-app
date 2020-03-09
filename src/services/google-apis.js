@@ -38,13 +38,15 @@ const getCitieById = async ({ placeId, state, setState, setLoading, label }) => 
       result: {
         geometry: {
           location: { lat, lng }
-        }
+        },
+        utc_offset: UTCOffset
       }
     }
   } = await axios({
     method: 'GET',
-    url: `https://maps.googleapis.com/maps/api/place/details/json?key=${key}&placeid=${placeId}&language=pt-BR&fields=geometry`
+    url: `https://maps.googleapis.com/maps/api/place/details/json?key=${key}&placeid=${placeId}&language=pt-BR&fields=geometry,utc_offset`
   });
+  const UTCFromMinutesToHours = UTCOffset / 60;
   setLoading(false);
   return setState({
     ...state,
@@ -53,7 +55,8 @@ const getCitieById = async ({ placeId, state, setState, setLoading, label }) => 
       placeId,
       lat: lat.toString(),
       lng: lng.toString(),
-      description: label
+      description: label,
+      UTC: UTCFromMinutesToHours.toString()
     }
   });
 };

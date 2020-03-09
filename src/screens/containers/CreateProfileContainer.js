@@ -147,7 +147,8 @@ const CreateProfileContainer = ({ navigation }) => {
       placeId: null,
       description: null,
       lat: null,
-      lng: null
+      lng: null,
+      UTC: null
     }
   });
 
