@@ -17,6 +17,7 @@ import Icon from '../../assets/components/Icon';
 import TextInput from '../../assets/components/TextInput';
 import ModalPicker from '../../assets/components/ModalPicker';
 import ModalLoading from '../../assets/components/ModalLoading';
+import ButtonPicker from '../../assets/components/ButtonPicker';
 
 const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -119,6 +120,17 @@ const CreateProfileComponent = ({
                   name="birthplaceDescription"
                   placeholder="Ex: Sāo Paulo"
                   textInfo="Outros usuários nāo poderāo visualizar esta informaçāo, ela será usada apenas para o calculo do mapa astral"
+                />
+              </SwitcherItem>
+              <SwitcherItem title="Eu sou">
+                <ButtonPicker
+                  {...props}
+                  name="genre"
+                  options={[
+                    { label: 'Homem', id: 'MALE' },
+                    { label: 'Mulher', id: 'FEMALE' },
+                    { label: 'Humano', id: ' ' }
+                  ]}
                 />
               </SwitcherItem>
               <SwitcherItem title="Minha melhor foto é">

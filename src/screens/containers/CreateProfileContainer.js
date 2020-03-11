@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import reactotron from 'reactotron-react-native';
 import * as yup from 'yup';
 import moment from 'moment';
 import { not, isNil } from 'ramda';
+import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import { getCitiesByName, getCitieById } from '../../services/google-apis';
@@ -25,8 +25,14 @@ const GET_USER = gql`
 `;
 
 const CREATE_PROFILE = gql`
-  mutation($file: String!, $name: String!, $birthday: String!, $input: BirthplaceInput!) {
-    createProfile(file: $file, name: $name, birthday: $birthday, input: $input) {
+  mutation(
+    $file: String!
+    $name: String!
+    $birthday: String!
+    $input: BirthplaceInput!
+    $genre: String
+  ) {
+    createProfile(file: $file, name: $name, birthday: $birthday, input: $input, genre: $genre) {
       _id
       images {
         _id
@@ -53,7 +59,8 @@ const switcherItemsMap = {
   0: 'name',
   1: 'birthdate',
   2: 'birthplaceDescription',
-  3: 'imageSelection'
+  3: 'genre',
+  4: 'imageSelection'
 };
 
 const onSelectCity = async props => {
@@ -92,7 +99,7 @@ const onSubmitSwitcherButton = ({
   const nextActiveItemIndex = activeItemIndex + 1;
   const itemsAmount = switcherRef.current.childrensAmount;
   const { errors, values } = switcherRef.current.formValues;
-  const { birthdate, name } = values;
+  const { birthdate, name, genre } = values;
   const referencedInput = switcherItemsMap[activeItemIndex];
   const referencedInputValue = values[referencedInput];
   const referencedInputError = errors[referencedInput];
@@ -106,16 +113,20 @@ const onSubmitSwitcherButton = ({
   if (activeItemIndex === 2 && referencedInputValue.length >= 4) {
     return setSearchCity(referencedInputValue);
   }
+  if (activeItemIndex === 3 && !genre) {
+    return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
+  }
   if (nextActiveItemIndex < itemsAmount) {
     return setActiveItemIndex(1 + activeItemIndex);
   }
-  if (activeItemIndex === 3) {
-    reactotron.log(birthdate);
+  if (activeItemIndex === 4) {
     if (state.file) {
+      reactotron.log(genre);
       return createProfile({
         variables: {
           name,
           birthday: birthdate,
+          genre,
           file: state.file,
           input: {
             ...state.birthplace
@@ -132,7 +143,7 @@ const getButtonSwitcherTitle = ({ activeItemIndex, state }) => {
   if (activeItemIndex === 2) {
     return state.birthplace.placeId ? 'Continuar' : 'Pesquisar';
   }
-  if (activeItemIndex === 3) {
+  if (activeItemIndex === 4) {
     return 'Pronto';
   }
   return 'Continuar';
@@ -181,9 +192,10 @@ const CreateProfileContainer = ({ navigation }) => {
   });
 
   const formInitialSchema = {
-    name: '',
-    birthdate: '',
-    birthplaceDescription: ''
+    name: 'Murilo Medeiros',
+    birthdate: '07/03/1994 11:45',
+    birthplaceDescription: 'Cacu',
+    genre: null
   };
 
   useEffect(() => {

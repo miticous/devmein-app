@@ -12,6 +12,7 @@ import MatchesContainer from './screens/containers/MatchesContainer';
 import { COLORS } from './assets/styles/colors';
 import ProfileContainer from './screens/containers/ProfileContainer';
 import { SCREEN_WIDTH } from './assets/styles';
+import ConfigsContainer from './screens/containers/ConfigsContainer';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +40,21 @@ const Routes = () => (
         headerShown: false
       }}
     />
-    <Stack.Screen name="Profile" component={ProfileContainer} options={{ title: 'Perfil' }} />
+    <Stack.Screen
+      name="Configs"
+      component={ConfigsContainer}
+      options={{ title: 'Configurações' }}
+    />
+    <Stack.Screen
+      name="Profile"
+      component={ProfileContainer}
+      options={({ navigation }) => ({
+        title: 'Perfil',
+        headerRight: () => (
+          <Button onPress={() => navigation.navigate('Configs')} title="Configurações" />
+        )
+      })}
+    />
     <Stack.Screen
       name="Home"
       component={HomeContainer}
