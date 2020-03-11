@@ -124,11 +124,20 @@ const CreateProfileComponent = ({
               </SwitcherItem>
               <SwitcherItem title="Eu sou">
                 <ButtonPicker
-                  {...props}
                   name="genre"
                   options={[
                     { label: 'Homem', id: 'MALE' },
                     { label: 'Mulher', id: 'FEMALE' },
+                    { label: 'Humano', id: ' ' }
+                  ]}
+                />
+              </SwitcherItem>
+              <SwitcherItem title="Á procura de">
+                <ButtonPicker
+                  name="searchGenre"
+                  options={[
+                    { label: 'Mulher', id: 'FEMALE' },
+                    { label: 'Homem', id: 'MALE' },
                     { label: 'Humano', id: ' ' }
                   ]}
                 />

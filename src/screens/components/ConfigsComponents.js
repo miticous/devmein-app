@@ -4,17 +4,20 @@ import { ActivityIndicator, View, Text, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { COLORS } from '../../assets/styles/colors';
 import Icon from '../../assets/components/Icon';
+import ModalLoading from '../../assets/components/ModalLoading';
+
+const GenreTypes = {
+  FEMALE: 'Mulheres',
+  MALE: 'Homens',
+  '': 'Humanos'
+};
 
 const ConfigsComponent = ({ loading, user, onSlideMaxDistance, onPressChangeSearchGenre }) => {
   console.log();
 
   return (
     <View style={{ flex: 1 }}>
-      {loading ? (
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-          <ActivityIndicator size="large" color={COLORS.primaryColor} />
-        </View>
-      ) : (
+      {!loading && (
         <>
           <View style={{ marginVertical: 10 }}>
             <Text
@@ -114,12 +117,12 @@ const ConfigsComponent = ({ loading, user, onSlideMaxDistance, onPressChangeSear
               >
                 <View style={{ flex: 0.5 }}>
                   <Text style={{ fontSize: 17, color: COLORS.textPrimaryColor, fontWeight: '600' }}>
-                    Mostrar
+                    Exibir
                   </Text>
                 </View>
                 <View style={{ alignItems: 'flex-end', flex: 2 }}>
                   <Text style={{ color: COLORS.textSecondaryColor, fontSize: 17 }}>
-                    {user.configs.searchGenre || 'Todos'}
+                    {GenreTypes[user.configs.searchGenre]}
                   </Text>
                 </View>
                 <View style={{ alignItems: 'flex-end', flex: 0.2, justifyContent: 'center' }}>
@@ -130,6 +133,7 @@ const ConfigsComponent = ({ loading, user, onSlideMaxDistance, onPressChangeSear
           </View>
         </>
       )}
+      {loading && <ModalLoading visible={loading} />}
     </View>
   );
 };

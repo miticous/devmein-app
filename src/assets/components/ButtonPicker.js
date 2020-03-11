@@ -48,9 +48,9 @@ const renderOptions = ({ options, activeId, onSelect }) => {
   return false;
 };
 
-const ButtonPicker = ({ options, name, ...props }) => {
+const ButtonPicker = ({ options, name }) => {
   const [field, , helpers] = useField(name);
-  reactotron.log(props);
+
   return (
     <View>
       {renderOptions({

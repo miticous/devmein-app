@@ -10,20 +10,6 @@ import DropDownHolder from '../../helpers/DropDownHolder';
 import { getCitiesByName, getCitieById } from '../../services/google-apis';
 import ImagePicker from '../../assets/components/ImagePicker';
 
-const GET_USER = gql`
-  query {
-    user {
-      name
-    }
-    profile {
-      images {
-        _id
-        image
-      }
-    }
-  }
-`;
-
 const CREATE_PROFILE = gql`
   mutation(
     $file: String!
@@ -31,8 +17,16 @@ const CREATE_PROFILE = gql`
     $birthday: String!
     $input: BirthplaceInput!
     $genre: String
+    $searchGenre: String!
   ) {
-    createProfile(file: $file, name: $name, birthday: $birthday, input: $input, genre: $genre) {
+    createProfile(
+      file: $file
+      name: $name
+      birthday: $birthday
+      input: $input
+      genre: $genre
+      searchGenre: $searchGenre
+    ) {
       _id
       images {
         _id
@@ -60,7 +54,8 @@ const switcherItemsMap = {
   1: 'birthdate',
   2: 'birthplaceDescription',
   3: 'genre',
-  4: 'imageSelection'
+  4: 'searchGenre',
+  5: 'imageSelection'
 };
 
 const onSelectCity = async props => {
@@ -99,7 +94,7 @@ const onSubmitSwitcherButton = ({
   const nextActiveItemIndex = activeItemIndex + 1;
   const itemsAmount = switcherRef.current.childrensAmount;
   const { errors, values } = switcherRef.current.formValues;
-  const { birthdate, name, genre } = values;
+  const { birthdate, name, genre, searchGenre } = values;
   const referencedInput = switcherItemsMap[activeItemIndex];
   const referencedInputValue = values[referencedInput];
   const referencedInputError = errors[referencedInput];
@@ -116,10 +111,14 @@ const onSubmitSwitcherButton = ({
   if (activeItemIndex === 3 && !genre) {
     return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
   }
+  reactotron.log(values);
+  if (activeItemIndex === 4 && !searchGenre) {
+    return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
+  }
   if (nextActiveItemIndex < itemsAmount) {
     return setActiveItemIndex(1 + activeItemIndex);
   }
-  if (activeItemIndex === 4) {
+  if (activeItemIndex === 5) {
     if (state.file) {
       reactotron.log(genre);
       return createProfile({
@@ -127,6 +126,7 @@ const onSubmitSwitcherButton = ({
           name,
           birthday: birthdate,
           genre,
+          searchGenre,
           file: state.file,
           input: {
             ...state.birthplace
@@ -143,7 +143,7 @@ const getButtonSwitcherTitle = ({ activeItemIndex, state }) => {
   if (activeItemIndex === 2) {
     return state.birthplace.placeId ? 'Continuar' : 'Pesquisar';
   }
-  if (activeItemIndex === 4) {
+  if (activeItemIndex === 5) {
     return 'Pronto';
   }
   return 'Continuar';
@@ -171,11 +171,9 @@ const CreateProfileContainer = ({ navigation }) => {
 
   const switcherRef = useRef(null);
 
-  const { loading: queryLoading, data } = useQuery(GET_USER);
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
     onCompleted: () => navigation.replace('Home'),
-    onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
-    refetchQueries: [{ query: GET_USER, variables: { v: Math.random() } }]
+    onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil')
   });
 
   const formSchema = yup.object().shape({
@@ -192,10 +190,11 @@ const CreateProfileContainer = ({ navigation }) => {
   });
 
   const formInitialSchema = {
-    name: 'Murilo Medeiros',
+    name: 'Murilo',
     birthdate: '07/03/1994 11:45',
-    birthplaceDescription: 'Cacu',
-    genre: null
+    birthplaceDescription: 'cacu',
+    genre: null,
+    searchGenre: null
   };
 
   useEffect(() => {
@@ -204,11 +203,9 @@ const CreateProfileContainer = ({ navigation }) => {
     }
   }, [searchCity]);
 
-  const { user, profile } = data || {};
-
   return (
     <CreateProfileComponent
-      isLoading={queryLoading || mutationLoading || loading}
+      isLoading={mutationLoading || loading}
       imageToUpload={state.avatar}
       formSchema={formSchema}
       formInitialSchema={formInitialSchema}
@@ -244,8 +241,6 @@ const CreateProfileContainer = ({ navigation }) => {
       }
       onChangeDate={(_, selectedDate) => setState({ ...state, birthday: selectedDate })}
       onPressUpload={() => false}
-      user={user}
-      profile={profile}
       image={state.avatar}
       buttonSwitcherTitle={getButtonSwitcherTitle({ activeItemIndex, state })}
       onPressImagePicker={() =>

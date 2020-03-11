@@ -9,7 +9,7 @@ const ProfileComponent = ({ loading, profile, data }) => {
   console.log();
 
   return (
-    <ScrollView style={{ flex: 1, marginHorizontal: 20 }}>
+    <ScrollView style={{ flex: 1, marginHorizontal: 20, backgroundColor: COLORS.backgroundColor }}>
       {loading && <ActivityIndicator size="large" />}
       {profile && (
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>

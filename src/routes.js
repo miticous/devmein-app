@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Button, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Button } from 'react-native';
 import HomeContainer from './screens/containers/HomeContainer';
 import AuthContainer from './screens/containers/AuthContainer';
 import LoginContainer from './screens/containers/LoginContainer';
@@ -11,8 +10,8 @@ import ChatContainer from './screens/containers/ChatContainer';
 import MatchesContainer from './screens/containers/MatchesContainer';
 import { COLORS } from './assets/styles/colors';
 import ProfileContainer from './screens/containers/ProfileContainer';
-import { SCREEN_WIDTH } from './assets/styles';
 import ConfigsContainer from './screens/containers/ConfigsContainer';
+import GenreSelectionContainer from './screens/containers/GenreSelectionContainer';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +43,11 @@ const Routes = () => (
       name="Configs"
       component={ConfigsContainer}
       options={{ title: 'Configurações' }}
+    />
+    <Stack.Screen
+      name="GenreSelection"
+      component={GenreSelectionContainer}
+      options={{ title: 'Exibir' }}
     />
     <Stack.Screen
       name="Profile"
