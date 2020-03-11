@@ -25,7 +25,7 @@ const GET_USER = gql`
 `;
 
 const CREATE_PROFILE = gql`
-  mutation($file: String, $name: String, $birthday: String, $input: BirthplaceInput) {
+  mutation($file: String!, $name: String!, $birthday: String!, $input: BirthplaceInput!) {
     createProfile(file: $file, name: $name, birthday: $birthday, input: $input) {
       _id
       images {
@@ -181,9 +181,9 @@ const CreateProfileContainer = ({ navigation }) => {
   });
 
   const formInitialSchema = {
-    name: 'Murilo',
-    birthdate: '26/03/1994 11:45',
-    birthplaceDescription: 'cacu'
+    name: '',
+    birthdate: '',
+    birthplaceDescription: ''
   };
 
   useEffect(() => {
