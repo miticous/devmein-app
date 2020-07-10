@@ -39,7 +39,28 @@ const Routes = () => (
         headerShown: false
       }}
     />
-    <Stack.Screen name="Profile" component={ProfileContainer} options={{ title: 'Perfil' }} />
+    <Stack.Screen
+      name="Profile"
+      component={ProfileContainer}
+      options={{
+        title: 'SEU PERFIL',
+        headerStyle: {
+          backgroundColor: COLORS.backgroundColor,
+          height: 70,
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0
+          }
+        },
+        headerTitleStyle: {
+          fontStyle: 'normal',
+          fontWeight: 'bold',
+          letterSpacing: 2,
+          fontSize: 18,
+          lineHeight: 18
+        }
+      }}
+    />
     <Stack.Screen
       name="Home"
       component={HomeContainer}

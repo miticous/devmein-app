@@ -14,7 +14,7 @@ export const COLORS = {
   black: '#000000',
   white: '#FFFFFF',
   iceColor: '#E5E9F2',
-  backgroundColor: '#fafafa',
+  backgroundColor: '#FFFFFF',
   lightning: 'rgba(0,0,0, 0.2)',
   lighter: '#FAFAFA',
 
