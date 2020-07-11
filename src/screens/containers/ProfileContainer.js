@@ -11,6 +11,7 @@ const GET_PROFILE = gql`
     profile {
       name
       birthday
+      sign
       images {
         image
       }

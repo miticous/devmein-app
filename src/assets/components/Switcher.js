@@ -18,8 +18,7 @@ const TextTitle = styled.Text`
 `;
 
 const Switcher = React.forwardRef((props, ref) => {
-  const { children, activeIndex, onPressSubmit } = props;
-  const values = useField(props);
+  const { children, activeIndex, onPressSubmit, buttonTitle } = props;
 
   const ITEM_SIZE = SCREEN_WIDTH;
   const ITEM_POSITION = (activeIndex + 1) * ITEM_SIZE * -1;
@@ -27,7 +26,7 @@ const Switcher = React.forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     childrensAmount: React.Children.count(children),
-    formValues: values
+    formValues: props
   }));
 
   const [scrollToIndex] = useState(new Animated.Value(SCROLL_TO_POSITION));
@@ -44,7 +43,6 @@ const Switcher = React.forwardRef((props, ref) => {
     <Container ref={ref}>
       <View style={{ width: SCREEN_WIDTH, flex: 0.8 }}>
         <Animated.View
-          onLayout={({ nativeEvent: { layout } }) => reactotron.log(layout)}
           style={{
             flex: 1,
             flexDirection: 'row',
@@ -56,7 +54,7 @@ const Switcher = React.forwardRef((props, ref) => {
       </View>
       <View style={{ flex: 0.2, justifyContent: 'center' }}>
         <View style={{ paddingHorizontal: 20 }}>
-          <Button text="Continuar" action={onPressSubmit} />
+          <Button text={buttonTitle} action={onPressSubmit} />
         </View>
       </View>
     </Container>

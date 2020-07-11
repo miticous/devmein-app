@@ -11,7 +11,7 @@ import HomeComponent from '../components/HomeComponent';
 
 const GET_HOME = gql`
   query {
-    home(maxDistance: "10000") {
+    home {
       name
       _id
       images {

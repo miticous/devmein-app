@@ -36,13 +36,12 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
   }
 };
 
-export const signUp = async ({ name, email, password, navigation }) => {
+export const signUp = async ({ email, password, navigation }) => {
   try {
     await axios({
       method: 'post',
       url: 'http://localhost:4000/users',
       data: {
-        name,
         email,
         password
       }
