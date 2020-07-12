@@ -11,7 +11,7 @@ const Container = styled.View`
   padding: 0px 20px;
 `;
 
-const ProfileComponent = ({ loading, profile, data }) => {
+const ProfileComponent = ({ loading, profile, data, onPressEditButton }) => {
   console.log();
 
   return (
@@ -29,7 +29,7 @@ const ProfileComponent = ({ loading, profile, data }) => {
           />
         )}
 
-        <DefaultButton text="EDITAR PERFIL" />
+        <DefaultButton text="EDITAR PERFIL" action={onPressEditButton} />
       </Container>
     </View>
   );

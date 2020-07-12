@@ -1,29 +1,10 @@
 import React, { useState } from 'react';
-import { View, Button, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import reactotron from 'reactotron-react-native';
 import Icon from '../../assets/components/Icon';
 import ProfileComponent from '../components/ProfileComponent';
-
-const GET_PROFILE = gql`
-  query {
-    profile {
-      name
-      birthday
-      sign
-      images {
-        image
-      }
-      birthplace {
-        placeId
-        description
-        lat
-        lng
-      }
-    }
-  }
-`;
+import { GET_PROFILE } from '../../graphQL/query';
 
 const ProfileContainer = ({ navigation }) => {
   const [state, setState] = useState({
@@ -53,7 +34,17 @@ const ProfileContainer = ({ navigation }) => {
       })
   });
 
-  return <ProfileComponent profile={state.profile} loading={loadingQuery} />;
+  return (
+    <ProfileComponent
+      profile={state.profile}
+      loading={loadingQuery}
+      onPressEditButton={() =>
+        navigation.navigate('ProfileEdition', {
+          profile: state.profile
+        })
+      }
+    />
+  );
 };
 
 export default ProfileContainer;

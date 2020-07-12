@@ -111,7 +111,6 @@ const onSubmitSwitcherButton = ({
   if (activeItemIndex === 3 && !genre) {
     return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
   }
-  reactotron.log(values);
   if (activeItemIndex === 4 && !searchGenre) {
     return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
   }
@@ -120,7 +119,6 @@ const onSubmitSwitcherButton = ({
   }
   if (activeItemIndex === 5) {
     if (state.file) {
-      reactotron.log(genre);
       return createProfile({
         variables: {
           name,
