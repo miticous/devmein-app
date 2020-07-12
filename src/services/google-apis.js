@@ -1,32 +1,35 @@
 import axios from 'axios';
 import reactotron from 'reactotron-react-native';
 
-const getCitiesByName = async ({ name, setFindedCities, setShowCitiesModal, setLoading }) => {
+const getCitiesByName = async ({ name }) => {
   const key = 'AIzaSyAsceWUlXxulQJohZddfRPstfcNl7FcE2s';
   const sessionToken = '12381247512';
-  setLoading(true);
-  setShowCitiesModal(false);
-  const {
-    data: { predictions }
-  } = await axios({
-    method: 'GET',
-    url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${name}&key=${key}&language=pt-BR&types=%28cities%29&sessionToken=${sessionToken}`
-  });
+  await new Promise(resolve =>
+    setTimeout(() => {
+      resolve();
+    }, 1000)
+  );
+  try {
+    const {
+      data: { predictions }
+    } = await axios({
+      method: 'GET',
+      url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${name}&key=${key}&language=pt-BR&types=%28cities%29&sessionToken=${sessionToken}`
+    });
 
-  const normalizedPreditionsData = predictions.map(predict => {
-    const { description, place_id: placeId } = predict;
+    const normalizedPreditionsData = predictions.map(predict => {
+      const { description, place_id: placeId } = predict;
 
-    return {
-      label: description,
-      id: placeId
-    };
-  });
-  setLoading(false);
-  setFindedCities(normalizedPreditionsData);
+      return {
+        label: description,
+        id: placeId
+      };
+    });
 
-  await new Promise(resolve => {
-    setTimeout(() => resolve(setShowCitiesModal(true)), 200);
-  });
+    return normalizedPreditionsData;
+  } catch (error) {
+    reactotron.log(error);
+  }
 };
 
 const getCitieById = async ({ placeId, state, setState, setLoading, label }) => {

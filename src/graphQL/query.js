@@ -16,6 +16,11 @@ export const GET_PROFILE = gql`
         lat
         lng
       }
+      eyes
+      occupation
+      graduation
+      graduationPlace
+      live
     }
   }
 `;

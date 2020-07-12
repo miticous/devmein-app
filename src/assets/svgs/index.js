@@ -31,8 +31,8 @@ export default {
         />
       </G>
     ),
-    height: '40px',
-    width: '40px',
+    height: 40,
+    width: 40,
     viewBox: '0 0 40 40'
   },
   Close: {

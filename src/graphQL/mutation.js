@@ -11,3 +11,33 @@ export const REMOVE_PROFILE_IMAGE = gql`
     removeProfileImage(imageId: $imageId)
   }
 `;
+
+export const EDIT_PROFILE = gql`
+  mutation(
+    $name: String!
+    $birthday: String!
+    $birthplaceId: String!
+    $eyes: String
+    $graduation: String
+    $graduationPlace: String
+    $occupation: String
+    $live: String
+  ) {
+    editProfile(
+      name: $name
+      birthday: $birthday
+      birthplaceId: $birthplaceId
+      eyes: $eyes
+      graduation: $graduation
+      graduationPlace: $graduationPlace
+      occupation: $occupation
+      live: $live
+    ) {
+      _id
+      images {
+        _id
+        image
+      }
+    }
+  }
+`;
