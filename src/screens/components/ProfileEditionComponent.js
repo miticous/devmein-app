@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
-import reactotron from 'reactotron-react-native';
 import ImageGrid from '../../assets/components/ImageGrid';
 import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
@@ -33,9 +32,11 @@ const ProfileEditionComponent = ({
   formRef,
   onChangeInput,
   sugestions,
-  onPressSugestion
+  onPressSugestion,
+  onSubmitForm,
+  onPressInputButton
 }) => (
-  <Container nestedScrollEnabled>
+  <Container nestedScrollEnabled keyboardShouldPersistTaps="always">
     <Content>
       <ImageGrid
         data={profile?.images?.map(image => image?.image)}
@@ -43,27 +44,69 @@ const ProfileEditionComponent = ({
         onPressRemove={onPressRemove}
       />
     </Content>
-    <Formik initialValues={formInitialSchema} validationSchema={formSchema} innerRef={formRef}>
-      {({ setFieldTouched }) => (
+    <Formik
+      initialValues={formInitialSchema}
+      validationSchema={formSchema}
+      innerRef={formRef}
+      onSubmit={onSubmitForm}
+      validateOnChange
+    >
+      {() => (
         <>
           <Content>
-            <TextInput name="name" label="Meu nome é" />
-            <TextInput name="eyes" label="A cor dos meus olhos é" />
-            <TextInput name="occupation" label="Minha profissão é" />
-            <TextInput name="live" label="Moro em" />
+            <TextInput name="name" label="Meu nome é" onPressButton={onPressInputButton} />
+            <TextInput
+              name="eyes"
+              label="A cor dos meus olhos é"
+              optional
+              onPressButton={onPressInputButton}
+            />
+            <TextInput
+              name="occupation"
+              label="Minha profissão é"
+              optional
+              onPressButton={onPressInputButton}
+            />
+            <TextInput
+              name="residence.description"
+              label="Moro em"
+              onChange={onChangeInput}
+              sugestions={sugestions}
+              onPressSugestion={onPressSugestion}
+              onPressButton={onPressInputButton}
+              optional
+            />
           </Content>
           <Separator />
           <Content>
-            <TextInput name="graduation" label="Estudante de" />
-            <TextInput name="graduationPlace" label="Estudo em" />
+            <TextInput
+              name="graduation.class"
+              label="Estudante de"
+              optional
+              onPressButton={onPressInputButton}
+            />
+            <TextInput
+              onPressButton={onPressInputButton}
+              name="graduation.description"
+              label="Estudo em"
+              onChange={onChangeInput}
+              sugestions={sugestions}
+              onPressSugestion={onPressSugestion}
+              optional
+            />
           </Content>
           <Content detached>
-            <TextInput name="birthday" label="Data e hora de nascimento" />
             <TextInput
-              name="description"
+              name="birthday"
+              label="Data e hora de nascimento"
+              onPressButton={onPressInputButton}
+            />
+            <TextInput
+              name="birthplace.description"
               label="Cidade em que nasceu"
               onChange={onChangeInput}
               sugestions={sugestions}
+              onPressButton={onPressInputButton}
               onPressSugestion={onPressSugestion}
             />
           </Content>
@@ -73,5 +116,24 @@ const ProfileEditionComponent = ({
     {loading && <ModalLoading visible={loading} />}
   </Container>
 );
+
+ProfileEditionComponent.defaultProps = {
+  sugestions: null
+};
+
+ProfileEditionComponent.propTypes = {
+  onPressImage: PropTypes.func.isRequired,
+  profile: PropTypes.shape({}).isRequired,
+  loading: PropTypes.bool.isRequired,
+  onPressRemove: PropTypes.func.isRequired,
+  formInitialSchema: PropTypes.shape({}).isRequired,
+  formSchema: PropTypes.shape({}).isRequired,
+  formRef: PropTypes.shape({}).isRequired,
+  onChangeInput: PropTypes.func.isRequired,
+  sugestions: PropTypes.arrayOf(PropTypes.shape({})),
+  onPressSugestion: PropTypes.func.isRequired,
+  onSubmitForm: PropTypes.func.isRequired,
+  onPressInputButton: PropTypes.func.isRequired
+};
 
 export default ProfileEditionComponent;

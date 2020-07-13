@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import Icon from '../../assets/components/Icon';
 import ProfileComponent from '../components/ProfileComponent';
 import { GET_PROFILE } from '../../graphQL/query';
 
 const ProfileContainer = ({ navigation }) => {
-  const [state, setState] = useState({
-    profile: undefined
-  });
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -26,25 +22,23 @@ const ProfileContainer = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const { loading: loadingQuery } = useQuery(GET_PROFILE, {
-    onCompleted: ({ profile }) =>
-      setState({
-        ...state,
-        profile
-      })
-  });
+  const { data, loading: loadingQuery } = useQuery(GET_PROFILE);
 
   return (
     <ProfileComponent
-      profile={state.profile}
+      profile={data?.profile}
       loading={loadingQuery}
-      onPressEditButton={() =>
-        navigation.navigate('ProfileEdition', {
-          profile: state.profile
-        })
-      }
+      onPressEditButton={() => navigation.navigate('ProfileEdition')}
     />
   );
+};
+
+ProfileContainer.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    pop: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired
+  }).isRequired
 };
 
 export default ProfileContainer;

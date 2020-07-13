@@ -16,22 +16,20 @@ export const EDIT_PROFILE = gql`
   mutation(
     $name: String!
     $birthday: String!
-    $birthplaceId: String!
     $eyes: String
-    $graduation: String
-    $graduationPlace: String
+    $graduation: GraduationInput
+    $birthplace: BirthplaceInput!
+    $residence: ResidenceInput
     $occupation: String
-    $live: String
   ) {
     editProfile(
       name: $name
       birthday: $birthday
-      birthplaceId: $birthplaceId
+      birthplace: $birthplace
       eyes: $eyes
       graduation: $graduation
-      graduationPlace: $graduationPlace
       occupation: $occupation
-      live: $live
+      residence: $residence
     ) {
       _id
       images {

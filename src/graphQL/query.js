@@ -18,9 +18,15 @@ export const GET_PROFILE = gql`
       }
       eyes
       occupation
-      graduation
-      graduationPlace
-      live
+      graduation {
+        class
+        placeId
+        description
+      }
+      residence {
+        placeId
+        description
+      }
     }
   }
 `;

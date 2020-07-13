@@ -1,7 +1,6 @@
 import axios from 'axios';
-import reactotron from 'reactotron-react-native';
 
-const getCitiesByName = async ({ name }) => {
+const getCitiesByName = async ({ name, type }) => {
   const key = 'AIzaSyAsceWUlXxulQJohZddfRPstfcNl7FcE2s';
   const sessionToken = '12381247512';
   await new Promise(resolve =>
@@ -14,21 +13,26 @@ const getCitiesByName = async ({ name }) => {
       data: { predictions }
     } = await axios({
       method: 'GET',
-      url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${name}&key=${key}&language=pt-BR&types=%28cities%29&sessionToken=${sessionToken}`
+      url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${name
+        .normalize('NFD')
+        .replace(
+          /[\u0300-\u036f]/g,
+          ''
+        )}&key=${key}&language=pt-BR&types=${type}&sessionToken=${sessionToken}`
     });
 
     const normalizedPreditionsData = predictions.map(predict => {
-      const { description, place_id: placeId } = predict;
+      const { description, place_id: placeId, terms } = predict;
 
       return {
-        label: description,
+        label: type === 'establishment' ? `${terms[0]?.value}, ${terms[4]?.value}` : description,
         id: placeId
       };
     });
 
     return normalizedPreditionsData;
   } catch (error) {
-    reactotron.log(error);
+    return {};
   }
 };
 
