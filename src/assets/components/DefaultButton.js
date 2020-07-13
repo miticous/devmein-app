@@ -22,8 +22,8 @@ const Label = styled.Text`
   color: #75396f;
 `;
 
-const DefaultButton = ({ text, action, buttonLoading, disabled }) => (
-  <Container onPress={disabled ? null : action}>
+const DefaultButton = ({ text, action, disabled }) => (
+  <Container onPress={disabled ? false : action}>
     <Label>{text.toUpperCase()}</Label>
   </Container>
 );

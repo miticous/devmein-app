@@ -16,7 +16,7 @@ import DropDownHolder from './helpers/DropDownHolder';
 
 require('./config/reactotronConfig');
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({ addTypename: false });
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000/graphql'
 });
@@ -40,7 +40,6 @@ const link = split(
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem('@jintou:token');
-
   return {
     headers: {
       ...headers,

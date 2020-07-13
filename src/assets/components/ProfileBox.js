@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
@@ -38,7 +39,7 @@ const Mandala = styled.TouchableOpacity`
   left: 16px;
   background-color: #75396f;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
-  border-radius: 100;
+  border-radius: 100px;
 `;
 const Name = styled.Text`
   font-style: normal;
@@ -92,5 +93,19 @@ const ProfileBox = ({ sign, image, name, birthplace, occupation, graduation }) =
     </AboutArea>
   </Container>
 );
+
+ProfileBox.defaultProps = {
+  occupation: null,
+  graduation: null
+};
+
+ProfileBox.propTypes = {
+  sign: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  birthplace: PropTypes.string.isRequired,
+  occupation: PropTypes.string,
+  graduation: PropTypes.string
+};
 
 export default ProfileBox;

@@ -12,6 +12,8 @@ import { COLORS } from './assets/styles/colors';
 import ProfileContainer from './screens/containers/ProfileContainer';
 import ConfigsContainer from './screens/containers/ConfigsContainer';
 import GenreSelectionContainer from './screens/containers/GenreSelectionContainer';
+import { headerTitleStyle, headerStyle } from './assets/styles';
+import ProfileEditionContainer from './screens/containers/ProfileEditionContainer';
 
 const Stack = createStackNavigator();
 
@@ -44,21 +46,17 @@ const Routes = () => (
       component={ProfileContainer}
       options={{
         title: 'SEU PERFIL',
-        headerStyle: {
-          backgroundColor: COLORS.backgroundColor,
-          height: 70,
-          shadowRadius: 0,
-          shadowOffset: {
-            height: 0
-          }
-        },
-        headerTitleStyle: {
-          fontStyle: 'normal',
-          fontWeight: 'bold',
-          letterSpacing: 2,
-          fontSize: 18,
-          lineHeight: 18
-        }
+        headerStyle,
+        headerTitleStyle
+      }}
+    />
+    <Stack.Screen
+      name="ProfileEdition"
+      component={ProfileEditionContainer}
+      options={{
+        title: 'EDITAR PERFIL',
+        headerStyle,
+        headerTitleStyle
       }}
     />
     <Stack.Screen
