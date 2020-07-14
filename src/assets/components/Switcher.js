@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useState, useEffect, useImperativeHandle } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { View, Text, Animated, Easing } from 'react-native';
 import reactotron from 'reactotron-react-native';
@@ -7,14 +8,38 @@ import { SCREEN_WIDTH } from '../styles';
 import { COLORS } from '../styles/colors';
 import Button from './Button';
 import TextInput from './TextInput';
+import DefaultButton from './DefaultButton';
 
 const Container = styled.View`
   flex: 1;
   justify-content: flex-start;
 `;
-
+const SwitcherItemContainer = styled.View`
+  width: 100%;
+`;
+const SwitcherItemHeader = styled.View`
+  flex: 0.3;
+  justify-content: center;
+  padding: 0px 20px;
+`;
+const SwitcherItemBody = styled.View`
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  padding: ${({ fluid }) => (fluid ? '0px 20px' : '0px')};
+`;
 const TextTitle = styled.Text`
-  font-size: 30px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 58px;
+`;
+const TextSubtitle = styled.Text`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #828282;
 `;
 
 const Switcher = React.forwardRef((props, ref) => {
@@ -25,8 +50,7 @@ const Switcher = React.forwardRef((props, ref) => {
   const SCROLL_TO_POSITION = ITEM_SIZE + ITEM_POSITION;
 
   useImperativeHandle(ref, () => ({
-    childrensAmount: React.Children.count(children),
-    formValues: props
+    childrensAmount: React.Children.count(children)
   }));
 
   const [scrollToIndex] = useState(new Animated.Value(SCROLL_TO_POSITION));
@@ -52,40 +76,33 @@ const Switcher = React.forwardRef((props, ref) => {
           {children}
         </Animated.View>
       </View>
-      <View style={{ flex: 0.2, justifyContent: 'center' }}>
-        <View style={{ paddingHorizontal: 20 }}>
-          <Button text={buttonTitle} action={onPressSubmit} />
+      <View style={{ flex: 0.2, justifyContent: 'flex-end' }}>
+        <View style={{ padding: 20 }}>
+          <DefaultButton text={buttonTitle} action={onPressSubmit} inverted />
         </View>
       </View>
     </Container>
   );
 });
 
-const SwitcherItem = ({ children, title }) => {
-  console.log();
+const SwitcherItem = ({ children, title, subtitle, containerFluid }) => (
+  <SwitcherItemContainer>
+    {title && subtitle && (
+      <SwitcherItemHeader>
+        <TextTitle>{title}</TextTitle>
+        <TextSubtitle>{subtitle}</TextSubtitle>
+      </SwitcherItemHeader>
+    )}
+    <SwitcherItemBody fluid={containerFluid}>{children}</SwitcherItemBody>
+  </SwitcherItemContainer>
+);
 
-  return (
-    <View
-      style={{
-        width: '100%',
-        paddingVertical: 20,
-        paddingHorizontal: 50
-      }}
-    >
-      <View style={{ flex: 0.3, justifyContent: 'center' }}>
-        <TextTitle style={{ width: '70%' }}>{title}</TextTitle>
-      </View>
-      <View
-        style={{
-          flex: 0.7,
-          justifyContent: 'center',
-          width: '100%'
-        }}
-      >
-        {children}
-      </View>
-    </View>
-  );
+SwitcherItem.defaultProps = {
+  containerFluid: true
+};
+
+SwitcherItem.propTypes = {
+  containerFluid: PropTypes.bool
 };
 
 export { Switcher, SwitcherItem };

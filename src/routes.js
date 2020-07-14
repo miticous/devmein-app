@@ -38,7 +38,9 @@ const Routes = () => (
       name="CreateProfile"
       component={CreateProfileContainer}
       options={{
-        headerShown: false
+        title: 'CADASTRO',
+        headerStyle,
+        headerTitleStyle
       }}
     />
     <Stack.Screen

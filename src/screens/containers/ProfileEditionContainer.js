@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
+import reactotron from 'reactotron-react-native';
 import ProfileEditionComponent from '../components/ProfileEditionComponent';
 import Icon from '../../assets/components/Icon';
 import ImagePicker from '../../assets/components/ImagePicker';
@@ -39,7 +40,7 @@ const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   }
 };
 
-const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
+export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
   if (fieldRef === 'birthplace.description') {
     formRef.current.setFieldValue('birthplace.placeId', sugestion?.id);
     formRef.current.setFieldValue('birthplace.description', sugestion?.label);
@@ -67,22 +68,57 @@ const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
     return true;
   }
 
-  return false;
+  if (fieldRef === 'sexualOrientation') {
+    const sexualOrientations = formRef.current.values.sexualOrientations;
+
+    const isSexualOrientationChecked = sexualOrientations?.some(
+      orientation => orientation === sugestion?.id
+    );
+
+    if (isSexualOrientationChecked) {
+      return formRef.current.setFieldValue('sexualOrientations', [
+        ...sexualOrientations.filter(orientation => orientation !== sugestion?.id)
+      ]);
+    }
+
+    return formRef.current.setFieldValue(
+      'sexualOrientations',
+      sexualOrientations?.length > 0 ? [...sexualOrientations, sugestion?.id] : [sugestion?.id]
+    );
+  }
+
+  return formRef.current.setFieldValue(fieldRef, sugestion?.id);
 };
 
-const onChangeInput = async ({ setSugestions, text, inputRef }) => {
+export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, sugestions }) => {
+  if (fieldRef === 'birthplace.description') {
+    formRef.current.setFieldValue('birthplace.placeId', null);
+  }
+
+  if (fieldRef === 'graduation.description') {
+    formRef.current.setFieldValue('graduation.placeId', null);
+  }
+
+  if (fieldRef === 'residence.description') {
+    formRef.current.setFieldValue('residence.placeId', null);
+  }
+
   if (text.length > 3) {
     const result = await getCitiesByName({
       name: text,
-      type: inputRef === 'graduation.description' ? 'establishment' : '%28cities%29'
+      type: fieldRef === 'graduation.description' ? 'establishment' : '%28cities%29'
     });
 
-    setSugestions(result);
+    setSugestions({ ...sugestions, [fieldRef]: result });
 
     return true;
   }
-  return false;
+
+  return setSugestions({ ...sugestions, [fieldRef]: null });
 };
+
+export const onPressInputButton = ({ field, formRef }) =>
+  formRef?.current?.setFieldValue(field, '');
 
 const ProfileEditionContainer = ({ navigation }) => {
   const formRef = useRef();
@@ -230,7 +266,7 @@ const ProfileEditionContainer = ({ navigation }) => {
           }
         })
       }
-      onPressInputButton={field => formRef?.current?.setFieldValue(field, '')}
+      onPressInputButton={field => onPressInputButton({ field, formRef })}
       onPressImage={() =>
         ImagePicker.show(imagePickerOptions, {
           onError: () => DropDownHolder.show('error', '', 'Failed on select image'),

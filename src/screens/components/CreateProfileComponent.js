@@ -18,6 +18,9 @@ import TextInput from '../../assets/components/TextInput';
 import ModalPicker from '../../assets/components/ModalPicker';
 import ModalLoading from '../../assets/components/ModalLoading';
 import ButtonPicker from '../../assets/components/ButtonPicker';
+import PickerList from '../../assets/components/PickerList';
+import InfoBox from '../../assets/components/InfoBox';
+import DefaultButton from '../../assets/components/DefaultButton';
 
 const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -34,12 +37,44 @@ const ImagePickerArea = styled.TouchableOpacity`
   align-items: center;
   overflow: hidden;
 `;
+const StepActive = styled.View`
+  height: 6px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  background-color: ${COLORS.success};
+`;
+const StepArea = styled.View`
+  height: 6px;
+  width: 100%;
+  background-color: #e0e0e0;
+  position: absolute;
+  box-shadow: 0px -20px 40px rgba(0, 0, 0, 0.8);
+`;
+const ContainerFluid = styled.View`
+  padding: 0px 20px;
+`;
+
+const SexTypes = [
+  { id: 'WOMAN', description: 'Mulher' },
+  { id: 'MAN', description: 'Homem' },
+  { id: 'HUMAN', description: 'Outro' }
+];
+const SexualOrientationTypes = [
+  { id: 'HETERO', description: 'Hétero' },
+  { id: 'GAY', description: 'Gay' },
+  { id: 'LESBIAN', description: 'Lésbica' },
+  { id: 'BISEXUAL', description: 'Bisexual' },
+  { id: 'ASEXUAL', description: 'Asexual' },
+  { id: 'DEMISEXUAL', description: 'Demisexual' },
+  { id: 'PANSEXUAL', description: 'Pansexual' },
+  { id: 'QUEER', description: 'Queer' },
+  { id: 'QUESTIONING', description: 'Questionando' },
+  { id: 'OTHER', description: 'Outro' }
+];
 
 const CreateProfileComponent = ({
-  onPressSubmit,
-  onPressUpload,
-  user,
-  profile,
+  onPressSwitcherButton,
   imageToUpload,
   isLoading,
   time,
@@ -53,107 +88,168 @@ const CreateProfileComponent = ({
   formSchema,
   formInitialSchema,
   switcherItemsMap,
+  onSubmitForm,
   modalDataCities,
   showCitiesModal,
   onDismissCitiesModal,
   onSelectCity,
-  buttonSwitcherTitle,
-  onPressImagePicker
+  onPressImagePicker,
+  formRef,
+  onChangeInput,
+  sugestions,
+  onPressSugestion,
+  onPressInputButton
 }) => (
   <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
     <Content>
       <View style={{ height: 6, width: SCREEN_WIDTH }}>
-        <LinearGradient
-          start={{ x: 0.0, y: 0.5 }}
-          end={{ x: 0.8, y: 1.0 }}
-          colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
-          style={{
-            height: 6,
-            width: `${((activeItemIndex + 1) / Object.keys(switcherItemsMap).length) * 100}%`,
-            position: 'absolute',
-            overflow: 'hidden'
-          }}
+        <StepActive
+          width={`${((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) * 100}%`}
         />
-      </View>
-      <View
-        style={{
-          flex: 0.1,
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          marginHorizontal: 10
-        }}
-      >
-        <TouchableOpacity activeOpacity={1} onPress={onPressBack}>
-          <Icon name="ArrowBack" width={30} height={30} fill={COLORS.textSecondaryColor} />
-        </TouchableOpacity>
+        <StepArea />
       </View>
       <SwitcherContainer>
-        <Formik initialValues={formInitialSchema} validationSchema={formSchema}>
-          {({ setFieldTouched, ...props }) => (
+        <Formik
+          validationSchema={formSchema}
+          innerRef={formRef}
+          initialValues={{ name: null }}
+          onSubmit={onSubmitForm}
+          // isInitialValid={false}
+          validateOnChange
+        >
+          {({ setFieldTouched, values, ...props }) => (
             <Switcher
               {...props}
-              buttonTitle={buttonSwitcherTitle}
+              onPressSubmit={onPressSwitcherButton}
+              buttonTitle="PRÓXIMO PASSO"
               activeIndex={activeItemIndex}
-              onPressSubmit={() => {
-                setFieldTouched(switcherItemsMap[activeItemIndex]);
-                onSubmitSwitcherButton();
-              }}
               ref={switcherRef}
             >
-              <SwitcherItem title="Meu primeiro nome é">
+              <SwitcherItem title="Vamos começar" subtitle="Insira seus dados abaixo">
                 <TextInput
                   name="name"
-                  placeholder="Nome"
-                  textInfo="Este será seu nome no Jiantou"
+                  label="Meu nome é"
+                  onChange={() => false}
+                  onPressButton={() => false}
+                  optional={false}
                 />
-              </SwitcherItem>
-              <SwitcherItem title="A data e a hora do meu nascimento foi">
                 <TextInput
-                  centralized
-                  name="birthdate"
-                  placeholder="01/01/2000 00:45"
-                  textInfo="Sua idade será visível para todos"
+                  name="eyes"
+                  label="A cor dos meus olhos é"
+                  optional
+                  onPressButton={() => false}
                 />
-              </SwitcherItem>
-              <SwitcherItem title="Eu nasci na cidade de">
                 <TextInput
-                  name="birthplaceDescription"
-                  placeholder="Ex: Sāo Paulo"
-                  textInfo="Outros usuários nāo poderāo visualizar esta informaçāo, ela será usada apenas para o calculo do mapa astral"
+                  name="occupation"
+                  label="Minha profissão é"
+                  optional
+                  onPressButton={() => false}
                 />
               </SwitcherItem>
-              <SwitcherItem title="Eu sou">
-                <ButtonPicker
-                  name="genre"
-                  options={[
-                    { label: 'Homem', id: 'MALE' },
-                    { label: 'Mulher', id: 'FEMALE' },
-                    { label: 'Humano', id: ' ' }
-                  ]}
+              <SwitcherItem containerFluid={false}>
+                <ContainerFluid>
+                  <TextInput
+                    name="residence.description"
+                    label="Moro em"
+                    onChange={onChangeInput}
+                    onPressButton={onPressInputButton}
+                  />
+                  <InfoBox width={16} height={19} />
+                </ContainerFluid>
+                <PickerList
+                  data={sugestions?.['residence.description']}
+                  itemsIdKey="id"
+                  itemsTitleKey="label"
+                  checkedItemId={values?.residence?.placeId}
+                  onPressItem={onPressSugestion}
+                  referencedInputName="residence.description"
+                />
+                <ContainerFluid>
+                  <DefaultButton text="Prefiro não compartilhar" />
+                </ContainerFluid>
+              </SwitcherItem>
+              <SwitcherItem
+                title="Conta mais sobre você"
+                containerFluid={false}
+                subtitle="Quanto mais você compartilha, mais fácil é de alguém se interessar"
+              >
+                <ContainerFluid>
+                  <TextInput
+                    name="graduation.class"
+                    label="Estudante de"
+                    optional
+                    onPressButton={onPressInputButton}
+                  />
+                  <TextInput
+                    onPressButton={onPressInputButton}
+                    name="graduation.description"
+                    label="Estudo em"
+                    onChange={onChangeInput}
+                    sugestions={sugestions}
+                    onPressSugestion={onPressSugestion}
+                    optional
+                  />
+                </ContainerFluid>
+                <PickerList
+                  data={sugestions?.['graduation.description']}
+                  itemsIdKey="id"
+                  itemsTitleKey="label"
+                  checkedItemId={values?.graduation?.placeId}
+                  onPressItem={onPressSugestion}
+                  referencedInputName="graduation.description"
                 />
               </SwitcherItem>
-              <SwitcherItem title="Á procura de">
-                <ButtonPicker
-                  name="searchGenre"
-                  options={[
-                    { label: 'Mulher', id: 'FEMALE' },
-                    { label: 'Homem', id: 'MALE' },
-                    { label: 'Humano', id: ' ' }
-                  ]}
+              <SwitcherItem
+                title="Mapa astral"
+                subtitle="Com esses dados, seu mapa astral será calculado para que o Jiàntou funcione"
+              >
+                <TextInput
+                  name="birthday"
+                  label="Data e hora de nascimento"
+                  optional={false}
+                  onPressButton={onPressInputButton}
+                />
+                <TextInput
+                  name="birthplace.description"
+                  label="Cidade em que nasceu"
+                  optional={false}
+                  onChange={onChangeInput}
+                  sugestions={sugestions}
+                  onPressButton={onPressInputButton}
+                  onPressSugestion={onPressSugestion}
+                />
+                <PickerList
+                  data={sugestions?.['birthplace.description']}
+                  itemsIdKey="id"
+                  itemsTitleKey="label"
+                  checkedItemId={values?.birthplace?.placeId}
+                  onPressItem={onPressSugestion}
+                  referencedInputName="birthplace.description"
                 />
               </SwitcherItem>
-              <SwitcherItem title="Minha melhor foto é">
-                <ImagePickerArea onPress={onPressImagePicker} activeOpacity={1}>
-                  {imageToUpload ? (
-                    <Image
-                      style={{ width: '100%', height: '100%' }}
-                      resizeMode="cover"
-                      source={{ uri: imageToUpload }}
-                    />
-                  ) : (
-                    <Icon name="Plus" fill={COLORS.primaryColor} />
-                  )}
-                </ImagePickerArea>
+              <SwitcherItem title="Me identifico como" subtitle="Fique à vontade">
+                <PickerList
+                  data={SexTypes}
+                  itemsIdKey="id"
+                  itemsTitleKey="description"
+                  checkedItemId={values?.genre}
+                  onPressItem={onPressSugestion}
+                  referencedInputName="genre"
+                />
+              </SwitcherItem>
+              <SwitcherItem
+                title="Orientação sexual"
+                subtitle="Fique à vontade, escolha quantas quiser"
+              >
+                <PickerList
+                  data={SexualOrientationTypes}
+                  itemsIdKey="id"
+                  itemsTitleKey="description"
+                  checkedItemId={values?.sexualOrientations}
+                  multipleChoices
+                  onPressItem={onPressSugestion}
+                  referencedInputName="sexualOrientation"
+                />
               </SwitcherItem>
             </Switcher>
           )}
