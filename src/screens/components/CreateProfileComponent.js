@@ -238,6 +238,7 @@ const CreateProfileComponent = ({
               <SwitcherItem title="Me identifico como" subtitle="Fique à vontade">
                 <PickerList
                   data={SexTypes}
+                  hasError={errors.genre}
                   itemsIdKey="id"
                   itemsTitleKey="description"
                   checkedItemId={values?.genre}
@@ -250,6 +251,7 @@ const CreateProfileComponent = ({
                 subtitle="Fique à vontade, escolha quantas quiser"
               >
                 <PickerList
+                  hasError={errors.sexualOrientations}
                   data={SexualOrientationTypes}
                   itemsIdKey="id"
                   itemsTitleKey="description"

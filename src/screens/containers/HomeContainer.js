@@ -92,13 +92,13 @@ const HomeContainer = ({ navigation }) => {
     onCompleted: () => setState({ ...state, geolocationSent: true })
   });
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button title={`Matches[${data && data.matches ? data.matches.length : 0}]`} />
-      )
-    });
-  }, [data, loadingQuery]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <Button title={`Matches[${data && data.matches ? data.matches.length : 0}]`} />
+  //     )
+  //   });
+  // }, [data, loadingQuery]);
 
   useEffect(() => {
     AsyncStorage.getItem('@jintou:userId').then(userId => {

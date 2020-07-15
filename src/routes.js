@@ -66,9 +66,7 @@ const Routes = () => (
       component={HomeContainer}
       options={({ navigation }) => ({
         title: 'Home',
-        headerRight: () => (
-          <Button onPress={() => navigation.navigate('Matches')} title="Matches" />
-        ),
+        headerRight: () => <Button onPress={() => navigation.pop()} title="Matches" />,
         headerLeft: () => <Button onPress={() => navigation.navigate('Profile')} title="Perfil" />
       })}
     />

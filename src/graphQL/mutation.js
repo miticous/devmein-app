@@ -39,3 +39,45 @@ export const EDIT_PROFILE = gql`
     }
   }
 `;
+
+export const CREATE_PROFILE = gql`
+  mutation(
+    $name: String!
+    $birthday: String!
+    $eyes: String
+    $occupation: String
+    $genre: String!
+    $sexualOrientations: [String]!
+    $birthplace: BirthplaceInput!
+    $graduation: GraduationInput
+    $residence: ResidenceInput
+    $searchLoveAgeRange: [Int]!
+    $searchFriendAgeRange: [Int]!
+    $searchLoveGenre: String!
+    $searchFriendGenre: String!
+  ) {
+    editProfile(
+      name: $name
+      birthday: $birthday
+      eyes: $eyes
+      occupation: $occupation
+      genre: $genre
+      sexualOrientations: $sexualOrientations
+      birthplace: $birthplace
+      graduation: $graduation
+      residence: $residence
+    ) {
+      _id
+      images {
+        _id
+        image
+      }
+    }
+    saveUserConfigs(
+      searchLoveAgeRange: $searchLoveAgeRange
+      searchFriendAgeRange: $searchFriendAgeRange
+      searchLoveGenre: $searchLoveGenre
+      searchFriendGenre: $searchFriendGenre
+    )
+  }
+`;
