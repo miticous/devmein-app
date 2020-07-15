@@ -1,7 +1,7 @@
 export const COLORS = {
   // ========== PRIMARY COLORS ============= //
 
-  primaryColor: '#D25890',
+  primaryColor: '#75396F',
 
   secondaryColor: '#A84F7E',
 
@@ -17,6 +17,8 @@ export const COLORS = {
   backgroundColor: '#FFFFFF',
   lightning: 'rgba(0,0,0, 0.2)',
   lighter: '#FAFAFA',
+  grayDark: '#828282',
+  grayLight: '#E0E0E0',
 
   // ========== CUSTOM CARDS COLORS ============= //
 

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import moment from 'moment';
 import { not, isNil } from 'ramda';
 import reactotron from 'reactotron-react-native';
+import { validateYupSchema } from 'formik';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import { getCitiesByName, getCitieById } from '../../services/google-apis';
@@ -38,6 +39,12 @@ const CREATE_PROFILE = gql`
     }
   }
 `;
+
+const formInitialValues = {
+  name: '',
+  searchLoveAgeRange: [18, 26],
+  searchFriendAgeRange: [18, 26]
+};
 
 const imagePickerOptions = {
   title: 'Selecione uma foto',
@@ -135,7 +142,17 @@ const CreateProfileContainer = ({ navigation }) => {
           return true;
         })
     }),
-    genre: yup.string()
+    genre: yup.string().required(),
+    searchLoveGenre: yup.string().when('_', {
+      is: () => activeItemIndex > 5,
+      then: yup.string().required()
+    }),
+    searchLoveAgeRange: yup.array().required(),
+    searchFriendGenre: yup.string().when('_', {
+      is: () => activeItemIndex > 6,
+      then: yup.string().required()
+    }),
+    searchFriendAgeRange: yup.array().required()
   });
 
   const formInitialSchema = {
@@ -182,6 +199,10 @@ const CreateProfileContainer = ({ navigation }) => {
           formRef
         })
       }
+      onChangeSliderValues={({ sliderValues, fieldRef }) =>
+        formRef?.current?.setFieldValue(fieldRef, [...sliderValues])
+      }
+      formInitialValues={formInitialValues}
       onPressInputButton={field => onPressInputButton({ formRef, field })}
       formSchema={formSchema}
       formInitialSchema={formInitialSchema}

@@ -12,7 +12,7 @@ const ContentItem = styled.TouchableOpacity`
   justify-content: center;
   height: 45px;
   padding: 0px 20px;
-  border-top-color: #e0e0e0;
+  border-top-color: ${({ hasError }) => (hasError ? COLORS.error : '#e0e0e0')};
   border-top-width: 1px;
 `;
 const ItemText = styled.Text`
@@ -41,7 +41,8 @@ const renderList = ({
   referencedInputName,
   itemsIdKey,
   itemsTitleKey,
-  multipleChoices
+  multipleChoices,
+  hasError
 }) => {
   const normalizedData = normalizeData({ data, itemsIdKey, itemsTitleKey });
 
@@ -53,6 +54,7 @@ const renderList = ({
     return (
       <ContentItem
         key={item?.id}
+        hasError={hasError}
         onPress={() => onPressItem({ item: data[index], referencedInputName })}
       >
         <ItemText checked={checked}>
@@ -72,7 +74,8 @@ const PickerList = ({
   itemsTitleKey,
   onPressItem,
   referencedInputName,
-  multipleChoices
+  multipleChoices,
+  hasError
 }) => (
   <Container>
     {renderList({
@@ -82,7 +85,8 @@ const PickerList = ({
       itemsIdKey,
       itemsTitleKey,
       onPressItem,
-      multipleChoices
+      multipleChoices,
+      hasError
     })}
   </Container>
 );

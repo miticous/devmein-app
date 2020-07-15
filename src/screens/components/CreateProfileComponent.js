@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -21,6 +22,7 @@ import ButtonPicker from '../../assets/components/ButtonPicker';
 import PickerList from '../../assets/components/PickerList';
 import InfoBox from '../../assets/components/InfoBox';
 import DefaultButton from '../../assets/components/DefaultButton';
+import SliderPicker from '../../assets/components/SliderPicker';
 
 const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -60,6 +62,11 @@ const SexTypes = [
   { id: 'MAN', description: 'Homem' },
   { id: 'HUMAN', description: 'Outro' }
 ];
+const SearchGenre = [
+  { id: 'WOMAN', description: 'Mulher' },
+  { id: 'MAN', description: 'Homem' },
+  { id: 'ALL', description: 'Todos' }
+];
 const SexualOrientationTypes = [
   { id: 'HETERO', description: 'Hétero' },
   { id: 'GAY', description: 'Gay' },
@@ -86,7 +93,7 @@ const CreateProfileComponent = ({
   onPressBack,
   switcherRef,
   formSchema,
-  formInitialSchema,
+  formInitialValues,
   switcherItemsMap,
   onSubmitForm,
   modalDataCities,
@@ -98,7 +105,8 @@ const CreateProfileComponent = ({
   onChangeInput,
   sugestions,
   onPressSugestion,
-  onPressInputButton
+  onPressInputButton,
+  onChangeSliderValues
 }) => (
   <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
     <Content>
@@ -112,12 +120,12 @@ const CreateProfileComponent = ({
         <Formik
           validationSchema={formSchema}
           innerRef={formRef}
-          initialValues={{ name: null }}
+          initialValues={formInitialValues}
           onSubmit={onSubmitForm}
           // isInitialValid={false}
           validateOnChange
         >
-          {({ setFieldTouched, values, ...props }) => (
+          {({ setFieldTouched, values, errors, ...props }) => (
             <Switcher
               {...props}
               onPressSubmit={onPressSwitcherButton}
@@ -249,6 +257,43 @@ const CreateProfileComponent = ({
                   multipleChoices
                   onPressItem={onPressSugestion}
                   referencedInputName="sexualOrientation"
+                />
+              </SwitcherItem>
+              <SwitcherItem title="Amor" subtitle="Quem você procura no campo do amor?">
+                <PickerList
+                  hasError={errors.searchLoveGenre}
+                  data={SearchGenre}
+                  itemsIdKey="id"
+                  itemsTitleKey="description"
+                  checkedItemId={values?.searchLoveGenre}
+                  onPressItem={onPressSugestion}
+                  referencedInputName="searchLoveGenre"
+                />
+
+                <SliderPicker
+                  onChangeSliderValues={onChangeSliderValues}
+                  label="Faixa etária"
+                  fieldRef="searchLoveAgeRange"
+                  startRange={values?.searchLoveAgeRange?.[0]}
+                  endRange={values?.searchLoveAgeRange?.[1]}
+                />
+              </SwitcherItem>
+              <SwitcherItem title="Amizades" subtitle="E pra bater um papo?">
+                <PickerList
+                  hasError={errors.searchFriendGenre}
+                  data={SearchGenre}
+                  itemsIdKey="id"
+                  itemsTitleKey="description"
+                  checkedItemId={values?.searchFriendGenre}
+                  onPressItem={onPressSugestion}
+                  referencedInputName="searchFriendGenre"
+                />
+                <SliderPicker
+                  onChangeSliderValues={onChangeSliderValues}
+                  label="Faixa etária"
+                  fieldRef="searchFriendAgeRange"
+                  startRange={values?.searchFriendAgeRange?.[0]}
+                  endRange={values?.searchFriendAgeRange?.[1]}
                 />
               </SwitcherItem>
             </Switcher>
