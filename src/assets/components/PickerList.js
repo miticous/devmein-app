@@ -77,18 +77,22 @@ const PickerList = ({
   multipleChoices,
   hasError
 }) => (
-  <Container>
-    {renderList({
-      data,
-      checkedItemId,
-      referencedInputName,
-      itemsIdKey,
-      itemsTitleKey,
-      onPressItem,
-      multipleChoices,
-      hasError
-    })}
-  </Container>
+  <>
+    {data && data?.length && (
+      <Container>
+        {renderList({
+          data,
+          checkedItemId,
+          referencedInputName,
+          itemsIdKey,
+          itemsTitleKey,
+          onPressItem,
+          multipleChoices,
+          hasError
+        })}
+      </Container>
+    )}
+  </>
 );
 
 export default PickerList;

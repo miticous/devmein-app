@@ -53,6 +53,7 @@ const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
 };
 
 export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
+  reactotron.log(sugestion, fieldRef);
   if (fieldRef === 'birthplace.description') {
     formRef.current.setValues(
       {
@@ -146,11 +147,11 @@ export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, su
       type: fieldRef === 'graduation.description' ? 'establishment' : '%28cities%29'
     });
 
-    setSugestions({ ...sugestions, [fieldRef]: result });
+    setSugestions({ ...sugestions, [fieldRef]: result && result?.length > 0 ? result : null });
 
     return true;
   }
-
+  reactotron.log('TROU');
   return setSugestions({ ...sugestions, [fieldRef]: null });
 };
 
@@ -160,7 +161,7 @@ export const onPressInputButton = ({ field, formRef }) =>
 const ProfileEditionContainer = ({ navigation }) => {
   const formRef = useRef();
   const [sugestions, setSugestions] = useState(null);
-
+  reactotron.log(formRef?.current?.values);
   const {
     data: { profile },
     loading: loadingQuery
@@ -218,17 +219,14 @@ const ProfileEditionContainer = ({ navigation }) => {
         .string()
         .min(3)
         .required()
-        .test('BIRTHPLACE_VALIDATION', 'error', value => {
+        .test('BIRTHPLACE_VALIDATION', 'error', () => {
           const { birthplace } = formRef?.current?.values;
 
-          if (
-            birthplace?.placeId === profile?.birthplace?.placeId &&
-            value !== profile?.birthplace?.description
-          ) {
-            return false;
+          if (birthplace?.placeId) {
+            return true;
           }
 
-          return true;
+          return false;
         }),
       placeId: yup.string().required()
     }),
@@ -236,40 +234,34 @@ const ProfileEditionContainer = ({ navigation }) => {
       description: yup
         .string()
         .min(3)
-        .test('GRADUATION_VALIDATION', 'error', value => {
+        .test('GRADUATION_VALIDATION', 'error', () => {
           const { graduation } = formRef?.current?.values;
 
           if (graduation?.description?.length === 0) {
             return true;
           }
 
-          if (
-            graduation?.placeId === profile?.graduation?.placeId &&
-            value !== profile?.graduation?.description
-          ) {
-            return false;
+          if (graduation?.placeId) {
+            return true;
           }
-          return true;
+          return false;
         })
     }),
     residence: yup.object().shape({
       description: yup
         .string()
         .min(3)
-        .test('RESIDENCE_VALIDATION', 'error', value => {
+        .test('RESIDENCE_VALIDATION', 'error', () => {
           const { residence } = formRef?.current?.values;
 
           if (residence?.description?.length === 0) {
             return true;
           }
 
-          if (
-            residence?.placeId === profile?.residence?.placeId &&
-            value !== profile?.residence?.description
-          ) {
-            return false;
+          if (residence?.placeId) {
+            return true;
           }
-          return true;
+          return false;
         })
     })
   });
@@ -283,15 +275,29 @@ const ProfileEditionContainer = ({ navigation }) => {
       formRef={formRef}
       formSchema={formSchema}
       profile={profile}
-      onSubmitForm={() => onSubmitForm({ formRef, editProfile, navigation })}
-      onPressSugestion={({ sugestion, ref }) =>
-        onPressSugestion({ sugestion, formRef, setSugestions, fieldRef: ref })
+      onSubmitForm={() =>
+        onSubmitForm({
+          formRef,
+          editProfile,
+          navigation
+        })
+      }
+      onPressSugestion={({ item, referencedInputName }) =>
+        onPressSugestion({
+          setSugestions: () => false,
+          sugestion: item,
+          fieldRef: referencedInputName,
+          formRef
+        })
       }
       onChangeInput={({ text, inputRef }) =>
         onChangeInput({
           text,
           setSugestions,
-          inputRef
+          inputRef,
+          fieldRef: inputRef,
+          formRef,
+          sugestions
         })
       }
       sugestions={sugestions}

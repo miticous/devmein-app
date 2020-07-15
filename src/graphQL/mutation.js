@@ -17,18 +17,22 @@ export const EDIT_PROFILE = gql`
     $name: String!
     $birthday: String!
     $eyes: String
-    $graduation: GraduationInput
-    $birthplace: BirthplaceInput!
-    $residence: ResidenceInput
     $occupation: String
+    $genre: String!
+    $sexualOrientations: [String]!
+    $birthplace: BirthplaceInput!
+    $graduation: GraduationInput
+    $residence: ResidenceInput
   ) {
     editProfile(
       name: $name
       birthday: $birthday
-      birthplace: $birthplace
       eyes: $eyes
-      graduation: $graduation
       occupation: $occupation
+      genre: $genre
+      sexualOrientations: $sexualOrientations
+      birthplace: $birthplace
+      graduation: $graduation
       residence: $residence
     ) {
       _id

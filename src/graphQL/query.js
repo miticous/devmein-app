@@ -12,8 +12,6 @@ export const GET_PROFILE = gql`
       birthplace {
         placeId
         description
-        lat
-        lng
       }
       astral {
         zodiac
