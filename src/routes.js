@@ -40,7 +40,8 @@ const Routes = () => (
       options={{
         title: 'CADASTRO',
         headerStyle,
-        headerTitleStyle
+        headerTitleStyle,
+        gestureEnabled: false
       }}
     />
     <Stack.Screen
@@ -66,7 +67,9 @@ const Routes = () => (
       component={HomeContainer}
       options={({ navigation }) => ({
         title: 'Home',
-        headerRight: () => <Button onPress={() => navigation.pop()} title="Matches" />,
+        headerRight: () => (
+          <Button onPress={() => navigation.navigate('Matches')} title="Matches" />
+        ),
         headerLeft: () => <Button onPress={() => navigation.navigate('Profile')} title="Perfil" />
       })}
     />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { G, Path, Circle, Polyline, Polygon, Rect } from 'react-native-svg';
+import { G, Path, Circle, Polygon, Rect } from 'react-native-svg';
 
 export default {
   Location: {
@@ -51,13 +51,15 @@ export default {
   Save: {
     svg: (
       <G width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <Circle cx="20" cy="20" r="20" fill="#E9F7EF" />
         <Path
-          d="M29 15L18 26L13 21"
-          stroke="#16CB62"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          d="M40 20C40 31.0457 31.0457 40 20 40C8.9543 40 0 31.0457 0 20C0 8.9543 8.9543 0 20 0C31.0457 0 40 8.9543 40 20Z"
+          fill="#E9F7EF"
+        />
+        <Path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M29.7071 14.2929C30.0976 14.6834 30.0976 15.3166 29.7071 15.7071L18.7071 26.7071C18.3166 27.0976 17.6834 27.0976 17.2929 26.7071L12.2929 21.7071C11.9024 21.3166 11.9024 20.6834 12.2929 20.2929C12.6834 19.9024 13.3166 19.9024 13.7071 20.2929L18 24.5858L28.2929 14.2929C28.6834 13.9024 29.3166 13.9024 29.7071 14.2929Z"
+          fill="#16CB62"
         />
       </G>
     ),

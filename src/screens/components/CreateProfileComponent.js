@@ -23,6 +23,7 @@ import PickerList from '../../assets/components/PickerList';
 import InfoBox from '../../assets/components/InfoBox';
 import DefaultButton from '../../assets/components/DefaultButton';
 import SliderPicker from '../../assets/components/SliderPicker';
+import ImageGrid from '../../assets/components/ImageGrid';
 
 const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -82,31 +83,21 @@ const SexualOrientationTypes = [
 
 const CreateProfileComponent = ({
   onPressSwitcherButton,
-  imageToUpload,
   isLoading,
-  time,
-  date,
-  onChangeDate,
-  onSelectBirthPlace,
   activeItemIndex,
-  onSubmitSwitcherButton,
-  onPressBack,
   switcherRef,
   formSchema,
   formInitialValues,
-  switcherItemsMap,
   onSubmitForm,
-  modalDataCities,
-  showCitiesModal,
-  onDismissCitiesModal,
-  onSelectCity,
-  onPressImagePicker,
   formRef,
   onChangeInput,
   sugestions,
   onPressSugestion,
   onPressInputButton,
-  onChangeSliderValues
+  onChangeSliderValues,
+  onPressImage,
+  onPressRemoveImage,
+  profile
 }) => (
   <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
     <Content>
@@ -122,14 +113,13 @@ const CreateProfileComponent = ({
           innerRef={formRef}
           initialValues={formInitialValues}
           onSubmit={onSubmitForm}
-          // isInitialValid={false}
           validateOnChange
         >
           {({ setFieldTouched, values, errors, ...props }) => (
             <Switcher
               {...props}
               onPressSubmit={onPressSwitcherButton}
-              buttonTitle="PRÓXIMO PASSO"
+              buttonTitle={activeItemIndex === 8 ? 'FINALIZAR' : 'PRÓXIMO PASSO'}
               activeIndex={activeItemIndex}
               ref={switcherRef}
             >
@@ -298,20 +288,18 @@ const CreateProfileComponent = ({
                   endRange={values?.searchFriendAgeRange?.[1]}
                 />
               </SwitcherItem>
+              <SwitcherItem title="Arrasa na foto" subtitle="Envie fotos que te representam!">
+                <ImageGrid
+                  data={profile?.images?.map(image => image?.image)}
+                  onPressImage={onPressImage}
+                  onPressRemove={onPressRemoveImage}
+                />
+              </SwitcherItem>
             </Switcher>
           )}
         </Formik>
       </SwitcherContainer>
     </Content>
-
-    {showCitiesModal && (
-      <ModalPicker
-        data={modalDataCities}
-        visible={showCitiesModal}
-        onPressCancel={onDismissCitiesModal}
-        onSelectItem={onSelectCity}
-      />
-    )}
     {isLoading && <ModalLoading visible={isLoading} />}
   </View>
 );

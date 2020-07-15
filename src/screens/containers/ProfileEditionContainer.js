@@ -26,6 +26,18 @@ const imagePickerOptions = {
   cancelButtonTitle: 'Cancelar'
 };
 
+export const onPressImage = async ({ addProfileImage }) => {
+  ImagePicker.show(imagePickerOptions, {
+    onError: () => DropDownHolder.show('error', '', 'Failed on select image'),
+    onSuccess: ({ file }) =>
+      addProfileImage({
+        variables: {
+          file
+        }
+      })
+  });
+};
+
 const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   try {
     await editProfile({
@@ -42,8 +54,16 @@ const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
 
 export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
   if (fieldRef === 'birthplace.description') {
-    formRef.current.setFieldValue('birthplace.placeId', sugestion?.id);
-    formRef.current.setFieldValue('birthplace.description', sugestion?.label);
+    formRef.current.setValues(
+      {
+        ...formRef.current.values,
+        birthplace: {
+          description: sugestion?.label,
+          placeId: sugestion?.id
+        }
+      },
+      true
+    );
 
     setSugestions(null);
 
@@ -51,8 +71,17 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
   }
 
   if (fieldRef === 'graduation.description') {
-    formRef.current.setFieldValue('graduation.placeId', sugestion?.id);
-    formRef.current.setFieldValue('graduation.description', sugestion?.label);
+    formRef.current.setValues(
+      {
+        ...formRef.current.values,
+        graduation: {
+          ...formRef.current.values.graduation,
+          description: sugestion?.label,
+          placeId: sugestion?.id
+        }
+      },
+      true
+    );
 
     setSugestions(null);
 
@@ -60,8 +89,16 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
   }
 
   if (fieldRef === 'residence.description') {
-    formRef.current.setFieldValue('residence.placeId', sugestion?.id);
-    formRef.current.setFieldValue('residence.description', sugestion?.label);
+    formRef.current.setValues(
+      {
+        ...formRef.current.values,
+        residence: {
+          description: sugestion?.label,
+          placeId: sugestion?.id
+        }
+      },
+      true
+    );
 
     setSugestions(null);
 
@@ -267,17 +304,7 @@ const ProfileEditionContainer = ({ navigation }) => {
         })
       }
       onPressInputButton={field => onPressInputButton({ field, formRef })}
-      onPressImage={() =>
-        ImagePicker.show(imagePickerOptions, {
-          onError: () => DropDownHolder.show('error', '', 'Failed on select image'),
-          onSuccess: ({ file }) =>
-            addProfileImage({
-              variables: {
-                file
-              }
-            })
-        })
-      }
+      onPressImage={() => onPressImage({ addProfileImage })}
     />
   );
 };

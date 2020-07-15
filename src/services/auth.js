@@ -1,6 +1,5 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import reactotron from 'reactotron-react-native';
 import DropDownHolder from '../helpers/DropDownHolder';
 
 export const login = async ({ email, password, navigation, setFieldError, setIsLoading }) => {
@@ -8,7 +7,7 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
     setIsLoading(true);
 
     const {
-      data: { token, hasProfile, _id }
+      data: { token, profileStatus, _id }
     } = await axios({
       method: 'post',
       url: 'http://localhost:4000/users/login',
@@ -19,7 +18,7 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
     });
 
     await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
-    if (hasProfile) {
+    if (profileStatus === 'COMPLETED') {
       return navigation.replace('Home');
     }
     return navigation.replace('CreateProfile');
@@ -65,7 +64,7 @@ export const validate = async ({ navigation, token }) => {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    if (data) {
+    if (data === 'COMPLETED') {
       return navigation.replace('Home');
     }
     return navigation.replace('CreateProfile');

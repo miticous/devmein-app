@@ -5,7 +5,6 @@ export const GET_PROFILE = gql`
     profile {
       name
       birthday
-      sign
       images {
         _id
         image
@@ -16,6 +15,11 @@ export const GET_PROFILE = gql`
         lat
         lng
       }
+      astral {
+        zodiac
+        indexes
+      }
+      genre
       eyes
       occupation
       graduation {
@@ -27,6 +31,56 @@ export const GET_PROFILE = gql`
         placeId
         description
       }
+      sexualOrientations
+    }
+  }
+`;
+
+export const GET_PROFILE_CREATION = gql`
+  query {
+    profile {
+      name
+      birthday
+      images {
+        _id
+        image
+      }
+      birthplace {
+        placeId
+        description
+        lat
+        lng
+      }
+      astral {
+        zodiac
+        indexes
+      }
+      genre
+      eyes
+      occupation
+      graduation {
+        class
+        placeId
+        description
+      }
+      residence {
+        placeId
+        description
+      }
+      sexualOrientations
+    }
+    user {
+      configs {
+        love {
+          range
+          genre
+        }
+        friendShip {
+          range
+          genre
+        }
+      }
+      profileStatus
     }
   }
 `;

@@ -1,14 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
 import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import Icon from '../../assets/components/Icon';
-import { onChangeInput, onPressSugestion, onPressInputButton } from './ProfileEditionContainer';
-import { CREATE_PROFILE } from '../../graphQL/mutation';
+import {
+  onChangeInput,
+  onPressSugestion,
+  onPressInputButton,
+  onPressImage
+} from './ProfileEditionContainer';
+import { CREATE_PROFILE, ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE } from '../../graphQL/mutation';
+import { GET_PROFILE_CREATION } from '../../graphQL/query';
 
 const formInitialValues = {
   name: '',
@@ -29,22 +35,58 @@ const formInitialValues = {
 //   cancelButtonTitle: 'Cancelar'
 // };
 
+const normalizeFormValues = ({ formRef, data, setActiveItemIndex }) => {
+  const { profile, user } = data;
+  formRef.current.setValues(
+    {
+      ...profile,
+      ...user,
+      birthplace: {
+        placeId: profile?.birthplace?.placeId,
+        description: profile?.birthplace?.description
+      },
+      searchLoveGenre: user?.configs?.love?.genre,
+      searchLoveAgeRange: user?.configs?.love?.range,
+      searchFriendGenre: user?.configs?.friendShip?.genre,
+      searchFriendAgeRange: user?.configs?.friendShip?.range,
+      birthday: moment(Number(profile?.birthday)).format('DD/MM/YYYY HH:mm')
+    },
+    true
+  );
+  return setActiveItemIndex(7);
+};
+
 const onSubmitForm = async ({
+  navigation,
   formRef,
   activeItemIndex,
   setActiveItemIndex,
   switcherRef,
   createProfile
 }) => {
-  if (activeItemIndex !== switcherRef.current.childrensAmount - 1) {
-    return setActiveItemIndex(activeItemIndex + 1);
-  }
-
-  await createProfile({
-    variables: {
-      ...formRef?.current?.values
+  try {
+    if (activeItemIndex === 7) {
+      await createProfile({
+        variables: {
+          ...formRef?.current?.values,
+          profileStatus: 'CREATION'
+        }
+      });
+      return setActiveItemIndex(activeItemIndex + 1);
     }
-  });
+    if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
+      await createProfile({
+        variables: {
+          ...formRef?.current?.values,
+          profileStatus: 'COMPLETED'
+        }
+      });
+      return navigation.replace('Home');
+    }
+    return setActiveItemIndex(activeItemIndex + 1);
+  } catch (error) {
+    return false;
+  }
 };
 
 const CreateProfileContainer = ({ navigation }) => {
@@ -53,10 +95,21 @@ const CreateProfileContainer = ({ navigation }) => {
 
   const formRef = useRef();
   const switcherRef = useRef();
-  reactotron.log(formRef?.current?.values);
+
+  const { data, loading: queryLoading } = useQuery(GET_PROFILE_CREATION);
+
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
-    onCompleted: () => navigation.replace('Home'),
     onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil')
+  });
+
+  const [addProfileImage, { loading: loadingAddImage }] = useMutation(ADD_PROFILE_IMAGE, {
+    onError: () => DropDownHolder.show('error', '', 'Falha ao adicionar image'),
+    refetchQueries: [{ query: GET_PROFILE_CREATION }]
+  });
+
+  const [removeProfileImage, { loading: loadingRemoveImage }] = useMutation(REMOVE_PROFILE_IMAGE, {
+    onError: () => DropDownHolder.show('error', '', 'Falha ao remover imagem'),
+    refetchQueries: [{ query: GET_PROFILE_CREATION }]
   });
 
   const formSchema = yup.object().shape({
@@ -78,17 +131,16 @@ const CreateProfileContainer = ({ navigation }) => {
       placeId: yup.string(),
       description: yup.string().when('placeId', {
         is: val => val?.length > 0 || activeItemIndex > 2,
-        then: yup.string().required(),
-        otherwise: yup
+        then: yup
           .string()
           .min(3)
+          .required()
           .test('RESIDENCE_VALIDATION', 'error', () => {
             const { birthplace } = formRef?.current?.values;
 
             if (!birthplace?.placeId && birthplace?.description?.length > 0) {
               return false;
             }
-
             return true;
           })
       })
@@ -100,11 +152,9 @@ const CreateProfileContainer = ({ navigation }) => {
         .min(3)
         .test('RESIDENCE_VALIDATION', 'error', () => {
           const { graduation } = formRef?.current?.values;
-
           if (!graduation?.placeId && graduation?.description?.length > 0) {
             return false;
           }
-
           return true;
         })
     }),
@@ -115,11 +165,9 @@ const CreateProfileContainer = ({ navigation }) => {
         .min(3)
         .test('RESIDENCE_VALIDATION', 'error', () => {
           const { residence } = formRef?.current?.values;
-
           if (!residence?.placeId && residence?.description?.length > 0) {
             return false;
           }
-
           return true;
         })
     }),
@@ -149,21 +197,15 @@ const CreateProfileContainer = ({ navigation }) => {
     searchFriendAgeRange: yup.array().required()
   });
 
-  const formInitialSchema = {
-    name: 'Murilo',
-    birthdate: '07/03/1994 11:45',
-    birthplaceDescription: 'cacu',
-    genre: null,
-    searchGenre: null
-  };
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <>
           {activeItemIndex > 0 && (
             <TouchableOpacity
-              onPress={() => setActiveItemIndex(activeItemIndex - 1)}
+              onPress={() =>
+                formRef?.current?.isValid ? setActiveItemIndex(activeItemIndex - 1) : false
+              }
               style={{ paddingHorizontal: 20 }}
             >
               <Icon name="Back" width={40} height={40} />
@@ -174,16 +216,30 @@ const CreateProfileContainer = ({ navigation }) => {
     });
   }, [activeItemIndex]);
 
+  useEffect(() => {
+    if (data?.user?.profileStatus === 'CREATION' && activeItemIndex <= 7) {
+      normalizeFormValues({ formRef, data, setActiveItemIndex });
+    }
+  }, [data]);
+
   return (
     <CreateProfileComponent
       formRef={formRef}
+      profile={data?.profile || null}
       onSubmitForm={() =>
-        onSubmitForm({ formRef, activeItemIndex, setActiveItemIndex, switcherRef, createProfile })
+        onSubmitForm({
+          formRef,
+          activeItemIndex,
+          setActiveItemIndex,
+          switcherRef,
+          createProfile,
+          navigation
+        })
       }
       onChangeInput={({ inputRef, text }) =>
         onChangeInput({ fieldRef: inputRef, setSugestions, text, formRef, sugestions })
       }
-      isLoading={mutationLoading}
+      isLoading={mutationLoading || queryLoading || loadingAddImage || loadingRemoveImage}
       sugestions={sugestions}
       onPressSugestion={({ item, referencedInputName }) =>
         onPressSugestion({
@@ -196,10 +252,17 @@ const CreateProfileContainer = ({ navigation }) => {
       onChangeSliderValues={({ sliderValues, fieldRef }) =>
         formRef?.current?.setFieldValue(fieldRef, [...sliderValues])
       }
+      onPressImage={() => onPressImage({ addProfileImage })}
+      onPressRemoveImage={index =>
+        removeProfileImage({
+          variables: {
+            imageId: data?.profile?.images[index]._id
+          }
+        })
+      }
       formInitialValues={formInitialValues}
       onPressInputButton={field => onPressInputButton({ formRef, field })}
       formSchema={formSchema}
-      formInitialSchema={formInitialSchema}
       activeItemIndex={activeItemIndex}
       switcherRef={switcherRef}
       onPressSwitcherButton={() => formRef.current.submitForm()}

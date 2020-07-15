@@ -100,9 +100,9 @@ const TextInput = props => {
     onPressButton,
     label,
     optional,
-    sugestions,
-    onChange,
-    onPressSugestion
+    // sugestions,
+    onChange
+    // onPressSugestion
   } = props;
   const [isFocused, setIsFocused] = useState(false);
   const [field, meta] = useField(name);
@@ -125,12 +125,12 @@ const TextInput = props => {
             onChangeText={text => onChangeText({ field, onChange, text, timer, setTimer })}
             placeholder={placeholder}
           />
-          {sugestions?.length > 0 && isFocused && (
+          {/* {sugestions?.length > 0 && isFocused && (
             <SugestionArea>
               <Separator />
               {renderSugestions({ sugestions, onPressSugestion, ref: field.name })}
             </SugestionArea>
-          )}
+          )} */}
         </InputArea>
         {isFocused && (
           <ButtonArea onPress={() => onPressButton(field.name)}>
@@ -144,8 +144,8 @@ const TextInput = props => {
 
 TextInput.defaultProps = {
   onChange: () => false,
-  sugestions: null,
-  onPressSugestion: () => false,
+  // sugestions: null,
+  // onPressSugestion: () => false,
   optional: true,
   placeholder: ''
 };
@@ -156,9 +156,9 @@ TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   onPressButton: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  optional: PropTypes.bool,
-  sugestions: PropTypes.arrayOf(PropTypes.shape({})),
-  onPressSugestion: PropTypes.func
+  optional: PropTypes.bool
+  // sugestions: PropTypes.arrayOf(PropTypes.shape({})),
+  // onPressSugestion: PropTypes.func
 };
 
 export default TextInput;

@@ -55,6 +55,7 @@ export const CREATE_PROFILE = gql`
     $searchFriendAgeRange: [Int]!
     $searchLoveGenre: String!
     $searchFriendGenre: String!
+    $profileStatus: String!
   ) {
     editProfile(
       name: $name
@@ -78,6 +79,7 @@ export const CREATE_PROFILE = gql`
       searchFriendAgeRange: $searchFriendAgeRange
       searchLoveGenre: $searchLoveGenre
       searchFriendGenre: $searchFriendGenre
+      profileStatus: $profileStatus
     )
   }
 `;
