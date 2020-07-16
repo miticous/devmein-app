@@ -8,32 +8,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { isNil, not } from 'ramda';
 import AsyncStorage from '@react-native-community/async-storage';
 import HomeComponent from '../components/HomeComponent';
-
-const GET_HOME = gql`
-  query {
-    home {
-      name
-      _id
-      images {
-        image
-      }
-      loc {
-        coordinates
-      }
-      birthday
-    }
-    matches {
-      matches {
-        _id
-        name
-        images {
-          image
-        }
-        birthday
-      }
-    }
-  }
-`;
+import { GET_MAIN_DATA } from '../../graphQL/query';
 
 const LIKE = gql`
   mutation($userLikedId: String!) {
@@ -58,38 +33,18 @@ const SEND_GEOLOCATION = gql`
   }
 `;
 
-const matchDone = ({ state, setState, likeSomeone }) => {
-  const { matches } = likeSomeone;
-  const profileMatched = matches.find(match => match._id !== state.userId);
-
-  return setState({ ...state, newMatch: profileMatched, matchModalVisible: true });
-};
-
 const HomeContainer = ({ navigation }) => {
-  const [state, setState] = useState({
-    latitude: null,
-    longitude: null,
-    geolocationSent: false,
-    matchModalVisible: false,
-    newMatch: undefined,
-    userId: null
-  });
+  const [geoLocationSent, setGeolocationSent] = useState(false);
 
-  const { loading: loadingQuery, data } = useQuery(GET_HOME, {
-    skip: !state.geolocationSent
-  });
-
-  const [likeSomeone] = useMutation(LIKE, {
-    onCompleted: ({ likeSomeone }) => {
-      if (likeSomeone._id) {
-        matchDone({ state, setState, likeSomeone });
-      }
+  const { data, loading: loadingQuery } = useQuery(GET_MAIN_DATA, {
+    variables: {
+      searchType: 'LOVE'
     },
-    refetchQueries: [{ query: GET_HOME }]
+    skip: !geoLocationSent
   });
 
   const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
-    onCompleted: () => setState({ ...state, geolocationSent: true })
+    onCompleted: () => setGeolocationSent(true)
   });
 
   // useLayoutEffect(() => {
@@ -101,35 +56,21 @@ const HomeContainer = ({ navigation }) => {
   // }, [data, loadingQuery]);
 
   useEffect(() => {
-    AsyncStorage.getItem('@jintou:userId').then(userId => {
-      Geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) =>
-        setState({ ...state, longitude, latitude, userId })
-      );
-    });
-  }, []);
-
-  useEffect(() => {
-    if (not(isNil(state.latitude)) && not(isNil(state.longitude))) {
+    Geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) =>
       sendGeoLocation({
-        variables: { latitude: state.latitude.toString(), longitude: state.longitude.toString() }
-      });
-    }
-  }, [state.latitude, state.longitude]);
+        variables: {
+          latitude: latitude.toString(),
+          longitude: longitude.toString()
+        }
+      })
+    );
+  }, []);
 
   return (
     <HomeComponent
-      userLocation={[state.latitude, state.longitude]}
       isProfilesLoading={loadingQuery}
-      profiles={data && data.home}
-      matchModalVisible={state.matchModalVisible}
-      newMatch={state.newMatch}
-      onPressProfile={profileId =>
-        likeSomeone({
-          variables: {
-            userLikedId: profileId
-          }
-        })
-      }
+      profiles={data?.profiles}
+      userProfile={data?.profile}
     />
   );
 };

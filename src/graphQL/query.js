@@ -82,3 +82,84 @@ export const GET_PROFILE_CREATION = gql`
     }
   }
 `;
+
+export const GET_MAIN_DATA = gql`
+  query GET_MAIN_DATA($searchType: String!) {
+    profile {
+      name
+      birthday
+      loc {
+        coordinates
+      }
+      images {
+        _id
+        image
+      }
+      birthplace {
+        placeId
+        description
+        lat
+        lng
+      }
+      astral {
+        zodiac
+        indexes
+      }
+      genre
+      eyes
+      occupation
+      graduation {
+        class
+        placeId
+        description
+      }
+      residence {
+        placeId
+        description
+      }
+      sexualOrientations
+    }
+
+    profiles(searchType: $searchType) {
+      name
+      birthday
+      loc {
+        coordinates
+      }
+      images {
+        _id
+        image
+      }
+      birthplace {
+        placeId
+        description
+        lat
+        lng
+      }
+      astral {
+        zodiac
+        indexes
+      }
+      occupation
+      graduation {
+        class
+        placeId
+        description
+      }
+      residence {
+        placeId
+        description
+      }
+    }
+    matches {
+      matches {
+        _id
+        name
+        images {
+          image
+        }
+        birthday
+      }
+    }
+  }
+`;
