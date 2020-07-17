@@ -105,6 +105,12 @@ export const LIKE = gql`
   }
 `;
 
+export const UNLIKE = gql`
+  mutation($userUnlikedId: String!) {
+    unlikeSomeone(userUnlikedId: $userUnlikedId)
+  }
+`;
+
 export const SEND_GEOLOCATION = gql`
   mutation($latitude: String!, $longitude: String!) {
     sendGeoLocation(latitude: $latitude, longitude: $longitude)

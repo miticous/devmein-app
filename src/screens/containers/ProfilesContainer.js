@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import ProfilesComponent from '../components/ProfilesComponent';
 import { GET_PROFILES, GET_PROFILE } from '../../graphQL/query';
-import { LIKE } from '../../graphQL/mutation';
+import { LIKE, UNLIKE } from '../../graphQL/mutation';
 
 const ProfilesContainer = ({ navigation, route }) => {
   const client = useApolloClient();
@@ -29,6 +29,10 @@ const ProfilesContainer = ({ navigation, route }) => {
     onCompleted: () => false
   });
 
+  const [unlike] = useMutation(UNLIKE, {
+    onCompleted: () => false
+  });
+
   return (
     <ProfilesComponent
       isProfilesLoading={loadingQuery}
@@ -42,7 +46,13 @@ const ProfilesContainer = ({ navigation, route }) => {
           }
         })
       }
-      onMoveBottom={() => false}
+      onMoveBottom={id =>
+        unlike({
+          variables: {
+            userUnlikedId: id
+          }
+        })
+      }
     />
   );
 };
