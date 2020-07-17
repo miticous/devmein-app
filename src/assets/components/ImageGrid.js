@@ -146,7 +146,8 @@ ImageGrid.defaultProps = {
 
 ImageGrid.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string.isRequired),
-  onPressImage: PropTypes.func.isRequired
+  onPressImage: PropTypes.func.isRequired,
+  onPressRemove: PropTypes.func.isRequired
 };
 
 export default ImageGrid;

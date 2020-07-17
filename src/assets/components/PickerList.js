@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import reactotron from 'reactotron-react-native';
 import Icon from './Icon';
 import { COLORS } from '../styles/colors';
 
@@ -94,5 +94,21 @@ const PickerList = ({
     )}
   </>
 );
+
+PickerList.defaultProps = {
+  hasError: false,
+  checkedItemId: null
+};
+
+PickerList.propTypes = {
+  checkedItemId: PropTypes.arrayOf(PropTypes.string),
+  data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  itemsIdKey: PropTypes.string.isRequired,
+  itemsTitleKey: PropTypes.string.isRequired,
+  onPressItem: PropTypes.func.isRequired,
+  referencedInputName: PropTypes.string.isRequired,
+  multipleChoices: PropTypes.bool.isRequired,
+  hasError: PropTypes.bool
+};
 
 export default PickerList;

@@ -15,6 +15,7 @@ const Container = styled.View`
 const ImageArea = styled.View`
   position: relative;
   flex: 2;
+  background-color: ${COLORS.backgroundColor};
 `;
 const Image = styled.Image`
   width: 100%;
@@ -61,13 +62,13 @@ const ItemListText = styled.Text`
   color: #131415;
 `;
 
-const ProfileBox = ({ sign, image, name, birthplace, occupation, graduation }) => (
+const ProfileBox = ({ sign, image, name, residence, occupation, graduation }) => (
   <Container>
     <ImageArea>
       <Zodiac>
         <Icon name={sign} width={74} height={23} />
       </Zodiac>
-      <Image source={{ uri: image }} />
+      <Image source={{ uri: image }} resizeMode="cover" />
       <Mandala>
         <CircledItem size={60} color={COLORS.white}>
           <Icon name="Mandala" width={50} height={50} />
@@ -79,15 +80,24 @@ const ProfileBox = ({ sign, image, name, birthplace, occupation, graduation }) =
         <Name>{name}</Name>
         <ItemList>
           <Icon name="Location" width={14} height={18} />
-          <ItemListText> {birthplace}</ItemListText>
+          <ItemListText>
+            {'   '}
+            {residence}
+          </ItemListText>
         </ItemList>
         <ItemList>
           <Icon name="Occupation" width={16} height={14} />
-          <ItemListText> {occupation}</ItemListText>
+          <ItemListText>
+            {'   '}
+            {occupation}
+          </ItemListText>
         </ItemList>
         <ItemList>
-          <Icon name="Graduation" width={16} height={14} />
-          <ItemListText> {graduation}</ItemListText>
+          <Icon name="Graduation" width={20} height={20} />
+          <ItemListText>
+            {'  '}
+            {graduation}
+          </ItemListText>
         </ItemList>
       </About>
     </AboutArea>
@@ -103,7 +113,7 @@ ProfileBox.propTypes = {
   sign: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  birthplace: PropTypes.string.isRequired,
+  residence: PropTypes.string.isRequired,
   occupation: PropTypes.string,
   graduation: PropTypes.string
 };

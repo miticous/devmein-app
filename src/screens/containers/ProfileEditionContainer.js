@@ -144,7 +144,7 @@ export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, su
   if (text.length > 3) {
     const result = await getCitiesByName({
       name: text,
-      type: fieldRef === 'graduation.description' ? 'establishment' : '%28cities%29'
+      type: fieldRef === 'graduation.description' ? 'establishment' : '(cities)'
     });
 
     setSugestions({ ...sugestions, [fieldRef]: result && result?.length > 0 ? result : null });

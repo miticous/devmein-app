@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import * as yup from 'yup';
 import { not } from 'ramda';
 import AsyncStorage from '@react-native-community/async-storage';
-import reactotron from 'reactotron-react-native';
 import LoginComponent from '../components/LoginComponent';
 import { login } from '../../services/auth';
 

@@ -8,17 +8,14 @@ const getCitiesByName = async ({ name, type }) => {
       resolve();
     }, 1000)
   );
+
+  const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${name}&key=${key}&language=pt-BR&types=${type}&sessionToken=${sessionToken}`;
   try {
     const {
       data: { predictions }
     } = await axios({
       method: 'GET',
-      url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${name
-        .normalize('NFD')
-        .replace(
-          /[\u0300-\u036f]/g,
-          ''
-        )}&key=${key}&language=pt-BR&types=${type}&sessionToken=${sessionToken}`
+      url: encodeURI(url)
     });
 
     const normalizedPreditionsData = predictions.map(predict => {

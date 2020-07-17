@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
 import { useField } from 'formik';
 import styled from 'styled-components/native';
 import VMasker from 'vanilla-masker';
@@ -47,16 +46,6 @@ const OptionalInput = styled.Text`
   text-transform: uppercase;
   color: #c4c4c4;
 `;
-const SugestionArea = styled.View``;
-const SugestionText = styled.Text`
-  font-size: 18px;
-  line-height: 30px;
-`;
-const Separator = styled.View`
-  height: 1px;
-  margin: 10px 0px;
-  background-color: ${COLORS.textSecondaryColor};
-`;
 
 const getBorderColor = ({ error, isFocused }) => {
   if (error) {
@@ -86,24 +75,8 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
   );
 };
 
-const renderSugestions = ({ sugestions, onPressSugestion, ref }) =>
-  sugestions.map(sugestion => (
-    <TouchableOpacity onPress={() => onPressSugestion({ sugestion, ref })} key={sugestion.id}>
-      <SugestionText>{sugestion.label}</SugestionText>
-    </TouchableOpacity>
-  ));
-
 const TextInput = props => {
-  const {
-    placeholder,
-    name,
-    onPressButton,
-    label,
-    optional,
-    // sugestions,
-    onChange
-    // onPressSugestion
-  } = props;
+  const { placeholder, name, onPressButton, label, optional, onChange } = props;
   const [isFocused, setIsFocused] = useState(false);
   const [field, meta] = useField(name);
   const [timer, setTimer] = useState(0);
@@ -144,8 +117,6 @@ const TextInput = props => {
 
 TextInput.defaultProps = {
   onChange: () => false,
-  // sugestions: null,
-  // onPressSugestion: () => false,
   optional: true,
   placeholder: ''
 };
@@ -157,8 +128,6 @@ TextInput.propTypes = {
   onPressButton: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   optional: PropTypes.bool
-  // sugestions: PropTypes.arrayOf(PropTypes.shape({})),
-  // onPressSugestion: PropTypes.func
 };
 
 export default TextInput;

@@ -119,8 +119,8 @@ export const GET_MAIN_DATA = gql`
       }
       sexualOrientations
     }
-
     profiles(searchType: $searchType) {
+      _id
       name
       birthday
       loc {

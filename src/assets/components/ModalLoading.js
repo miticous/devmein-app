@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Modal, ActivityIndicator } from 'react-native';
 import { COLORS } from '../styles/colors';
 
@@ -21,5 +22,9 @@ const ModalLoading = ({ visible }) => (
     </Modal>
   </View>
 );
+
+ModalLoading.propTypes = {
+  visible: PropTypes.bool.isRequired
+};
 
 export default ModalLoading;

@@ -1,24 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, Text, Image, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import LinearGradient from 'react-native-linear-gradient';
 import { Formik } from 'formik';
-import reactotron from 'reactotron-react-native';
 import { COLORS } from '../../assets/styles/colors';
-import DefaultUserImage from '../../assets/images/default_user_image.jpg';
-import Button from '../../assets/components/Button';
 import { SCREEN_WIDTH } from '../../assets/styles';
 import { SwitcherItem, Switcher } from '../../assets/components/Switcher';
-import Icon from '../../assets/components/Icon';
 import TextInput from '../../assets/components/TextInput';
-import ModalPicker from '../../assets/components/ModalPicker';
 import ModalLoading from '../../assets/components/ModalLoading';
-import ButtonPicker from '../../assets/components/ButtonPicker';
 import PickerList from '../../assets/components/PickerList';
 import InfoBox from '../../assets/components/InfoBox';
 import DefaultButton from '../../assets/components/DefaultButton';
@@ -32,14 +21,14 @@ const Content = styled.View`
 const SwitcherContainer = styled.View`
   flex: 1;
 `;
-const ImagePickerArea = styled.TouchableOpacity`
-  flex: 1;
-  background-color: ${COLORS.iceColor};
-  border-radius: 20px;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-`;
+// const ImagePickerArea = styled.TouchableOpacity`
+//   flex: 1;
+//   background-color: ${COLORS.iceColor};
+//   border-radius: 20px;
+//   justify-content: center;
+//   align-items: center;
+//   overflow: hidden;
+// `;
 const StepActive = styled.View`
   height: 6px;
   overflow: hidden;
@@ -99,7 +88,7 @@ const CreateProfileComponent = ({
   onPressRemoveImage,
   profile
 }) => (
-  <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
+  <View style={{ flex: 1, backgroundColor: COLORS.lighter }}>
     <Content>
       <View style={{ height: 6, width: SCREEN_WIDTH }}>
         <StepActive
@@ -310,9 +299,6 @@ CreateProfileComponent.defaultProps = {
         image: ''
       }
     ]
-  },
-  user: {
-    name: ''
   }
 };
 CreateProfileComponent.propTypes = {
@@ -323,9 +309,21 @@ CreateProfileComponent.propTypes = {
       })
     )
   }),
-  user: PropTypes.shape({
-    name: PropTypes.string
-  })
+  onPressSwitcherButton: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  activeItemIndex: PropTypes.number.isRequired,
+  switcherRef: PropTypes.shape({}).isRequired,
+  formSchema: PropTypes.shape({}).isRequired,
+  formInitialValues: PropTypes.shape({}).isRequired,
+  onSubmitForm: PropTypes.func.isRequired,
+  formRef: PropTypes.shape({}).isRequired,
+  onChangeInput: PropTypes.func.isRequired,
+  sugestions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onPressSugestion: PropTypes.func.isRequired,
+  onPressInputButton: PropTypes.func.isRequired,
+  onChangeSliderValues: PropTypes.func.isRequired,
+  onPressImage: PropTypes.func.isRequired,
+  onPressRemoveImage: PropTypes.func.isRequired
 };
 
 export default CreateProfileComponent;

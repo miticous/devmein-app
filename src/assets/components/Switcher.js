@@ -1,13 +1,8 @@
-import React, { useLayoutEffect, useState, useEffect, useImperativeHandle } from 'react';
+import React, { useLayoutEffect, useState, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import { View, Text, Animated, Easing } from 'react-native';
-import reactotron from 'reactotron-react-native';
-import { useField } from 'formik';
+import { View, Animated } from 'react-native';
 import { SCREEN_WIDTH } from '../styles';
-import { COLORS } from '../styles/colors';
-import Button from './Button';
-import TextInput from './TextInput';
 import DefaultButton from './DefaultButton';
 
 const Container = styled.View`
@@ -97,12 +92,24 @@ const SwitcherItem = ({ children, title, subtitle, containerFluid }) => (
   </SwitcherItemContainer>
 );
 
+Switcher.propTypes = {
+  children: PropTypes.shape({}).isRequired,
+  activeIndex: PropTypes.number.isRequired,
+  onPressSubmit: PropTypes.func.isRequired,
+  buttonTitle: PropTypes.string.isRequired
+};
+
 SwitcherItem.defaultProps = {
-  containerFluid: true
+  containerFluid: true,
+  title: null,
+  subtitle: null
 };
 
 SwitcherItem.propTypes = {
-  containerFluid: PropTypes.bool
+  containerFluid: PropTypes.bool,
+  children: PropTypes.shape({}).isRequired,
+  title: PropTypes.string,
+  subtitle: PropTypes.string
 };
 
 export { Switcher, SwitcherItem };

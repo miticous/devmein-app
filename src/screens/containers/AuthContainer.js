@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import reactotron from 'reactotron-react-native';
 import { validate } from '../../services/auth';
 
 const AuthContainer = ({ navigation }) => {
   useEffect(() => {
-    // AsyncStorage.removeItem('@jintou:token')
-    //   .then(() => false)
-    //   .catch(() => false);
     AsyncStorage.getItem('@jintou:token')
       .then(token => {
         if (!token) {
@@ -24,6 +21,13 @@ const AuthContainer = ({ navigation }) => {
       <ActivityIndicator size="large" />
     </View>
   );
+};
+
+AuthContainer.propTypes = {
+  navigation: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired
+  }).isRequired
 };
 
 export default AuthContainer;

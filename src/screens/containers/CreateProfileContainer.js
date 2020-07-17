@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
-import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import Icon from '../../assets/components/Icon';
@@ -269,6 +269,12 @@ const CreateProfileContainer = ({ navigation }) => {
       onPressUpload={() => false}
     />
   );
+};
+
+CreateProfileContainer.propTypes = {
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired
+  }).isRequired
 };
 
 export default CreateProfileContainer;

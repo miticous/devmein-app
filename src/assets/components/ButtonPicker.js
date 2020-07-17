@@ -1,8 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { View } from 'react-native';
 import { not, isEmpty } from 'ramda';
-import reactotron from 'reactotron-react-native';
 import { useField } from 'formik';
 import { COLORS } from '../styles/colors';
 
@@ -60,6 +60,11 @@ const ButtonPicker = ({ options, name }) => {
       })}
     </View>
   );
+};
+
+ButtonPicker.propTypes = {
+  options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  name: PropTypes.string.isRequired
 };
 
 export default ButtonPicker;
