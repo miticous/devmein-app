@@ -69,6 +69,6 @@ export const validate = async ({ navigation, token }) => {
     }
     return navigation.replace('CreateProfile');
   } catch (error) {
-    return navigation.navigate('Login');
+    return navigation.replace('Login');
   }
 };

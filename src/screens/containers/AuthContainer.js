@@ -13,7 +13,7 @@ const AuthContainer = ({ navigation }) => {
         }
         return validate({ navigation, token });
       })
-      .catch(() => navigation.navigate('Login'));
+      .catch(() => navigation.replace('Login'));
   }, []);
 
   return (

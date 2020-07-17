@@ -80,7 +80,7 @@ const Tabs = () => (
 );
 
 const Routes = () => (
-  <Stack.Navigator initialRouteName="Tabs">
+  <Stack.Navigator initialRouteName="Auth">
     <Stack.Screen name="Auth" component={AuthContainer} options={{ headerShown: false }} />
     <Stack.Screen
       name="Login"
