@@ -71,7 +71,7 @@ const ProfilesComponent = ({
               occupation={item?.occupation}
               image={item?.images[0]?.image}
               residence={`${getUsersDistance({
-                coordinates: profiles?.[0]?.loc?.coordinates,
+                coordinates: item?.loc?.coordinates,
                 userLocation: userProfile?.loc?.coordinates
               })}km, ${item?.residence?.description}`}
               graduation={`${item?.graduation.class} @${item?.graduation?.description}`}

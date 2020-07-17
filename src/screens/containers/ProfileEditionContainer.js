@@ -4,7 +4,6 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
-import reactotron from 'reactotron-react-native';
 import ProfileEditionComponent from '../components/ProfileEditionComponent';
 import Icon from '../../assets/components/Icon';
 import ImagePicker from '../../assets/components/ImagePicker';
@@ -53,7 +52,6 @@ const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
 };
 
 export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
-  reactotron.log(sugestion, fieldRef);
   if (fieldRef === 'birthplace.description') {
     formRef.current.setValues(
       {
@@ -151,7 +149,7 @@ export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, su
 
     return true;
   }
-  reactotron.log('TROU');
+
   return setSugestions({ ...sugestions, [fieldRef]: null });
 };
 
@@ -161,11 +159,11 @@ export const onPressInputButton = ({ field, formRef }) =>
 const ProfileEditionContainer = ({ navigation }) => {
   const formRef = useRef();
   const [sugestions, setSugestions] = useState(null);
-  reactotron.log(formRef?.current?.values);
+
   const {
     data: { profile },
     loading: loadingQuery
-  } = useQuery(GET_PROFILE, {});
+  } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
 
   const [editProfile, { loading: loadingMutationEdit }] = useMutation(EDIT_PROFILE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao salvar edição'),

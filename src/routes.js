@@ -12,12 +12,14 @@ import ProfileContainer from './screens/containers/ProfileContainer';
 import { headerTitleStyle, headerStyle, bottomTabBar } from './assets/styles';
 import ProfileEditionContainer from './screens/containers/ProfileEditionContainer';
 import TabIcon from './assets/components/TabIcon';
+import HomeContainer from './screens/containers/HomeContainer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => (
   <Tab.Navigator
+    initialRouteName="Home"
     tabBarOptions={{
       style: bottomTabBar.style,
       tabStyle: bottomTabBar.tabStyle,
@@ -43,8 +45,7 @@ const Tabs = () => (
     />
     <Tab.Screen
       name="Home"
-      component={ProfilesContainer}
-      initialParams={{ searchType: 'FRIENDSHIP' }}
+      component={HomeContainer}
       options={{
         tabBarIcon: ({ focused }) => (
           <TabIcon

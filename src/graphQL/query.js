@@ -9,6 +9,9 @@ export const GET_PROFILE = gql`
         _id
         image
       }
+      loc {
+        coordinates
+      }
       birthplace {
         placeId
         description
@@ -83,42 +86,8 @@ export const GET_PROFILE_CREATION = gql`
   }
 `;
 
-export const GET_MAIN_DATA = gql`
-  query GET_MAIN_DATA($searchType: String!) {
-    profile {
-      name
-      birthday
-      loc {
-        coordinates
-      }
-      images {
-        _id
-        image
-      }
-      birthplace {
-        placeId
-        description
-        lat
-        lng
-      }
-      astral {
-        zodiac
-        indexes
-      }
-      genre
-      eyes
-      occupation
-      graduation {
-        class
-        placeId
-        description
-      }
-      residence {
-        placeId
-        description
-      }
-      sexualOrientations
-    }
+export const GET_PROFILES = gql`
+  query GET_PROFILES($searchType: String!) {
     profiles(searchType: $searchType) {
       _id
       name

@@ -1,67 +1,39 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import Geolocation from '@react-native-community/geolocation';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import ProfilesComponent from '../components/ProfilesComponent';
-import { GET_MAIN_DATA } from '../../graphQL/query';
-import Icon from '../../assets/components/Icon';
-import ProfileHeader from '../../assets/components/ProfileHeader';
-import { LIKE, SEND_GEOLOCATION } from '../../graphQL/mutation';
+import { GET_PROFILES, GET_PROFILE } from '../../graphQL/query';
+import { LIKE } from '../../graphQL/mutation';
 
 const ProfilesContainer = ({ navigation, route }) => {
-  const [geoLocationSent, setGeolocationSent] = useState(false);
+  const client = useApolloClient();
 
-  const { data, loading: loadingQuery } = useQuery(GET_MAIN_DATA, {
+  const {
+    data: { profile }
+  } = useQuery(GET_PROFILE, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-first'
+  });
+
+  const { data: cachedData } = client.cache;
+
+  const { data, loading: loadingQuery } = useQuery(GET_PROFILES, {
     variables: {
       searchType: route?.params?.searchType
     },
-    skip: !geoLocationSent
-  });
-
-  const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
-    onCompleted: () => setGeolocationSent(true)
+    skip: !cachedData?.data?.ROOT_QUERY?.geoLocationSent
   });
 
   const [like] = useMutation(LIKE, {
     onCompleted: () => false
   });
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <ProfileHeader
-          onPress={() => navigation.navigate('Profile')}
-          imageSource={data?.profile?.images?.[0].image}
-          name={data?.profile?.name}
-          icon={data?.profile?.astral?.zodiac}
-        />
-      ),
-      headerRight: () => (
-        <TouchableOpacity style={{ paddingHorizontal: 20 }}>
-          <Icon name="Config" width={40} height={40} />
-        </TouchableOpacity>
-      )
-    });
-  }, [data, loadingQuery]);
-
-  useEffect(() => {
-    Geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) =>
-      sendGeoLocation({
-        variables: {
-          latitude: latitude.toString(),
-          longitude: longitude.toString()
-        }
-      })
-    );
-  }, []);
-
   return (
     <ProfilesComponent
       isProfilesLoading={loadingQuery}
       profiles={data?.profiles}
-      userProfile={data?.profile}
+      userProfile={profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveTop={id =>
         like({
