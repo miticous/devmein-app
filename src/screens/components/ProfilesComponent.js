@@ -40,7 +40,7 @@ const getUsersDistance = ({ coordinates, userLocation }) => {
   return 0;
 };
 
-const LoveComponent = ({
+const ProfilesComponent = ({
   isProfilesLoading,
   profiles,
   userProfile,
@@ -84,7 +84,7 @@ const LoveComponent = ({
   </Container>
 );
 
-LoveComponent.propTypes = {
+ProfilesComponent.propTypes = {
   isProfilesLoading: PropTypes.bool.isRequired,
   profiles: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   userProfile: PropTypes.shape({}).isRequired,
@@ -93,4 +93,4 @@ LoveComponent.propTypes = {
   onPressHeaderLeft: PropTypes.func.isRequired
 };
 
-export default LoveComponent;
+export default ProfilesComponent;

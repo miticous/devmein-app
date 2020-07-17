@@ -1,25 +1,94 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoveContainer from './screens/containers/LoveContainer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ProfilesContainer from './screens/containers/ProfilesContainer';
 import AuthContainer from './screens/containers/AuthContainer';
 import LoginContainer from './screens/containers/LoginContainer';
 import SignUpContainer from './screens/containers/SignUpContainer';
 import CreateProfileContainer from './screens/containers/CreateProfileContainer';
-// import ChatContainer from './screens/containers/ChatContainer';
-// import MatchesContainer from './screens/containers/MatchesContainer';
 import { COLORS } from './assets/styles/colors';
 import ProfileContainer from './screens/containers/ProfileContainer';
-import { headerTitleStyle, headerStyle } from './assets/styles';
+import { headerTitleStyle, headerStyle, bottomTabBar } from './assets/styles';
 import ProfileEditionContainer from './screens/containers/ProfileEditionContainer';
+import TabIcon from './assets/components/TabIcon';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const Tabs = () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      style: bottomTabBar.style,
+      tabStyle: bottomTabBar.tabStyle,
+      labelStyle: bottomTabBar.labelStyle
+    }}
+  >
+    <Tab.Screen
+      name="Love"
+      component={ProfilesContainer}
+      initialParams={{ searchType: 'LOVE' }}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon="Love"
+            label="Amor"
+            backgroundColor="#ffe3f0"
+            color="#D25890"
+          />
+        ),
+        tabBarLabel: () => false
+      }}
+    />
+    <Tab.Screen
+      name="Home"
+      component={ProfilesContainer}
+      initialParams={{ searchType: 'FRIENDSHIP' }}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon="Home"
+            label="Home"
+            backgroundColor="#e6d8e5"
+            color="#75396F"
+          />
+        ),
+        tabBarLabel: () => false
+      }}
+    />
+    <Tab.Screen
+      name="Friendship"
+      component={ProfilesContainer}
+      initialParams={{ searchType: 'FRIENDSHIP' }}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon="Friendship"
+            label="Amizade"
+            backgroundColor="#e0ffdb"
+            color="#1CCB00"
+          />
+        ),
+        tabBarLabel: () => false
+      }}
+    />
+  </Tab.Navigator>
+);
 
 const Routes = () => (
-  <Stack.Navigator initialRouteName="Auth">
+  <Stack.Navigator initialRouteName="Tabs">
     <Stack.Screen name="Auth" component={AuthContainer} options={{ headerShown: false }} />
     <Stack.Screen
       name="Login"
       component={LoginContainer}
+      options={{ headerLeft: false, headerShown: false }}
+    />
+    <Stack.Screen
+      name="Tabs"
+      component={Tabs}
       options={{ headerLeft: false, headerShown: false }}
     />
     <Stack.Screen
@@ -57,13 +126,6 @@ const Routes = () => (
         title: 'EDITAR PERFIL',
         headerStyle,
         headerTitleStyle
-      }}
-    />
-    <Stack.Screen
-      name="Love"
-      component={LoveContainer}
-      options={{
-        headerShown: false
       }}
     />
     {/* <Stack.Screen name="Chat" component={ChatContainer} options={{ title: 'Chat' }} /> */}

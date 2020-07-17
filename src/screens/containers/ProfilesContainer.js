@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import Geolocation from '@react-native-community/geolocation';
-import LoveComponent from '../components/LoveComponent';
+import ProfilesComponent from '../components/ProfilesComponent';
 import { GET_MAIN_DATA } from '../../graphQL/query';
 import Icon from '../../assets/components/Icon';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import { LIKE, SEND_GEOLOCATION } from '../../graphQL/mutation';
 
-const LoveContainer = ({ navigation }) => {
+const ProfilesContainer = ({ navigation, route }) => {
   const [geoLocationSent, setGeolocationSent] = useState(false);
 
   const { data, loading: loadingQuery } = useQuery(GET_MAIN_DATA, {
     variables: {
-      searchType: 'LOVE'
+      searchType: route?.params?.searchType
     },
     skip: !geoLocationSent
   });
@@ -58,7 +58,7 @@ const LoveContainer = ({ navigation }) => {
   }, []);
 
   return (
-    <LoveComponent
+    <ProfilesComponent
       isProfilesLoading={loadingQuery}
       profiles={data?.profiles}
       userProfile={data?.profile}
@@ -75,11 +75,16 @@ const LoveContainer = ({ navigation }) => {
   );
 };
 
-LoveContainer.propTypes = {
+ProfilesContainer.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      searchType: PropTypes.string.isRequired
+    })
   }).isRequired
 };
 
-export default LoveContainer;
+export default ProfilesContainer;

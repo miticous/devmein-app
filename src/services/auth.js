@@ -19,7 +19,7 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
 
     await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
     if (profileStatus === 'COMPLETED') {
-      return navigation.replace('Love');
+      return navigation.replace('Tabs');
     }
     return navigation.replace('CreateProfile');
   } catch ({
@@ -65,7 +65,7 @@ export const validate = async ({ navigation, token }) => {
     });
 
     if (data === 'COMPLETED') {
-      return navigation.replace('Love');
+      return navigation.replace('Tabs');
     }
     return navigation.replace('CreateProfile');
   } catch (error) {
