@@ -89,25 +89,20 @@ export const CREATE_PROFILE = gql`
 `;
 
 export const LIKE = gql`
-  mutation($userLikedId: String!) {
-    likeSomeone(userLikedId: $userLikedId) {
-      _id
-      startedAt
-      matches {
+  mutation($userLikedId: String!, $type: String!) {
+    likeSomeone(userLikedId: $userLikedId, type: $type) {
+      name
+      images {
         _id
-        name
-        images {
-          image
-        }
-        birthday
+        image
       }
     }
   }
 `;
 
 export const UNLIKE = gql`
-  mutation($userUnlikedId: String!) {
-    unlikeSomeone(userUnlikedId: $userUnlikedId)
+  mutation($userUnlikedId: String!, $type: String!) {
+    unlikeSomeone(userUnlikedId: $userUnlikedId, type: $type)
   }
 `;
 

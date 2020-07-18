@@ -129,8 +129,6 @@ const Routes = () => (
         headerTitleStyle
       }}
     />
-    {/* <Stack.Screen name="Chat" component={ChatContainer} options={{ title: 'Chat' }} /> */}
-    {/* <Stack.Screen name="Matches" component={MatchesContainer} options={{ title: 'Matches' }} /> */}
   </Stack.Navigator>
 );
 

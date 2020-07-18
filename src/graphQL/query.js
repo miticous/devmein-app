@@ -37,6 +37,62 @@ export const GET_PROFILE = gql`
   }
 `;
 
+export const GET_HOME = gql`
+  query {
+    profile {
+      name
+      birthday
+      images {
+        _id
+        image
+      }
+      loc {
+        coordinates
+      }
+      birthplace {
+        placeId
+        description
+      }
+      astral {
+        zodiac
+        indexes
+      }
+      genre
+      eyes
+      occupation
+      graduation {
+        class
+        placeId
+        description
+      }
+      residence {
+        placeId
+        description
+      }
+      sexualOrientations
+    }
+    matches {
+      _id
+      startedAt
+      profileMatched {
+        name
+        images {
+          _id
+          image
+        }
+      }
+      lastMessage {
+        _id
+        sender_id
+        receiver_id
+        sentAt
+        text
+        viewed
+      }
+    }
+  }
+`;
+
 export const GET_PROFILE_CREATION = gql`
   query {
     profile {
@@ -118,16 +174,6 @@ export const GET_PROFILES = gql`
       residence {
         placeId
         description
-      }
-    }
-    matches {
-      matches {
-        _id
-        name
-        images {
-          image
-        }
-        birthday
       }
     }
   }

@@ -26,10 +26,16 @@ const ProfilesContainer = ({ navigation, route }) => {
   });
 
   const [like] = useMutation(LIKE, {
+    variables: {
+      type: route?.params?.searchType
+    },
     onCompleted: () => false
   });
 
   const [unlike] = useMutation(UNLIKE, {
+    variables: {
+      type: route?.params?.searchType
+    },
     onCompleted: () => false
   });
 
