@@ -13,6 +13,7 @@ import { headerTitleStyle, headerStyle, bottomTabBar } from './assets/styles';
 import ProfileEditionContainer from './screens/containers/ProfileEditionContainer';
 import TabIcon from './assets/components/TabIcon';
 import HomeContainer from './screens/containers/HomeContainer';
+import ChatContainer from './screens/containers/ChatContainer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -127,6 +128,21 @@ const Routes = () => (
         title: 'EDITAR PERFIL',
         headerStyle,
         headerTitleStyle
+      }}
+    />
+    <Stack.Screen
+      name="Chat"
+      component={ChatContainer}
+      options={{
+        title: 'JIÀNTOU',
+        headerStyle: {
+          ...headerStyle,
+          backgroundColor: '#75396F'
+        },
+        headerTitleStyle: {
+          ...headerTitleStyle,
+          color: 'white'
+        }
       }}
     />
   </Stack.Navigator>

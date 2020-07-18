@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const GET_PROFILE = gql`
   query {
     profile {
+      _id
       name
       birthday
       images {
@@ -77,18 +78,17 @@ export const GET_HOME = gql`
       type
       profileMatched {
         name
+        birthday
         images {
           _id
           image
         }
       }
       lastMessage {
-        _id
-        sender_id
-        receiver_id
+        senderId
+        receiverId
         sentAt
         text
-        viewed
       }
     }
   }
@@ -175,6 +175,28 @@ export const GET_PROFILES = gql`
       residence {
         placeId
         description
+      }
+    }
+  }
+`;
+
+export const GET_CHAT = gql`
+  query GET_CHAT($matchId: String!) {
+    chat(matchId: $matchId) {
+      participant {
+        _id
+        name
+        birthday
+        images {
+          image
+        }
+      }
+      messages {
+        _id
+        text
+        senderId
+        receiverId
+        sentAt
       }
     }
   }

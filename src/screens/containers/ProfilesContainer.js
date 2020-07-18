@@ -9,9 +9,7 @@ import { LIKE, UNLIKE } from '../../graphQL/mutation';
 const ProfilesContainer = ({ navigation, route }) => {
   const client = useApolloClient();
 
-  const {
-    data: { profile }
-  } = useQuery(GET_PROFILE, {
+  const { data: profileQuery } = useQuery(GET_PROFILE, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-first'
   });
@@ -43,7 +41,7 @@ const ProfilesContainer = ({ navigation, route }) => {
     <ProfilesComponent
       isProfilesLoading={loadingQuery}
       profiles={data?.profiles}
-      userProfile={profile}
+      userProfile={profileQuery?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveTop={id =>
         like({

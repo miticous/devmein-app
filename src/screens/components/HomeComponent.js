@@ -31,10 +31,17 @@ const normalizeCarouselData = ({ matches }) =>
     _id: match?._id,
     image: match?.profileMatched?.images?.[0].image,
     name: match?.profileMatched?.name,
-    type: match?.type
+    type: match?.type,
+    birthday: match?.profileMatched?.birthday
   }));
 
-const HomeComponent = ({ isProfilesLoading, userProfile, onPressHeaderLeft, matches }) => (
+const HomeComponent = ({
+  isProfilesLoading,
+  userProfile,
+  onPressHeaderLeft,
+  matches,
+  onPressCarouselItem
+}) => (
   <Container>
     <ProfileHeader
       onPress={onPressHeaderLeft}
@@ -44,7 +51,7 @@ const HomeComponent = ({ isProfilesLoading, userProfile, onPressHeaderLeft, matc
     />
     <Content>
       <Title>Novas flechadas e amizades</Title>
-      <Carousel data={normalizeCarouselData({ matches })} />
+      <Carousel data={normalizeCarouselData({ matches })} onPressItem={onPressCarouselItem} />
     </Content>
     {isProfilesLoading && <ModalLoading visible={isProfilesLoading} />}
   </Container>

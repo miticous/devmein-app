@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import Geolocation from '@react-native-community/geolocation';
+import reactotron from 'reactotron-react-native';
 import { SEND_GEOLOCATION } from '../../graphQL/mutation';
 import { GET_HOME } from '../../graphQL/query';
 import HomeComponent from '../components/HomeComponent';
@@ -44,6 +45,7 @@ const HomeContainer = ({ navigation }) => {
     <HomeComponent
       isProfilesLoading={loadingQuery}
       matches={data?.matches}
+      onPressCarouselItem={item => navigation.navigate('Chat', { match: item })}
       userProfile={data?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveBottom={() => false}

@@ -111,3 +111,21 @@ export const SEND_GEOLOCATION = gql`
     sendGeoLocation(latitude: $latitude, longitude: $longitude)
   }
 `;
+
+export const SEND_MESSAGE = gql`
+  mutation($matchId: String!, $message: String!) {
+    sendMessage(matchId: $matchId, message: $message) {
+      participant {
+        _id
+      }
+      messages {
+        _id
+        text
+        senderId
+        receiverId
+        sentAt
+        viewed
+      }
+    }
+  }
+`;

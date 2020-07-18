@@ -9,7 +9,7 @@ import Icon from './Icon';
 const Container = styled.View`
   height: 130px;
 `;
-const ContentItem = styled.View`
+const ContentItem = styled.TouchableOpacity`
   height: 100%;
 `;
 const Image = styled.Image`
@@ -44,7 +44,7 @@ const Text = styled.Text`
   color: #333333;
 `;
 
-const Carousel = ({ data }) => (
+const Carousel = ({ data, onPressItem }) => (
   <Container>
     <FlatList
       data={data}
@@ -54,7 +54,7 @@ const Carousel = ({ data }) => (
       contentContainerStyle={{ paddingLeft: 20 }}
       ItemSeparatorComponent={() => <Separator />}
       renderItem={({ item }) => (
-        <ContentItem>
+        <ContentItem onPress={() => onPressItem(item)}>
           <CircledItem size={90}>
             <LinearGradient
               start={{ x: 0, y: 0 }}
