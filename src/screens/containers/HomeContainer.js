@@ -43,6 +43,7 @@ const HomeContainer = ({ navigation }) => {
   return (
     <HomeComponent
       isProfilesLoading={loadingQuery}
+      matches={data?.matches}
       userProfile={data?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveBottom={() => false}

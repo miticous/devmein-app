@@ -74,6 +74,7 @@ export const GET_HOME = gql`
     matches {
       _id
       startedAt
+      type
       profileMatched {
         name
         images {
