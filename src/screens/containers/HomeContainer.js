@@ -3,21 +3,25 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import Geolocation from '@react-native-community/geolocation';
-import reactotron from 'reactotron-react-native';
 import { SEND_GEOLOCATION } from '../../graphQL/mutation';
-import { GET_HOME } from '../../graphQL/query';
+import { GET_HOME, GET_PROFILE } from '../../graphQL/query';
 import HomeComponent from '../components/HomeComponent';
 
 const HomeContainer = ({ navigation }) => {
   const [geoLocationSent, setGeoLocationSent] = useState(false);
+  const client = useApolloClient();
 
-  const { data, loading: loadingQuery } = useQuery(GET_HOME, {
+  const { data: profileQuery, loading: loadingProfileQuery } = useQuery(GET_PROFILE, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-first',
     skip: !geoLocationSent
   });
 
-  const client = useApolloClient();
+  const { data: homeQuery } = useQuery(GET_HOME, {
+    notifyOnNetworkStatusChange: true,
+    skip: !geoLocationSent,
+    pollInterval: 15000
+  });
 
   const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
     onCompleted: () => {
@@ -43,10 +47,10 @@ const HomeContainer = ({ navigation }) => {
 
   return (
     <HomeComponent
-      isProfilesLoading={loadingQuery}
-      matches={data?.matches}
+      isProfilesLoading={loadingProfileQuery}
+      matches={homeQuery?.matches}
       onPressCarouselItem={item => navigation.navigate('Chat', { match: item })}
-      userProfile={data?.profile}
+      userProfile={profileQuery?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveBottom={() => false}
     />

@@ -1,9 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
+import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import reactotron from 'reactotron-react-native';
 import ProfilesComponent from '../components/ProfilesComponent';
-import { GET_PROFILES, GET_PROFILE } from '../../graphQL/query';
+import { GET_PROFILES, GET_PROFILE, GET_HOME } from '../../graphQL/query';
 import { LIKE, UNLIKE } from '../../graphQL/mutation';
 
 const ProfilesContainer = ({ navigation, route }) => {
@@ -27,7 +29,20 @@ const ProfilesContainer = ({ navigation, route }) => {
     variables: {
       type: route?.params?.searchType
     },
-    onCompleted: () => false
+    onCompleted: ({ likeSomeone }) => {
+      if (likeSomeone?.name) {
+        Alert.alert('Novo match!', `Você deu match com ${likeSomeone?.name}`, [
+          { text: 'OK', onPress: () => navigation.navigate('Home') }
+        ]);
+      }
+    },
+    refetchQueries: ({ data: _data }) => {
+      if (_data?.likeSomeone) {
+        return [{ query: GET_HOME }];
+      }
+      return false;
+    },
+    notifyOnNetworkStatusChange: true
   });
 
   const [unlike] = useMutation(UNLIKE, {

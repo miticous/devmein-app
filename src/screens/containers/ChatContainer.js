@@ -45,24 +45,14 @@ const ChatContainer = ({ navigation, route: { params } }) => {
     });
   }, []);
 
-  // React.useEffect(() => {
-  //   const timeShown = subscriptionData?.updateChat?.messages?.sort((a, b) =>
-  //     moment(Number(b?.sentAt)) > moment(Number(a?.sentAt)) &&
-  //     b?.senderId !== profileData?.profile?._id
-  //       ? 1
-  //       : -1
-  //   );
-
-  // }, [subscriptionData?.updateChat?.messages]);
-
   return (
     <ChatComponent
       loading={mutationLoading || profileLoading || chatLoading}
       userProfile={profileData?.profile}
       matchType={match?.type}
-      messages={subscriptionData?.updateChat?.messages || data?.chat?.messages}
+      messages={subscriptionData?.newMessage?.messages || data?.chat?.messages}
       inputValue={inputValue}
-      participant={subscriptionData?.updateChat?.participant || data?.chat?.participant || match}
+      participant={subscriptionData?.newMessage?.participant || data?.chat?.participant || match}
       onChangeInput={text => setInputValue(text)}
       messagesBodyRef={messagesBodyRef}
       onLayout={() => messagesBodyRef?.current.scrollToEnd({ animated: true })}

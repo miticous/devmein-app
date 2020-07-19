@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const CHAT_SUB = gql`
-  subscription updateChat {
-    updateChat {
+  subscription newMessage {
+    newMessage {
       participant {
         _id
         name
@@ -17,6 +17,7 @@ export const CHAT_SUB = gql`
         senderId
         receiverId
         sentAt
+        viewed
       }
     }
   }

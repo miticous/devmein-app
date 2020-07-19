@@ -61,11 +61,11 @@ const Separator = styled.View`
 `;
 const Body = styled.ScrollView``;
 const BodyMessage = styled.View`
-  background-color: #f8f1f8;
+  background-color: ${({ mySelf }) => (mySelf ? '#EDE0E6' : '#F8F1F8')};
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
-  border-bottom-right-radius: ${({ mySelf }) => (mySelf ? '32px' : '0px')};
-  border-bottom-left-radius: ${({ mySelf }) => (mySelf ? '0px' : '32px')};
+  border-bottom-right-radius: ${({ mySelf }) => (mySelf ? '0px' : '32px')};
+  border-bottom-left-radius: ${({ mySelf }) => (mySelf ? '32px' : '0px')};
   margin: 5px 20px;
   padding: 20px;
 `;
@@ -76,6 +76,11 @@ const Message = styled.Text`
   line-height: 18px;
   text-align: justify;
   color: #000000;
+`;
+const ViewedArea = styled.View`
+  position: absolute;
+  right: 0;
+  bottom: 0;
 `;
 const Footer = styled.View`
   height: 60px;
@@ -103,7 +108,7 @@ const Button = styled.TouchableOpacity`
 
 const renderMessages = ({ messages, userProfile, receiverTimedMessage }) =>
   messages?.map(message => {
-    const mySelf = message?.senderId !== userProfile?._id;
+    const mySelf = message?.senderId === userProfile?._id;
 
     return (
       <BodyMessage mySelf={mySelf} key={message?._id}>
@@ -111,6 +116,11 @@ const renderMessages = ({ messages, userProfile, receiverTimedMessage }) =>
           {message?.text}
           {receiverTimedMessage === message?._id && 'dasdkaopsk'}
         </Message>
+        {message?.viewed && mySelf && (
+          <ViewedArea>
+            <Message>A</Message>
+          </ViewedArea>
+        )}
       </BodyMessage>
     );
   });

@@ -40,38 +40,6 @@ export const GET_PROFILE = gql`
 
 export const GET_HOME = gql`
   query {
-    profile {
-      name
-      birthday
-      images {
-        _id
-        image
-      }
-      loc {
-        coordinates
-      }
-      birthplace {
-        placeId
-        description
-      }
-      astral {
-        zodiac
-        indexes
-      }
-      genre
-      eyes
-      occupation
-      graduation {
-        class
-        placeId
-        description
-      }
-      residence {
-        placeId
-        description
-      }
-      sexualOrientations
-    }
     matches {
       _id
       startedAt
@@ -84,6 +52,7 @@ export const GET_HOME = gql`
           image
         }
       }
+      unreadMessages
       lastMessage {
         senderId
         receiverId
@@ -197,6 +166,7 @@ export const GET_CHAT = gql`
         senderId
         receiverId
         sentAt
+        viewed
       }
     }
   }

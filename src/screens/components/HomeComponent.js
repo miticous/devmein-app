@@ -2,10 +2,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
+import { FlatList } from 'react-native';
+import moment from 'moment';
 import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import Carousel from '../../assets/components/Carousel';
+import ChatCard from '../../assets/components/ChatCard';
 
 const Container = styled.View`
   flex: 1;
@@ -14,8 +17,6 @@ const Container = styled.View`
 const Content = styled.View`
   border-top-color: #e0e0e0;
   border-top-width: 1px;
-  border-bottom-color: #e0e0e0;
-  border-bottom-width: 1px;
   padding-bottom: 20px;
 `;
 const Title = styled.Text`
@@ -52,6 +53,31 @@ const HomeComponent = ({
     <Content>
       <Title>Novas flechadas e amizades</Title>
       <Carousel data={normalizeCarouselData({ matches })} onPressItem={onPressCarouselItem} />
+    </Content>
+    <Content>
+      <Title>Seus chats</Title>
+      <FlatList
+        data={matches}
+        renderItem={({ item }) => (
+          <>
+            {item?.lastMessage && (
+              <ChatCard
+                onPress={() => onPressCarouselItem(item)}
+                image={item?.profileMatched?.images?.[0]?.image}
+                subtitle={`${moment(item?.lastMessage?.lastMessage).format(' HH:mm')}  ${
+                  item?.lastMessage?.text
+                }`}
+                title={item?.profileMatched?.name}
+                warns={
+                  item?.unreadMessages > 0 &&
+                  item?.lastMessage?.senderId !== userProfile?._id &&
+                  item?.unreadMessages
+                }
+              />
+            )}
+          </>
+        )}
+      />
     </Content>
     {isProfilesLoading && <ModalLoading visible={isProfilesLoading} />}
   </Container>
