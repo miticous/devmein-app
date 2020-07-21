@@ -11,6 +11,7 @@ import ProfileBox from '../../assets/components/ProfileBox';
 // import ProfileDetailsBox from '../../assets/components/ProfileDetailsBox';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import AnimatedProfileBox from '../../assets/components/AnimatedProfileBox';
+import ProfileDetailsBox from '../../assets/components/ProfileDetailsBox';
 
 const Container = styled.View`
   flex: 1;
@@ -46,7 +47,16 @@ const ProfilesComponent = ({
   userProfile,
   onMoveBottom,
   onMoveTop,
-  onPressHeaderLeft
+  onPressHeaderLeft,
+  activeTextsIndex,
+  onPressDetailsNext,
+  onPressDetailsPrev,
+  onPressShowDetails,
+  showProfileDetails,
+  texts,
+  showHelperInitial,
+  showHelperFinal,
+  tutorialDone
 }) => (
   <Container>
     <ProfileHeader
@@ -57,25 +67,40 @@ const ProfilesComponent = ({
     />
     <FlatList
       data={profiles}
-      keyExtractor={item => item?._id}
       scrollEnabled={false}
+      keyExtractor={item => item?._id}
       renderItem={({ item }) => (
         <Content>
           <AnimatedProfileBox
             onMoveBottom={() => onMoveBottom(item?._id)}
             onMoveTop={() => onMoveTop(item?._id)}
           >
-            <ProfileBox
-              sign={item?.astral?.zodiac}
-              name={item?.name}
-              occupation={item?.occupation}
-              image={item?.images[0]?.image}
-              residence={`${getUsersDistance({
-                coordinates: item?.loc?.coordinates,
-                userLocation: userProfile?.loc?.coordinates
-              })}km, ${item?.residence?.description}`}
-              graduation={`${item?.graduation.class} @${item?.graduation?.description}`}
-            />
+            {showProfileDetails && (
+              <ProfileDetailsBox
+                images={item?.images}
+                texts={texts}
+                activeIndex={activeTextsIndex}
+                onPressNext={onPressDetailsNext}
+                onPressPrev={onPressDetailsPrev}
+              />
+            )}
+            {!showProfileDetails && (
+              <ProfileBox
+                tutorialDone={tutorialDone}
+                showHelperInitial={showHelperInitial}
+                showHelperFinal={showHelperFinal}
+                onPressNext={onPressShowDetails}
+                sign={item?.astral?.zodiac}
+                name={item?.name}
+                occupation={item?.occupation}
+                image={item?.images[0]?.image}
+                residence={`${getUsersDistance({
+                  coordinates: item?.loc?.coordinates,
+                  userLocation: userProfile?.loc?.coordinates
+                })}km, ${item?.residence?.description}`}
+                graduation={`${item?.graduation.class} @${item?.graduation?.description}`}
+              />
+            )}
           </AnimatedProfileBox>
         </Content>
       )}
@@ -90,7 +115,16 @@ ProfilesComponent.propTypes = {
   userProfile: PropTypes.shape({}).isRequired,
   onMoveBottom: PropTypes.func.isRequired,
   onMoveTop: PropTypes.func.isRequired,
-  onPressHeaderLeft: PropTypes.func.isRequired
+  onPressHeaderLeft: PropTypes.func.isRequired,
+  activeTextsIndex: PropTypes.number.isRequired,
+  onPressDetailsNext: PropTypes.func.isRequired,
+  onPressDetailsPrev: PropTypes.func.isRequired,
+  onPressShowDetails: PropTypes.func.isRequired,
+  showProfileDetails: PropTypes.bool.isRequired,
+  texts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  showHelperInitial: PropTypes.bool.isRequired,
+  showHelperFinal: PropTypes.bool.isRequired,
+  tutorialDone: PropTypes.bool.isRequired
 };
 
 export default ProfilesComponent;

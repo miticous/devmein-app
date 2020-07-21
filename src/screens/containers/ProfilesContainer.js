@@ -1,14 +1,119 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
-import reactotron from 'reactotron-react-native';
 import ProfilesComponent from '../components/ProfilesComponent';
 import { GET_PROFILES, GET_PROFILE, GET_HOME } from '../../graphQL/query';
 import { LIKE, UNLIKE } from '../../graphQL/mutation';
 
+const texts = [
+  {
+    title: 'Instinto',
+    subtitle: 'Escorpião no ascendente (casa 1) e Marte em Gêmeos na casa 8',
+    text:
+      'Quanto ao meu instinto, tenho temperamento introspectivo, estratégico e com forte poder mental. Sou uma pessoa impulsiva e indecisa nos pensamentos e ações; sofro por constantes arrependimentos. Tenho especial interesse por assuntos relacionados a psique, sexo e mistérios.'
+  },
+  {
+    title: 'Sexo',
+    subtitle: 'Casa 8 em Gêmeos e Mercúrio em Áries',
+    text: 'Me excito com os pensamentos e conversas sobre sexo e me realizo rapidamente.'
+  },
+  {
+    title: 'Namoro',
+    subtitle: 'Peixes na casa 5 e Júpiter em Sagitário na casa 2',
+    text:
+      'No namoro, sou uma pessoa bondosa, expansiva, bem humorada, divertida, franca e justa. Sou sociável e com muita sorte na vida. Tenho interesse por religiões, pela justiça terrena e divina, por viagens e assuntos relacionados com o exterior. Gosto das coisas boas e finas.'
+  },
+  {
+    title: 'Emocao',
+    subtitle: 'Lua em Touro na casa 7',
+    text:
+      'Emocionalmente, sou uma pessoa simples e sensual, que busca segurança, comodidade e conforto. Não tomo decisões precipitadas. Minhas emoções se voltam para o casamento ou união, apresentando forte sentimento de posse em minhas relações.'
+  },
+  {
+    title: 'Intelecto',
+    subtitle: 'Mercúrio em Áries na casa 6',
+    text:
+      'Tenho uma forma de pensar confiante, impulsiva, combativa e corajosa. Individualista, impaciente e ágil, desenvolvo minhas tarefas de forma solitária. Sou capaz de enfrentar grandes desafios, mas canso rápido. Meus pensamentos se voltam para o trabalho.'
+  },
+  {
+    title: 'Personalidade',
+    subtitle: 'Sol em Peixes na casa 5',
+    text:
+      'De grande sensibilidade, vivo simultaneamente nos planos material e espiritual. Eu me descuido das coisas práticas que a vida exige. Minha gentileza é tão grande que me inclino a assumir culpa pelos erros dos outros. Sou uma pessoa orgulhosa e empreendedora. Tenho minhas atenções dirigidas para o amor, filhos e artes.'
+  },
+  {
+    title: 'Amor',
+    subtitle: 'Vênus em Áries na casa 6',
+    text:
+      'Sou uma pessoa apaixonada e ciumenta. Tenho talento artístico. Gosto de pessoas decididas. Eu coloco meu foco no trabalho, onde desenvolvo minhas tarefas com amor'
+  }
+];
+
+const onPressDetailsNext = ({
+  activeTextsIndex,
+  setActiveTextsIndex,
+  // eslint-disable-next-line no-shadow
+  texts,
+  setShowProfileDetails,
+  setShowHelperFinal,
+  setShowHelperInitial,
+  tutorialDone
+}) => {
+  if (!tutorialDone) {
+    setShowHelperInitial(false);
+    setShowHelperFinal(true);
+  }
+  if (activeTextsIndex + 1 === texts?.length) {
+    setActiveTextsIndex(0);
+    return setShowProfileDetails(false);
+  }
+  return setActiveTextsIndex(activeTextsIndex + 1);
+};
+
+const onMoveTop = async ({ setTutorialDone, tutorialDone, like, id }) => {
+  if (!tutorialDone) {
+    await AsyncStorage.setItem('@jintou:tutorial_done', 'true');
+    setTutorialDone(true);
+  }
+
+  await like({
+    variables: {
+      userLikedId: id
+    }
+  });
+};
+
+const onMoveBottom = async ({ setTutorialDone, tutorialDone, unlike, id }) => {
+  if (!tutorialDone) {
+    await AsyncStorage.setItem('@jintou:tutorial_done', 'true');
+    setTutorialDone(true);
+  }
+
+  await unlike({
+    variables: {
+      userUnlikedId: id
+    }
+  });
+};
+
+const verifyTutorialStatus = async ({ setTutorialDone }) => {
+  const teste = await AsyncStorage.getItem('@jintou:tutorial_done');
+
+  if (!teste) {
+    return setTutorialDone(false);
+  }
+  return setTutorialDone(true);
+};
+
 const ProfilesContainer = ({ navigation, route }) => {
+  const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
+  const [showProfileDetails, setShowProfileDetails] = React.useState(false);
+  const [tutorialDone, setTutorialDone] = React.useState(false);
+  const [showHelperInitial, setShowHelperInitial] = React.useState(true);
+  const [showHelperFinal, setShowHelperFinal] = React.useState(false);
+
   const client = useApolloClient();
 
   const { data: profileQuery } = useQuery(GET_PROFILE, {
@@ -48,30 +153,45 @@ const ProfilesContainer = ({ navigation, route }) => {
   const [unlike] = useMutation(UNLIKE, {
     variables: {
       type: route?.params?.searchType
-    },
-    onCompleted: () => false
+    }
   });
+
+  React.useEffect(() => {
+    verifyTutorialStatus({ setTutorialDone });
+  }, []);
 
   return (
     <ProfilesComponent
+      texts={texts}
+      showHelperInitial={showHelperInitial}
+      showHelperFinal={showHelperFinal}
+      tutorialDone={tutorialDone}
+      activeTextsIndex={activeTextsIndex}
+      setActiveTextsIndex={setActiveTextsIndex}
       isProfilesLoading={loadingQuery}
       profiles={data?.profiles}
+      showProfileDetails={showProfileDetails}
       userProfile={profileQuery?.profile}
+      onPressShowDetails={() => setShowProfileDetails(true)}
+      onPressDetailsNext={() =>
+        onPressDetailsNext({
+          activeTextsIndex,
+          setActiveTextsIndex,
+          texts,
+          setShowProfileDetails,
+          setShowHelperFinal,
+          setShowHelperInitial,
+          tutorialDone
+        })
+      }
+      onPressDetailsPrev={() =>
+        activeTextsIndex === 0
+          ? setShowProfileDetails(false)
+          : setActiveTextsIndex(activeTextsIndex - 1)
+      }
       onPressHeaderLeft={() => navigation.navigate('Profile')}
-      onMoveTop={id =>
-        like({
-          variables: {
-            userLikedId: id
-          }
-        })
-      }
-      onMoveBottom={id =>
-        unlike({
-          variables: {
-            userUnlikedId: id
-          }
-        })
-      }
+      onMoveTop={id => onMoveTop({ tutorialDone, like, id, setTutorialDone })}
+      onMoveBottom={id => onMoveBottom({ tutorialDone, unlike, id, setTutorialDone })}
     />
   );
 };

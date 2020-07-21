@@ -4,6 +4,8 @@ import styled from 'styled-components/native';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
 import CircledItem from './CircledItem';
+import NavigationHelperInitial from './NavigationHelperInitial';
+import NavigationHelperFinal from './NavigationHelperFinal';
 
 const Container = styled.View`
   border-radius: 24px;
@@ -61,9 +63,31 @@ const ItemListText = styled.Text`
   line-height: 19px;
   color: #131415;
 `;
+const ButtonNext = styled.TouchableOpacity`
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+`;
 
-const ProfileBox = ({ sign, image, name, residence, occupation, graduation }) => (
+const ProfileBox = ({
+  sign,
+  image,
+  name,
+  residence,
+  occupation,
+  graduation,
+  onPressNext,
+  showHelperInitial,
+  showHelperFinal,
+  tutorialDone
+}) => (
   <Container>
+    <ButtonNext onPress={onPressNext} />
+    {!tutorialDone && showHelperFinal && <NavigationHelperFinal />}
+    {!tutorialDone && showHelperInitial && <NavigationHelperInitial />}
     <ImageArea>
       <Zodiac>
         <Icon name={sign} width={74} height={23} />
@@ -115,7 +139,11 @@ ProfileBox.propTypes = {
   name: PropTypes.string.isRequired,
   residence: PropTypes.string.isRequired,
   occupation: PropTypes.string,
-  graduation: PropTypes.string
+  graduation: PropTypes.string,
+  onPressNext: PropTypes.func.isRequired,
+  showHelperInitial: PropTypes.bool.isRequired,
+  showHelperFinal: PropTypes.bool.isRequired,
+  tutorialDone: PropTypes.bool.isRequired
 };
 
 export default ProfileBox;

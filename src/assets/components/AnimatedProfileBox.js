@@ -11,7 +11,15 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
   const pan = new Animated.ValueXY();
 
   const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (_, gesture) => {
+      if (gesture?.dy === 0) {
+        return false;
+      }
+      if (gesture?.dx === 0 && gesture?.dy === 0) {
+        return false;
+      }
+      return true;
+    },
     onPanResponderGrant: () => {
       pan.setOffset({
         y: pan.y._value
