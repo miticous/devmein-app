@@ -41,7 +41,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             resizeMode="contain"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[0] && (
           <RemoveButton onPress={() => onPressRemove(0)}>
@@ -58,7 +58,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             resizeMode="contain"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={35} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[1] && (
           <RemoveButton onPress={() => onPressRemove(1)}>
@@ -75,7 +75,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             resizeMode="contain"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[2] && (
           <RemoveButton onPress={() => onPressRemove(2)}>
@@ -94,7 +94,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             resizeMode="contain"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[3] && (
           <RemoveButton onPress={() => onPressRemove(3)}>
@@ -111,7 +111,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             resizeMode="contain"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[4] && (
           <RemoveButton onPress={() => onPressRemove(4)}>
@@ -128,7 +128,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             resizeMode="contain"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[5] && (
           <RemoveButton onPress={() => onPressRemove(5)}>

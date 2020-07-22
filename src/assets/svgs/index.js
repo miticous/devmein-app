@@ -2,6 +2,21 @@ import React from 'react';
 import { G, Path, Circle, Rect } from 'react-native-svg';
 
 export default {
+  Plus: {
+    svg: (
+      <G width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <Path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M10 1C10 0.447715 9.55229 0 9 0C8.44771 0 8 0.447715 8 1V8H1C0.447715 8 0 8.44771 0 9C0 9.55229 0.447715 10 1 10H8V17.9264C8 18.4787 8.44771 18.9264 9 18.9264C9.55229 18.9264 10 18.4787 10 17.9264V10H17.9292C18.4815 10 18.9292 9.55229 18.9292 9C18.9292 8.44771 18.4815 8 17.9292 8H10V1Z"
+          fill="#75396F"
+        />
+      </G>
+    ),
+    height: '19px',
+    width: '19px',
+    viewBox: '0 0 19 19'
+  },
   BigX: {
     svg: (
       <G width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">

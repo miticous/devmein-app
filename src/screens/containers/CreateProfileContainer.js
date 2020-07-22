@@ -53,7 +53,7 @@ const normalizeFormValues = ({ formRef, data, setActiveItemIndex }) => {
     },
     true
   );
-  return setActiveItemIndex(7);
+  return setActiveItemIndex(8);
 };
 
 const onSubmitForm = async ({
