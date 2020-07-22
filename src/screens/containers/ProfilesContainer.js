@@ -51,27 +51,6 @@ const texts = [
   }
 ];
 
-const onPressDetailsNext = ({
-  activeTextsIndex,
-  setActiveTextsIndex,
-  // eslint-disable-next-line no-shadow
-  texts,
-  setShowProfileDetails,
-  setShowHelperFinal,
-  setShowHelperInitial,
-  tutorialDone
-}) => {
-  if (!tutorialDone) {
-    setShowHelperInitial(false);
-    setShowHelperFinal(true);
-  }
-  if (activeTextsIndex + 1 === texts?.length) {
-    setActiveTextsIndex(0);
-    return setShowProfileDetails(false);
-  }
-  return setActiveTextsIndex(activeTextsIndex + 1);
-};
-
 const onMoveTop = async ({ setTutorialDone, tutorialDone, like, id }) => {
   if (!tutorialDone) {
     await AsyncStorage.setItem('@jintou:tutorial_done', 'true');
@@ -108,8 +87,6 @@ const verifyTutorialStatus = async ({ setTutorialDone }) => {
 };
 
 const ProfilesContainer = ({ navigation, route }) => {
-  const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
-  const [showProfileDetails, setShowProfileDetails] = React.useState(false);
   const [tutorialDone, setTutorialDone] = React.useState(false);
   const [showHelperInitial, setShowHelperInitial] = React.useState(true);
   const [showHelperFinal, setShowHelperFinal] = React.useState(false);
@@ -166,29 +143,11 @@ const ProfilesContainer = ({ navigation, route }) => {
       showHelperInitial={showHelperInitial}
       showHelperFinal={showHelperFinal}
       tutorialDone={tutorialDone}
-      activeTextsIndex={activeTextsIndex}
-      setActiveTextsIndex={setActiveTextsIndex}
       isProfilesLoading={loadingQuery}
       profiles={data?.profiles}
-      showProfileDetails={showProfileDetails}
+      setShowHelperInitial={setShowHelperInitial}
+      setShowHelperFinal={setShowHelperFinal}
       userProfile={profileQuery?.profile}
-      onPressShowDetails={() => setShowProfileDetails(true)}
-      onPressDetailsNext={() =>
-        onPressDetailsNext({
-          activeTextsIndex,
-          setActiveTextsIndex,
-          texts,
-          setShowProfileDetails,
-          setShowHelperFinal,
-          setShowHelperInitial,
-          tutorialDone
-        })
-      }
-      onPressDetailsPrev={() =>
-        activeTextsIndex === 0
-          ? setShowProfileDetails(false)
-          : setActiveTextsIndex(activeTextsIndex - 1)
-      }
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveTop={id => onMoveTop({ tutorialDone, like, id, setTutorialDone })}
       onMoveBottom={id => onMoveBottom({ tutorialDone, unlike, id, setTutorialDone })}

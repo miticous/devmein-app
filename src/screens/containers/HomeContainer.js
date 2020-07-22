@@ -19,8 +19,8 @@ const HomeContainer = ({ navigation }) => {
 
   const { data: homeQuery } = useQuery(GET_HOME, {
     notifyOnNetworkStatusChange: true,
-    skip: !geoLocationSent,
-    pollInterval: 15000
+    skip: !geoLocationSent
+    // pollInterval: 15000
   });
 
   const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
