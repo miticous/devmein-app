@@ -38,7 +38,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[0]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Icon name="Plus" fill="#75396F" width={19} height={19} />
@@ -55,7 +55,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[1]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Icon name="Plus" fill="#75396F" width={19} height={19} />
@@ -72,7 +72,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[2]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Icon name="Plus" fill="#75396F" width={19} height={19} />
@@ -91,7 +91,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[3]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Icon name="Plus" fill="#75396F" width={19} height={19} />
@@ -108,7 +108,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[4]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Icon name="Plus" fill="#75396F" width={19} height={19} />
@@ -125,7 +125,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[5]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Icon name="Plus" fill="#75396F" width={19} height={19} />
