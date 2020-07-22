@@ -144,6 +144,21 @@ export default {
     width: '20px',
     viewBox: '0 0 16 20'
   },
+  ArrowBackNoCircle: {
+    svg: (
+      <G width="6" height="14" viewBox="0 0 6 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <Path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M5.55374 0.168056C6.01327 0.474408 6.13745 1.09528 5.83109 1.55481L2.20185 6.99867L5.83109 12.4425C6.13745 12.9021 6.01327 13.5229 5.55374 13.8293C5.09421 14.1356 4.47335 14.0115 4.16699 13.5519L0.16795 7.55337C-0.0559833 7.21747 -0.0559833 6.77987 0.16795 6.44397L4.16699 0.445406C4.47335 -0.0141227 5.09421 -0.138296 5.55374 0.168056Z"
+          fill="#75396F"
+        />
+      </G>
+    ),
+    height: '6px',
+    width: '14px',
+    viewBox: '0 0 6 14'
+  },
   ArrowFowardNoCircle: {
     svg: (
       <G width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">

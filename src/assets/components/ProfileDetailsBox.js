@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
+import FullScreenImage from './FullScreenImage';
 
 const Container = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -18,7 +19,7 @@ const ImageListBox = styled.View`
   margin-left: 20px;
   margin-top: 20px;
 `;
-const ImageBox = styled.View`
+const ImageBox = styled.TouchableOpacity`
   width: 100px;
   border-radius: 8px;
   overflow: hidden;
@@ -76,37 +77,51 @@ const DetailBoxButtonPrev = styled.TouchableOpacity`
   z-index: 1;
 `;
 
-const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPrev }) => (
-  <Container>
-    <ImageListBox>
-      <FlatList
-        keyExtractor={(_, index) => index.toString()}
-        showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <ImageSeparator />}
-        horizontal
-        data={images}
-        renderItem={({ item }) => (
-          <ImageBox>
-            <Image source={{ uri: item?.image }} />
-          </ImageBox>
-        )}
-      />
-    </ImageListBox>
-    <DetailBoxButtonNext onPress={onPressNext} />
-    <DetailBoxButtonPrev onPress={onPressPrev} />
-    <DetailsBox>
-      <DetailsBoxHeader>
-        <Icon name="ArrowHearth" width={16} height={20} />
-        <DetailsBoxTitle>
-          {'  '}
-          {texts[activeIndex].title}
-        </DetailsBoxTitle>
-      </DetailsBoxHeader>
-      <DetailsBoxSubtitle>{texts[activeIndex].subtitle}</DetailsBoxSubtitle>
-      <DetailsBoxResume>{texts[activeIndex].text}</DetailsBoxResume>
-    </DetailsBox>
-  </Container>
-);
+const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPrev }) => {
+  const [fullScreen, setFullScreen] = React.useState({
+    visible: false,
+    initialIndex: 0
+  });
+
+  return (
+    <Container>
+      <ImageListBox>
+        <FlatList
+          keyExtractor={(_, index) => index.toString()}
+          showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={() => <ImageSeparator />}
+          horizontal
+          data={images}
+          renderItem={({ item, index }) => (
+            <ImageBox onPress={() => setFullScreen({ initialIndex: index, visible: true })}>
+              <Image source={{ uri: item?.image }} />
+            </ImageBox>
+          )}
+        />
+      </ImageListBox>
+      <DetailBoxButtonNext onPress={onPressNext} />
+      <DetailBoxButtonPrev onPress={onPressPrev} />
+      <DetailsBox>
+        <DetailsBoxHeader>
+          <Icon name="ArrowHearth" width={16} height={20} />
+          <DetailsBoxTitle>
+            {'  '}
+            {texts[activeIndex].title}
+          </DetailsBoxTitle>
+        </DetailsBoxHeader>
+        <DetailsBoxSubtitle>{texts[activeIndex].subtitle}</DetailsBoxSubtitle>
+        <DetailsBoxResume>{texts[activeIndex].text}</DetailsBoxResume>
+      </DetailsBox>
+      {fullScreen.visible && (
+        <FullScreenImage
+          images={images}
+          initialIndex={fullScreen.initialIndex}
+          onPressExit={() => setFullScreen({ ...fullScreen, visible: false })}
+        />
+      )}
+    </Container>
+  );
+};
 
 ProfileDetailsBox.defaultProps = {};
 
@@ -119,7 +134,7 @@ ProfileDetailsBox.propTypes = {
       text: PropTypes.string.isRequired
     })
   ).isRequired,
-  activeIndex: PropTypes.func.isRequired,
+  activeIndex: PropTypes.number.isRequired,
   onPressNext: PropTypes.func.isRequired,
   onPressPrev: PropTypes.func.isRequired
 };
