@@ -21,7 +21,6 @@ const ProfilesComponent = ({
   onMoveTop,
   onPressHeaderLeft,
   onPressShowDetails,
-  texts,
   setShowHelperInitial,
   setShowHelperFinal,
   showHelperInitial,
@@ -45,7 +44,6 @@ const ProfilesComponent = ({
           onMoveBottom={onMoveBottom}
           onMoveTop={onMoveTop}
           onPressShowDetails={onPressShowDetails}
-          texts={texts}
           setShowHelperInitial={setShowHelperInitial}
           setShowHelperFinal={setShowHelperFinal}
           showHelperInitial={showHelperInitial}
@@ -69,7 +67,6 @@ ProfilesComponent.propTypes = {
   setShowHelperInitial: PropTypes.func.isRequired,
   setShowHelperFinal: PropTypes.func.isRequired,
   onPressShowDetails: PropTypes.func.isRequired,
-  texts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   showHelperInitial: PropTypes.bool.isRequired,
   showHelperFinal: PropTypes.bool.isRequired,
   tutorialDone: PropTypes.bool.isRequired

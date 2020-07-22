@@ -134,6 +134,12 @@ export const GET_PROFILES = gql`
       astral {
         zodiac
         indexes
+        mandala
+        texts {
+          title
+          subtitle
+          text
+        }
       }
       occupation
       graduation {

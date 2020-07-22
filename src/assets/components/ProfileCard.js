@@ -58,7 +58,6 @@ const ProfileCard = ({
   userProfile,
   onMoveBottom,
   onMoveTop,
-  texts,
   setShowHelperInitial,
   setShowHelperFinal,
   showHelperInitial,
@@ -78,13 +77,13 @@ const ProfileCard = ({
         {showProfileDetails && (
           <ProfileDetailsBox
             images={item?.images}
-            texts={texts}
+            texts={item?.astral?.texts}
             activeIndex={activeTextsIndex}
             onPressNext={() =>
               onPressDetailsNext({
                 activeTextsIndex,
                 setActiveTextsIndex,
-                texts,
+                texts: item?.astral?.texts,
                 setShowProfileDetails,
                 setShowHelperFinal,
                 setShowHelperInitial,
@@ -129,7 +128,6 @@ ProfileCard.propTypes = {
   setShowHelperFinal: PropTypes.func.isRequired,
   onMoveBottom: PropTypes.func.isRequired,
   onMoveTop: PropTypes.func.isRequired,
-  texts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   showHelperInitial: PropTypes.bool.isRequired,
   showHelperFinal: PropTypes.bool.isRequired,
   tutorialDone: PropTypes.bool.isRequired
