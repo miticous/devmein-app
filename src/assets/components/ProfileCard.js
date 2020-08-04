@@ -6,6 +6,7 @@ import { getDistance } from 'geolib';
 import AnimatedProfileBox from './AnimatedProfileBox';
 import ProfileDetailsBox from './ProfileDetailsBox';
 import ProfileBox from './ProfileBox';
+import Mandala from './Mandala';
 
 const Content = styled.View`
   padding: 10px 20px;
@@ -67,6 +68,7 @@ const ProfileCard = ({
 }) => {
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
+  const [showMandala, setShowMandala] = React.useState(false);
 
   return (
     <Content>
@@ -101,6 +103,7 @@ const ProfileCard = ({
         )}
         {!showProfileDetails && (
           <ProfileBox
+            onPressMandala={() => setShowMandala(true)}
             tutorialDone={tutorialDone}
             showHelperInitial={showHelperInitial}
             showHelperFinal={showHelperFinal}
@@ -116,6 +119,11 @@ const ProfileCard = ({
             graduation={`${item?.graduation.class} @${item?.graduation?.description}`}
           />
         )}
+        <Mandala
+          image={item?.astral?.mandala}
+          visible={showMandala}
+          onPressBack={() => setShowMandala(false)}
+        />
       </AnimatedProfileBox>
     </Content>
   );

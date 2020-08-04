@@ -6,11 +6,12 @@ import Icon from './Icon';
 import CircledItem from './CircledItem';
 import NavigationHelperInitial from './NavigationHelperInitial';
 import NavigationHelperFinal from './NavigationHelperFinal';
+import { SCREEN_HEIGHT } from '../styles';
 
 const Container = styled.View`
   border-radius: 24px;
   overflow: hidden;
-  height: 480px;
+  height: ${SCREEN_HEIGHT * 0.71};
   border: 1px solid #e0e0e0;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
 `;
@@ -82,7 +83,8 @@ const ProfileBox = ({
   onPressNext,
   showHelperInitial,
   showHelperFinal,
-  tutorialDone
+  tutorialDone,
+  onPressMandala
 }) => (
   <Container>
     <ButtonNext onPress={onPressNext} />
@@ -93,7 +95,7 @@ const ProfileBox = ({
         <Icon name={sign} width={74} height={23} />
       </Zodiac>
       <Image source={{ uri: image }} resizeMode="cover" />
-      <Mandala>
+      <Mandala onPress={onPressMandala}>
         <CircledItem size={60} color={COLORS.white}>
           <Icon name="Mandala" width={50} height={50} />
         </CircledItem>
@@ -143,7 +145,8 @@ ProfileBox.propTypes = {
   onPressNext: PropTypes.func.isRequired,
   showHelperInitial: PropTypes.bool.isRequired,
   showHelperFinal: PropTypes.bool.isRequired,
-  tutorialDone: PropTypes.bool.isRequired
+  tutorialDone: PropTypes.bool.isRequired,
+  onPressMandala: PropTypes.func.isRequired
 };
 
 export default ProfileBox;
