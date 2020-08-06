@@ -8,11 +8,7 @@ import ProfileDetailsBox from './ProfileDetailsBox';
 import ProfileBox from './ProfileBox';
 import Mandala from './Mandala';
 
-const Content = styled.View`
-  padding: 10px 20px;
-  width: 100%;
-  position: absolute;
-`;
+const Content = styled.View``;
 
 const getUsersDistance = ({ coordinates, userLocation }) => {
   if (
@@ -111,7 +107,7 @@ const ProfileCard = ({
             sign={item?.astral?.zodiac}
             name={item?.name}
             occupation={item?.occupation}
-            image={item?.images[0]?.image}
+            image={item?.images?.[0]?.image}
             residence={`${getUsersDistance({
               coordinates: item?.loc?.coordinates,
               userLocation: userProfile?.loc?.coordinates

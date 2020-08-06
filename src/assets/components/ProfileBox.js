@@ -11,7 +11,7 @@ import { SCREEN_HEIGHT } from '../styles';
 const Container = styled.View`
   border-radius: 24px;
   overflow: hidden;
-  height: ${SCREEN_HEIGHT * 0.71};
+  height: ${SCREEN_HEIGHT * 0.68}px;
   border: 1px solid #e0e0e0;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
 `;

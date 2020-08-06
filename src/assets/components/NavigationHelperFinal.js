@@ -10,6 +10,7 @@ const NavigationHelperTop = styled.View`
   position: absolute;
   top: 0;
   z-index: 1;
+  elevation: 2;
 `;
 const NavigationHelperBottom = styled.View`
   justify-content: flex-end;
@@ -20,6 +21,7 @@ const NavigationHelperBottom = styled.View`
   position: absolute;
   bottom: 0;
   z-index: 1;
+  elevation: 2;
 `;
 
 const NavigationHelperFinal = () => (

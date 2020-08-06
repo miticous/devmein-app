@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
+import { SCREEN_HEIGHT } from '../styles';
 
 const Content = styled.View`
   width: 100%;
-  height: 100%;
   position: absolute;
+  z-index: 10;
   background-color: ${COLORS.backgroundColor};
   border-radius: 24px;
+  height: ${SCREEN_HEIGHT * 0.68}px;
   overflow: hidden;
   border: 1px solid #e0e0e0;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);

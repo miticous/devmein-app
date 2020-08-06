@@ -46,7 +46,7 @@ const HomeComponent = ({
   <Container>
     <ProfileHeader
       onPress={onPressHeaderLeft}
-      imageSource={userProfile?.images?.[0].image}
+      imageSource={userProfile?.images?.[0]?.image}
       name={userProfile?.name}
       icon={userProfile?.astral?.zodiac}
     />

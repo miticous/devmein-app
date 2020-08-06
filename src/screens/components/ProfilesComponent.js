@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import { FlatList } from 'react-native';
 import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
@@ -10,8 +9,36 @@ import ProfileCard from '../../assets/components/ProfileCard';
 
 const Container = styled.View`
   flex: 1;
+  position: relative;
   background-color: ${COLORS.backgroundColor};
 `;
+
+const renderProfiles = ({
+  profiles,
+  userProfile,
+  onMoveBottom,
+  onMoveTop,
+  onPressShowDetails,
+  setShowHelperInitial,
+  setShowHelperFinal,
+  showHelperInitial,
+  showHelperFinal,
+  tutorialDone
+}) =>
+  profiles?.map(item => (
+    <ProfileCard
+      userProfile={userProfile}
+      onMoveBottom={onMoveBottom}
+      onMoveTop={onMoveTop}
+      onPressShowDetails={onPressShowDetails}
+      setShowHelperInitial={setShowHelperInitial}
+      setShowHelperFinal={setShowHelperFinal}
+      showHelperInitial={showHelperInitial}
+      showHelperFinal={showHelperFinal}
+      tutorialDone={tutorialDone}
+      item={item}
+    />
+  ));
 
 const ProfilesComponent = ({
   isProfilesLoading,
@@ -30,29 +57,24 @@ const ProfilesComponent = ({
   <Container>
     <ProfileHeader
       onPress={onPressHeaderLeft}
-      imageSource={userProfile?.images?.[0].image}
+      imageSource={userProfile?.images?.[0]?.image}
       name={userProfile?.name}
       icon={userProfile?.astral?.zodiac}
     />
-    <FlatList
-      data={profiles}
-      scrollEnabled={false}
-      keyExtractor={item => item?._id}
-      renderItem={({ item }) => (
-        <ProfileCard
-          userProfile={userProfile}
-          onMoveBottom={onMoveBottom}
-          onMoveTop={onMoveTop}
-          onPressShowDetails={onPressShowDetails}
-          setShowHelperInitial={setShowHelperInitial}
-          setShowHelperFinal={setShowHelperFinal}
-          showHelperInitial={showHelperInitial}
-          showHelperFinal={showHelperFinal}
-          tutorialDone={tutorialDone}
-          item={item}
-        />
-      )}
-    />
+    {renderProfiles({
+      isProfilesLoading,
+      profiles,
+      userProfile,
+      onMoveBottom,
+      onMoveTop,
+      onPressHeaderLeft,
+      onPressShowDetails,
+      setShowHelperInitial,
+      setShowHelperFinal,
+      showHelperInitial,
+      showHelperFinal,
+      tutorialDone
+    })}
     {isProfilesLoading && <ModalLoading visible={isProfilesLoading} />}
   </Container>
 );

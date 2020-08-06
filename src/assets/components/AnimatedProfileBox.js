@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { Animated, PanResponder } from 'react-native';
 import styled from 'styled-components/native';
 
-const Container = styled.View``;
+const Container = styled.View`
+  position: absolute;
+  width: 100%;
+  padding: 0px 20px;
+  top: 20px;
+`;
 const ChildrenBox = styled.View``;
 
 const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {

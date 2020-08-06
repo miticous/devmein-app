@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Alert, AsyncStorage } from 'react-native';
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import ProfilesComponent from '../components/ProfilesComponent';

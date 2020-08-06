@@ -18,7 +18,7 @@ require('./config/reactotronConfig');
 
 const cache = new InMemoryCache({ addTypename: false });
 const httpLink = new HttpLink({
-  uri: 'https://nifty-memory-284816.rj.r.appspot.com/graphql'
+  uri: 'http://localhost:8080/graphql'
 });
 
 const wsLink = new WebSocketLink({
