@@ -33,8 +33,8 @@ const LoginContainer = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const formLoginInitialSchema = {
-    email: 'murilo@gmail.com',
-    password: '123123'
+    email: '',
+    password: ''
   };
 
   useEffect(() => {

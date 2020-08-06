@@ -9,9 +9,7 @@ const Container = styled.View`
   flex: 1;
   justify-content: flex-start;
 `;
-const SwitcherItemContainer = styled.View`
-  width: 100%;
-`;
+const SwitcherItemContainer = styled.View``;
 const SwitcherItemHeader = styled.View`
   flex: 0.3;
   justify-content: center;
@@ -41,6 +39,7 @@ const Switcher = React.forwardRef((props, ref) => {
   const { children, activeIndex, onPressSubmit, buttonTitle } = props;
 
   const ITEM_SIZE = SCREEN_WIDTH;
+  const SWITCHER_SIZE = ITEM_SIZE * React.Children.count(children);
   const ITEM_POSITION = (activeIndex + 1) * ITEM_SIZE * -1;
   const SCROLL_TO_POSITION = ITEM_SIZE + ITEM_POSITION;
 
@@ -64,6 +63,7 @@ const Switcher = React.forwardRef((props, ref) => {
         <Animated.View
           style={{
             flex: 1,
+            width: SWITCHER_SIZE,
             flexDirection: 'row',
             transform: [{ translateX: scrollToIndex }]
           }}
@@ -81,7 +81,7 @@ const Switcher = React.forwardRef((props, ref) => {
 });
 
 const SwitcherItem = ({ children, title, subtitle, containerFluid }) => (
-  <SwitcherItemContainer>
+  <SwitcherItemContainer width={SCREEN_WIDTH}>
     {title && subtitle && (
       <SwitcherItemHeader>
         <TextTitle>{title}</TextTitle>

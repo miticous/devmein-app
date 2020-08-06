@@ -24,7 +24,9 @@ const ButtonArea = styled.TouchableOpacity`
   right: 10px;
   top: 10px;
 `;
-const RNTextInput = styled.TextInput``;
+const RNTextInput = styled.TextInput`
+  color: ${({ isFocused }) => (isFocused ? COLORS.black : COLORS.textSecondaryColor)};
+`;
 const LabelArea = styled.View`
   flex-direction: row;
   align-items: center;
@@ -91,7 +93,7 @@ const TextInput = props => {
         <InputArea>
           <RNTextInput
             style={{ padding: 5 }}
-            color={isFocused ? COLORS.black : COLORS.textSecondaryColor}
+            isFocused={isFocused}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             value={field.value}

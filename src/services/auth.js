@@ -10,7 +10,7 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
       data: { token, profileStatus, _id }
     } = await axios({
       method: 'post',
-      url: 'http://localhost:4000/users/login',
+      url: 'https://nifty-memory-284816.rj.r.appspot.com/users/login',
       data: {
         email,
         password
@@ -39,7 +39,7 @@ export const signUp = async ({ email, password, navigation }) => {
   try {
     await axios({
       method: 'post',
-      url: 'http://localhost:4000/users',
+      url: 'https://nifty-memory-284816.rj.r.appspot.com/users',
       data: {
         email,
         password
@@ -60,7 +60,7 @@ export const validate = async ({ navigation, token }) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: 'http://localhost:4000/users/auth',
+      url: 'https://nifty-memory-284816.rj.r.appspot.com/users/auth',
       headers: { Authorization: `Bearer ${token}` }
     });
 

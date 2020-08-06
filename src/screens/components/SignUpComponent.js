@@ -18,7 +18,7 @@ const ContentFooter = styled.View`
 `;
 
 const SignUpComponent = ({ formLoginInitialSchema, formLoginSchema, onPressSignUp }) => (
-  <Container behavior="padding">
+  <Container>
     <Formik
       initialValues={formLoginInitialSchema}
       validationSchema={formLoginSchema}
