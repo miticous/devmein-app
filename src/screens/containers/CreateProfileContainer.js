@@ -121,7 +121,6 @@ const CreateProfileContainer = ({ navigation }) => {
       .min(4)
       .required('Seu nome nao pode conter menos de 4 caracteres'),
     eye: yup.string().min(3),
-    occupation: yup.string().min(4),
     birthday: yup.string().when('_', {
       is: () => activeItemIndex > 2,
       then: yup

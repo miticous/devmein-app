@@ -52,7 +52,7 @@ export const signUp = async ({ email, password, navigation }) => {
       data: { error }
     }
   }) {
-    return DropDownHolder.show('error', '', error);
+    return DropDownHolder.show('error', '', 'Usuario ja existe');
   }
 };
 
