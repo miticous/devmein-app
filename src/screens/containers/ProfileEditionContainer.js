@@ -268,7 +268,9 @@ const ProfileEditionContainer = ({ navigation }) => {
     <ProfileEditionComponent
       formInitialSchema={{
         ...profile,
-        birthday: moment(Number(profile.birthday)).format('DD/MM/YYYY HH:mm')
+        birthday: moment(Number(profile.birthday))
+          .utc()
+          .format('DD/MM/YYYY HH:mm')
       }}
       formRef={formRef}
       formSchema={formSchema}

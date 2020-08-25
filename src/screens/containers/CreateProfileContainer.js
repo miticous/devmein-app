@@ -4,7 +4,6 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
-import momentTz from 'moment-timezone';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import Icon from '../../assets/components/Icon';
@@ -50,8 +49,8 @@ const normalizeFormValues = ({ formRef, data, setActiveItemIndex }) => {
       searchLoveAgeRange: user?.configs?.love?.range,
       searchFriendGenre: user?.configs?.friendShip?.genre,
       searchFriendAgeRange: user?.configs?.friendShip?.range,
-      birthday: momentTz(Number(profile?.birthday))
-        .tz('America/Sao_Paulo')
+      birthday: moment(Number(profile?.birthday))
+        .utc()
         .format('DD/MM/YYYY HH:mm')
     },
     true

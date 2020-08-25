@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
+import moment from 'moment';
 import { not, isNil, isEmpty } from 'ramda';
 import { getDistance } from 'geolib';
 import AnimatedProfileBox from './AnimatedProfileBox';
@@ -118,6 +119,10 @@ const ProfileCard = ({
         <Mandala
           image={item?.astral?.mandala}
           visible={showMandala}
+          thirtyText={item?.birthplace?.description}
+          secondText={moment(Number(item?.birthday))
+            .utc()
+            .format('DD/MM/YYYY HH:mm')}
           onPressBack={() => setShowMandala(false)}
         />
       </AnimatedProfileBox>

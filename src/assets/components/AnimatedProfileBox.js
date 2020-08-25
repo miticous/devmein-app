@@ -17,7 +17,7 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gesture) => {
-      if (gesture?.dy === 0) {
+      if (gesture?.dy <= 2 && gesture?.dy >= 2 * -1) {
         return false;
       }
       if (gesture?.dx === 0 && gesture?.dy === 0) {

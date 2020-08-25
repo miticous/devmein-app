@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { COLORS } from '../../assets/styles/colors';
@@ -14,7 +14,7 @@ import DefaultButton from '../../assets/components/DefaultButton';
 import SliderPicker from '../../assets/components/SliderPicker';
 import ImageGrid from '../../assets/components/ImageGrid';
 
-const Content = styled.View`
+const Content = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
   flex: 1;
 `;
@@ -88,7 +88,10 @@ const CreateProfileComponent = ({
   onPressRemoveImage,
   profile
 }) => (
-  <View style={{ flex: 1, backgroundColor: COLORS.lighter }}>
+  <KeyboardAvoidingView
+    style={{ flex: 1, backgroundColor: COLORS.lighter }}
+    behavior={`${Platform.OS === 'ios' ? 'padding' : 'height'}`}
+  >
     <Content>
       <View style={{ height: 6, width: SCREEN_WIDTH }}>
         <StepActive
@@ -290,7 +293,7 @@ const CreateProfileComponent = ({
       </SwitcherContainer>
     </Content>
     {isLoading && <ModalLoading visible={isLoading} />}
-  </View>
+  </KeyboardAvoidingView>
 );
 CreateProfileComponent.defaultProps = {
   profile: {

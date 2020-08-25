@@ -41,6 +41,13 @@ const Title = styled.Text`
   font-size: 14px;
   line-height: 19px;
 `;
+const SecondText = styled.Text`
+  font-weight: 200;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 19px;
+`;
 const Body = styled.View`
   flex: 5;
   align-items: center;
@@ -51,7 +58,7 @@ const MandalaImage = styled.Image`
   height: 100%;
 `;
 
-const Mandala = ({ image, visible, onPressBack }) => (
+const Mandala = ({ image, visible, onPressBack, secondText, thirtyText }) => (
   <>
     {visible && (
       <Content>
@@ -60,7 +67,9 @@ const Mandala = ({ image, visible, onPressBack }) => (
             <Icon name="Back" width={40} height={40} />
           </BackButton>
           <TitleBox>
-            <Title>MAPA ASTRAL</Title>
+            <Title>MAPA NATAL</Title>
+            <SecondText>{secondText}</SecondText>
+            <SecondText>{thirtyText}</SecondText>
           </TitleBox>
           <Empty />
         </Header>
