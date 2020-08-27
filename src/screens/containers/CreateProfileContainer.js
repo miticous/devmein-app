@@ -226,6 +226,7 @@ const CreateProfileContainer = ({ navigation }) => {
   return (
     <CreateProfileComponent
       formRef={formRef}
+      user={data?.user}
       profile={data?.profile || null}
       onSubmitForm={() =>
         onSubmitForm({

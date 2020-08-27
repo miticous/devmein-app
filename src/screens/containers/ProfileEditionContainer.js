@@ -161,7 +161,7 @@ const ProfileEditionContainer = ({ navigation }) => {
   const [sugestions, setSugestions] = useState(null);
 
   const {
-    data: { profile },
+    data: { profile, user },
     loading: loadingQuery
   } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
 
@@ -272,6 +272,7 @@ const ProfileEditionContainer = ({ navigation }) => {
           .utc()
           .format('DD/MM/YYYY HH:mm')
       }}
+      user={user}
       formRef={formRef}
       formSchema={formSchema}
       profile={profile}

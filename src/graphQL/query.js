@@ -42,6 +42,9 @@ export const GET_PROFILE = gql`
       }
       sexualOrientations
     }
+    user {
+      plan
+    }
   }
 `;
 
@@ -119,6 +122,7 @@ export const GET_PROFILE_CREATION = gql`
         }
       }
       profileStatus
+      plan
     }
   }
 `;

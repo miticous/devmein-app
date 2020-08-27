@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
+import { FlatList } from 'react-native';
 import ImageGrid from '../../assets/components/ImageGrid';
 import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import TextInput from '../../assets/components/TextInput';
 import PickerList from '../../assets/components/PickerList';
+import { checkTextAvalability } from './CreateProfileComponent';
+import AstralTextCard from '../../assets/components/AstralTextCard';
 
 const Container = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
@@ -35,7 +38,8 @@ const ProfileEditionComponent = ({
   sugestions,
   onPressSugestion,
   onSubmitForm,
-  onPressInputButton
+  onPressInputButton,
+  user
 }) => (
   <Container nestedScrollEnabled keyboardShouldPersistTaps="always">
     <Content>
@@ -130,6 +134,23 @@ const ProfileEditionComponent = ({
               referencedInputName="birthplace.description"
             />
           </Content>
+          <FlatList
+            data={profile?.astral?.texts}
+            horizontal
+            ItemSeparatorComponent={() => <Separator />}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              marginVertical: 20,
+              height: 300
+            }}
+            renderItem={({ item }) => (
+              <AstralTextCard
+                title={item?.title}
+                subtitle={item?.text}
+                checked={checkTextAvalability({ plan: user?.plan, textType: item?.type })}
+              />
+            )}
+          />
         </>
       )}
     </Formik>
@@ -144,6 +165,7 @@ ProfileEditionComponent.defaultProps = {
 ProfileEditionComponent.propTypes = {
   onPressImage: PropTypes.func.isRequired,
   profile: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,
   onPressRemove: PropTypes.func.isRequired,
   formInitialSchema: PropTypes.shape({}).isRequired,
