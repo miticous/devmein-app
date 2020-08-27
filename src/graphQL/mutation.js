@@ -77,6 +77,14 @@ export const CREATE_PROFILE = gql`
         _id
         image
       }
+      astral {
+        texts {
+          text
+          title
+          subtitle
+          type
+        }
+      }
     }
     saveUserConfigs(
       searchLoveAgeRange: $searchLoveAgeRange
