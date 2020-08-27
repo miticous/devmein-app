@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, FlatList, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
+import reactotron from 'reactotron-react-native';
 import { COLORS } from '../../assets/styles/colors';
 import { SCREEN_WIDTH } from '../../assets/styles';
 import { SwitcherItem, Switcher } from '../../assets/components/Switcher';
@@ -13,6 +14,7 @@ import InfoBox from '../../assets/components/InfoBox';
 import DefaultButton from '../../assets/components/DefaultButton';
 import SliderPicker from '../../assets/components/SliderPicker';
 import ImageGrid from '../../assets/components/ImageGrid';
+import AstralTextCard from '../../assets/components/AstralTextCard';
 
 const Content = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
@@ -45,6 +47,25 @@ const StepArea = styled.View`
 `;
 const ContainerFluid = styled.View`
   padding: 0px 20px;
+`;
+const InnerTitle = styled.Text`
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  margin: 0px 20px;
+  margin-top: 20px;
+`;
+const InnerSubtitle = styled.Text`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  color: #828282;
+  margin: 20px;
+`;
+const Separator = styled.View`
+  margin: 5px;
 `;
 
 const SexTypes = [
@@ -92,13 +113,13 @@ const CreateProfileComponent = ({
     style={{ flex: 1, backgroundColor: COLORS.lighter }}
     behavior={`${Platform.OS === 'ios' ? 'padding' : 'height'}`}
   >
+    <View style={{ height: 6, width: SCREEN_WIDTH }}>
+      <StepActive
+        width={`${((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) * 100}%`}
+      />
+      <StepArea />
+    </View>
     <Content>
-      <View style={{ height: 6, width: SCREEN_WIDTH }}>
-        <StepActive
-          width={`${((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) * 100}%`}
-        />
-        <StepArea />
-      </View>
       <SwitcherContainer>
         <Formik
           validationSchema={formSchema}
@@ -285,6 +306,28 @@ const CreateProfileComponent = ({
                   data={profile?.images?.map(image => image?.image)}
                   onPressImage={onPressImage}
                   onPressRemove={onPressRemoveImage}
+                />
+              </SwitcherItem>
+              <SwitcherItem
+                title="Por último..."
+                subtitle="Com a leitura do seu Mapa astral, nós já sabemos muuuuito sobre você. Agora só precisa escolher o que você quer compartilhar publicamente:"
+                containerFluid={false}
+              >
+                <InnerTitle>O que os astros dizem</InnerTitle>
+                <InnerSubtitle>
+                  Escolha os tópicos que as pessoas irão ver no seu perfil
+                </InnerSubtitle>
+                <FlatList
+                  data={profile?.astral?.texts}
+                  horizontal
+                  ItemSeparatorComponent={() => <Separator />}
+                  contentContainerStyle={{
+                    paddingHorizontal: 20,
+                    height: 300
+                  }}
+                  renderItem={({ item }) => (
+                    <AstralTextCard title={item?.title} subtitle={item?.text} checked />
+                  )}
                 />
               </SwitcherItem>
             </Switcher>

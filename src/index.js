@@ -1,4 +1,5 @@
 import React from 'react';
+import Config from 'react-native-config';
 import { split } from 'apollo-link';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
@@ -18,11 +19,11 @@ require('./config/reactotronConfig');
 
 const cache = new InMemoryCache({ addTypename: false });
 const httpLink = new HttpLink({
-  uri: 'https://nifty-memory-284816.rj.r.appspot.com/graphql'
+  uri: `${Config.API_BASE_URL}/graphql`
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://nifty-memory-284816.rj.r.appspot.com/graphql`,
+  uri: `${Config.WS_BASE_URL}/graphql`,
   options: {
     reconnect: true,
     lazy: true,
