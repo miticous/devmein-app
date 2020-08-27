@@ -1,177 +1,117 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import * as yup from 'yup';
 import moment from 'moment';
-import { not, isNil } from 'ramda';
-import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
-import { getCitiesByName, getCitieById } from '../../services/google-apis';
-import ImagePicker from '../../assets/components/ImagePicker';
+import Icon from '../../assets/components/Icon';
+import {
+  onChangeInput,
+  onPressSugestion,
+  onPressInputButton,
+  onPressImage
+} from './ProfileEditionContainer';
+import { CREATE_PROFILE, ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE } from '../../graphQL/mutation';
+import { GET_PROFILE_CREATION } from '../../graphQL/query';
 
-const CREATE_PROFILE = gql`
-  mutation(
-    $file: String!
-    $name: String!
-    $birthday: String!
-    $input: BirthplaceInput!
-    $genre: String
-    $searchGenre: String!
-  ) {
-    createProfile(
-      file: $file
-      name: $name
-      birthday: $birthday
-      input: $input
-      genre: $genre
-      searchGenre: $searchGenre
-    ) {
-      _id
-      images {
-        _id
-        image
-      }
-    }
-  }
-`;
-
-const imagePickerOptions = {
-  title: 'Selecione uma foto',
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-    cameraRoll: true,
-    waitUntilSaved: true
-  },
-  takePhotoButtonTitle: 'Tirar foto',
-  chooseFromLibraryButtonTitle: 'Escolher na galeria',
-  cancelButtonTitle: 'Cancelar'
+const formInitialValues = {
+  name: '',
+  searchLoveAgeRange: [18, 26],
+  searchFriendAgeRange: [18, 26]
 };
 
-const switcherItemsMap = {
-  0: 'name',
-  1: 'birthdate',
-  2: 'birthplaceDescription',
-  3: 'genre',
-  4: 'searchGenre',
-  5: 'imageSelection'
+// const imagePickerOptions = {
+//   title: 'Selecione uma foto',
+//   storageOptions: {
+//     skipBackup: true,
+//     path: 'images',
+//     cameraRoll: true,
+//     waitUntilSaved: true
+//   },
+//   takePhotoButtonTitle: 'Tirar foto',
+//   chooseFromLibraryButtonTitle: 'Escolher na galeria',
+//   cancelButtonTitle: 'Cancelar'
+// };
+
+const normalizeFormValues = ({ formRef, data, setActiveItemIndex }) => {
+  const { profile, user } = data;
+  formRef.current.setValues(
+    {
+      ...profile,
+      ...user,
+      birthplace: {
+        placeId: profile?.birthplace?.placeId,
+        description: profile?.birthplace?.description
+      },
+      searchLoveGenre: user?.configs?.love?.genre,
+      searchLoveAgeRange: user?.configs?.love?.range,
+      searchFriendGenre: user?.configs?.friendShip?.genre,
+      searchFriendAgeRange: user?.configs?.friendShip?.range,
+      birthday: moment(Number(profile?.birthday))
+        .utc()
+        .format('DD/MM/YYYY HH:mm')
+    },
+    true
+  );
+  return setActiveItemIndex(8);
 };
 
-const onSelectCity = async props => {
-  const {
-    switcherRef,
-    activeItemIndex,
-    state,
-    setState,
-    id,
-    setLoading,
-    label,
-    setShowCitiesModal
-  } = props;
-  const { setFieldValue } = switcherRef.current.formValues;
-  setFieldValue(switcherItemsMap[activeItemIndex], label);
-  setShowCitiesModal(false);
-  await getCitieById({ placeId: id, setState, state, setLoading, label });
-};
-
-const onPressBack = ({ activeItemIndex, setActiveItemIndex }) => {
-  const nextActiveItemIndex = activeItemIndex - 1;
-  if (nextActiveItemIndex >= 0) {
-    return setActiveItemIndex(nextActiveItemIndex);
-  }
-  return false;
-};
-
-const onSubmitSwitcherButton = ({
+const onSubmitForm = async ({
+  navigation,
+  formRef,
   activeItemIndex,
-  switcherRef,
-  setSearchCity,
   setActiveItemIndex,
-  state,
+  switcherRef,
   createProfile
 }) => {
-  const nextActiveItemIndex = activeItemIndex + 1;
-  const itemsAmount = switcherRef.current.childrensAmount;
-  const { errors, values } = switcherRef.current.formValues;
-  const { birthdate, name, genre, searchGenre } = values;
-  const referencedInput = switcherItemsMap[activeItemIndex];
-  const referencedInputValue = values[referencedInput];
-  const referencedInputError = errors[referencedInput];
-
-  if (referencedInputError) {
-    return false;
-  }
-  if (activeItemIndex === 2 && not(isNil(state.birthplace.placeId))) {
-    return setActiveItemIndex(1 + activeItemIndex);
-  }
-  if (activeItemIndex === 2 && referencedInputValue.length >= 4) {
-    return setSearchCity(referencedInputValue);
-  }
-  if (activeItemIndex === 3 && !genre) {
-    return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
-  }
-  if (activeItemIndex === 4 && !searchGenre) {
-    return DropDownHolder.show('error', '', 'Você deve selecionar uma destas opcões');
-  }
-  if (nextActiveItemIndex < itemsAmount) {
-    return setActiveItemIndex(1 + activeItemIndex);
-  }
-  if (activeItemIndex === 5) {
-    if (state.file) {
-      return createProfile({
+  try {
+    if (activeItemIndex === 7) {
+      await createProfile({
         variables: {
-          name,
-          birthday: birthdate,
-          genre,
-          searchGenre,
-          file: state.file,
-          input: {
-            ...state.birthplace
-          }
+          ...formRef?.current?.values,
+          profileStatus: 'CREATION'
         }
       });
+      return setActiveItemIndex(activeItemIndex + 1);
     }
-    return DropDownHolder.show('error', '', 'Você deve selecionar uma imagem principal');
+    if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
+      await createProfile({
+        variables: {
+          ...formRef?.current?.values,
+          profileStatus: 'COMPLETED'
+        }
+      });
+      return navigation.replace('Tabs');
+    }
+    return setActiveItemIndex(activeItemIndex + 1);
+  } catch (error) {
+    return false;
   }
-  return false;
-};
-
-const getButtonSwitcherTitle = ({ activeItemIndex, state }) => {
-  if (activeItemIndex === 2) {
-    return state.birthplace.placeId ? 'Continuar' : 'Pesquisar';
-  }
-  if (activeItemIndex === 5) {
-    return 'Pronto';
-  }
-  return 'Continuar';
 };
 
 const CreateProfileContainer = ({ navigation }) => {
-  const [state, setState] = useState({
-    birthday: null,
-    file: null,
-    avatar: undefined,
-    birthplace: {
-      placeId: null,
-      description: null,
-      lat: null,
-      lng: null,
-      UTC: null
-    }
-  });
-
   const [activeItemIndex, setActiveItemIndex] = useState(0);
-  const [searchCity, setSearchCity] = useState('');
-  const [findedCities, setFindedCities] = useState([]);
-  const [showCitiesModal, setShowCitiesModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [sugestions, setSugestions] = useState(null);
 
-  const switcherRef = useRef(null);
+  const formRef = useRef();
+  const switcherRef = useRef();
+
+  const { data, loading: queryLoading } = useQuery(GET_PROFILE_CREATION);
 
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
-    onCompleted: () => navigation.replace('Home'),
     onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil')
+  });
+
+  const [addProfileImage, { loading: loadingAddImage }] = useMutation(ADD_PROFILE_IMAGE, {
+    onError: () => DropDownHolder.show('error', '', 'Falha ao adicionar image'),
+    refetchQueries: [{ query: GET_PROFILE_CREATION }]
+  });
+
+  const [removeProfileImage, { loading: loadingRemoveImage }] = useMutation(REMOVE_PROFILE_IMAGE, {
+    onError: () => DropDownHolder.show('error', '', 'Falha ao remover imagem'),
+    refetchQueries: [{ query: GET_PROFILE_CREATION }]
   });
 
   const formSchema = yup.object().shape({
@@ -179,82 +119,163 @@ const CreateProfileContainer = ({ navigation }) => {
       .string()
       .min(4)
       .required('Seu nome nao pode conter menos de 4 caracteres'),
-    birthdate: yup
-      .string()
-      .min(16, 'Ops! Digite data e hora de nascimento.')
-      .test('TST', 'error', values => moment(values, 'DD/MM/YYYY HH:mm').isValid())
-      .required('Digite uma data válida'),
-    birthplaceDescription: yup.string()
+    eye: yup.string().min(3),
+    birthday: yup.string().when('_', {
+      is: () => activeItemIndex > 2,
+      then: yup
+        .string()
+        .min(16, 'Ops! Digite data e hora de nascimento.')
+        .test('TST', 'error', values => moment(values, 'DD/MM/YYYY HH:mm').isValid())
+        .required('Digite uma data válida')
+    }),
+    birthplace: yup.object().shape({
+      placeId: yup.string(),
+      description: yup.string().when('placeId', {
+        is: val => val?.length > 0 || activeItemIndex > 2,
+        then: yup
+          .string()
+          .min(3)
+          .required()
+          .test('RESIDENCE_VALIDATION', 'error', () => {
+            const { birthplace } = formRef?.current?.values;
+
+            if (!birthplace?.placeId && birthplace?.description?.length > 0) {
+              return false;
+            }
+            return true;
+          })
+      })
+    }),
+    graduation: yup.object().shape({
+      placeId: yup.string(),
+      description: yup
+        .string()
+        .min(3)
+        .test('RESIDENCE_VALIDATION', 'error', () => {
+          const { graduation } = formRef?.current?.values;
+          if (!graduation?.placeId && graduation?.description?.length > 0) {
+            return false;
+          }
+          return true;
+        })
+    }),
+    residence: yup.object().shape({
+      placeId: yup.string(),
+      description: yup
+        .string()
+        .min(3)
+        .test('RESIDENCE_VALIDATION', 'error', () => {
+          const { residence } = formRef?.current?.values;
+          if (!residence?.placeId && residence?.description?.length > 0) {
+            return false;
+          }
+          return true;
+        })
+    }),
+    genre: yup.string().when('_', {
+      is: () => activeItemIndex > 3,
+      then: yup.string().required()
+    }),
+    sexualOrientations: yup
+      .array()
+      .of(yup.string())
+      .when('_', {
+        is: () => activeItemIndex > 4,
+        then: yup
+          .array()
+          .of(yup.string())
+          .required()
+      }),
+    searchLoveGenre: yup.string().when('_', {
+      is: () => activeItemIndex > 5,
+      then: yup.string().required()
+    }),
+    searchLoveAgeRange: yup.array().required(),
+    searchFriendGenre: yup.string().when('_', {
+      is: () => activeItemIndex > 6,
+      then: yup.string().required()
+    }),
+    searchFriendAgeRange: yup.array().required()
   });
 
-  const formInitialSchema = {
-    name: 'Murilo',
-    birthdate: '07/03/1994 11:45',
-    birthplaceDescription: 'cacu',
-    genre: null,
-    searchGenre: null
-  };
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <>
+          {activeItemIndex > 0 && (
+            <TouchableOpacity
+              onPress={() =>
+                formRef?.current?.isValid ? setActiveItemIndex(activeItemIndex - 1) : false
+              }
+              style={{ paddingHorizontal: 20 }}
+            >
+              <Icon name="Back" width={40} height={40} />
+            </TouchableOpacity>
+          )}
+        </>
+      )
+    });
+  }, [activeItemIndex]);
 
   useEffect(() => {
-    if (searchCity.length >= 4) {
-      getCitiesByName({ name: searchCity, setFindedCities, setShowCitiesModal, setLoading });
+    if (data?.user?.profileStatus === 'CREATION' && activeItemIndex <= 7) {
+      normalizeFormValues({ formRef, data, setActiveItemIndex });
     }
-  }, [searchCity]);
+  }, [data]);
 
   return (
     <CreateProfileComponent
-      isLoading={mutationLoading || loading}
-      imageToUpload={state.avatar}
-      formSchema={formSchema}
-      formInitialSchema={formInitialSchema}
-      date={state.birthday}
-      showCitiesModal={showCitiesModal}
-      activeItemIndex={activeItemIndex}
-      switcherItemsMap={switcherItemsMap}
-      onDismissCitiesModal={() => setShowCitiesModal(false)}
-      onSubmitSwitcherButton={() =>
-        onSubmitSwitcherButton({
+      formRef={formRef}
+      profile={data?.profile || null}
+      onSubmitForm={() =>
+        onSubmitForm({
+          formRef,
           activeItemIndex,
-          switcherRef,
-          setSearchCity,
           setActiveItemIndex,
-          state,
-          createProfile
-        })
-      }
-      switcherRef={switcherRef}
-      onPressBack={() => onPressBack({ activeItemIndex, setActiveItemIndex })}
-      modalDataCities={findedCities}
-      onSelectCity={({ id, label }) =>
-        onSelectCity({
           switcherRef,
-          activeItemIndex,
-          state,
-          setState,
-          id,
-          setLoading,
-          label,
-          setShowCitiesModal
+          createProfile,
+          navigation
         })
       }
-      onChangeDate={(_, selectedDate) => setState({ ...state, birthday: selectedDate })}
-      onPressUpload={() => false}
-      image={state.avatar}
-      buttonSwitcherTitle={getButtonSwitcherTitle({ activeItemIndex, state })}
-      onPressImagePicker={() =>
-        ImagePicker.show(imagePickerOptions, {
-          onError: () => DropDownHolder.show('error', '', 'Failed on select image'),
-          onSuccess: ({ path, file }) => {
-            setState({
-              ...state,
-              file,
-              avatar: path.replace('file//', '')
-            });
+      onChangeInput={({ inputRef, text }) =>
+        onChangeInput({ fieldRef: inputRef, setSugestions, text, formRef, sugestions })
+      }
+      isLoading={mutationLoading || queryLoading || loadingAddImage || loadingRemoveImage}
+      sugestions={sugestions}
+      onPressSugestion={({ item, referencedInputName }) =>
+        onPressSugestion({
+          setSugestions: () => false,
+          sugestion: item,
+          fieldRef: referencedInputName,
+          formRef
+        })
+      }
+      onChangeSliderValues={({ sliderValues, fieldRef }) =>
+        formRef?.current?.setFieldValue(fieldRef, [...sliderValues])
+      }
+      onPressImage={() => onPressImage({ addProfileImage })}
+      onPressRemoveImage={index =>
+        removeProfileImage({
+          variables: {
+            imageId: data?.profile?.images[index]._id
           }
         })
       }
+      formInitialValues={formInitialValues}
+      onPressInputButton={field => onPressInputButton({ formRef, field })}
+      formSchema={formSchema}
+      activeItemIndex={activeItemIndex}
+      switcherRef={switcherRef}
+      onPressSwitcherButton={() => formRef.current.submitForm()}
+      onPressUpload={() => false}
     />
   );
+};
+
+CreateProfileContainer.propTypes = {
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired
+  }).isRequired
 };
 
 export default CreateProfileContainer;

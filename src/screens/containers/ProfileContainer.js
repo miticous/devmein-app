@@ -22,7 +22,7 @@ const ProfileContainer = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const { data, loading: loadingQuery } = useQuery(GET_PROFILE);
+  const { data, loading: loadingQuery } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
 
   return (
     <ProfileComponent

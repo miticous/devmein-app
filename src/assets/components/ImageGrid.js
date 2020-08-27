@@ -38,10 +38,10 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[0]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[0] && (
           <RemoveButton onPress={() => onPressRemove(0)}>
@@ -55,10 +55,10 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[1]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={35} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[1] && (
           <RemoveButton onPress={() => onPressRemove(1)}>
@@ -72,10 +72,10 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[2]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[2] && (
           <RemoveButton onPress={() => onPressRemove(2)}>
@@ -91,10 +91,10 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[3]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[3] && (
           <RemoveButton onPress={() => onPressRemove(3)}>
@@ -108,10 +108,10 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[4]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[4] && (
           <RemoveButton onPress={() => onPressRemove(4)}>
@@ -125,10 +125,10 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
             source={{
               uri: data[5]
             }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
-          <Icon name="Plus" fill="#75396F" width={24} height={24} />
+          <Icon name="Plus" fill="#75396F" width={19} height={19} />
         )}
         {data[5] && (
           <RemoveButton onPress={() => onPressRemove(5)}>
@@ -146,7 +146,8 @@ ImageGrid.defaultProps = {
 
 ImageGrid.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string.isRequired),
-  onPressImage: PropTypes.func.isRequired
+  onPressImage: PropTypes.func.isRequired,
+  onPressRemove: PropTypes.func.isRequired
 };
 
 export default ImageGrid;

@@ -25,6 +25,18 @@ const imagePickerOptions = {
   cancelButtonTitle: 'Cancelar'
 };
 
+export const onPressImage = async ({ addProfileImage }) => {
+  ImagePicker.show(imagePickerOptions, {
+    onError: () => DropDownHolder.show('error', '', 'Failed on select image'),
+    onSuccess: ({ file }) =>
+      addProfileImage({
+        variables: {
+          file
+        }
+      })
+  });
+};
+
 const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   try {
     await editProfile({
@@ -39,10 +51,18 @@ const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   }
 };
 
-const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
+export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
   if (fieldRef === 'birthplace.description') {
-    formRef.current.setFieldValue('birthplace.placeId', sugestion?.id);
-    formRef.current.setFieldValue('birthplace.description', sugestion?.label);
+    formRef.current.setValues(
+      {
+        ...formRef.current.values,
+        birthplace: {
+          description: sugestion?.label,
+          placeId: sugestion?.id
+        }
+      },
+      true
+    );
 
     setSugestions(null);
 
@@ -50,8 +70,17 @@ const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
   }
 
   if (fieldRef === 'graduation.description') {
-    formRef.current.setFieldValue('graduation.placeId', sugestion?.id);
-    formRef.current.setFieldValue('graduation.description', sugestion?.label);
+    formRef.current.setValues(
+      {
+        ...formRef.current.values,
+        graduation: {
+          ...formRef.current.values.graduation,
+          description: sugestion?.label,
+          placeId: sugestion?.id
+        }
+      },
+      true
+    );
 
     setSugestions(null);
 
@@ -59,30 +88,73 @@ const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
   }
 
   if (fieldRef === 'residence.description') {
-    formRef.current.setFieldValue('residence.placeId', sugestion?.id);
-    formRef.current.setFieldValue('residence.description', sugestion?.label);
+    formRef.current.setValues(
+      {
+        ...formRef.current.values,
+        residence: {
+          description: sugestion?.label,
+          placeId: sugestion?.id
+        }
+      },
+      true
+    );
 
     setSugestions(null);
 
     return true;
   }
 
-  return false;
+  if (fieldRef === 'sexualOrientation') {
+    const sexualOrientations = formRef.current.values.sexualOrientations;
+
+    const isSexualOrientationChecked = sexualOrientations?.some(
+      orientation => orientation === sugestion?.id
+    );
+
+    if (isSexualOrientationChecked) {
+      return formRef.current.setFieldValue('sexualOrientations', [
+        ...sexualOrientations.filter(orientation => orientation !== sugestion?.id)
+      ]);
+    }
+
+    return formRef.current.setFieldValue(
+      'sexualOrientations',
+      sexualOrientations?.length > 0 ? [...sexualOrientations, sugestion?.id] : [sugestion?.id]
+    );
+  }
+
+  return formRef.current.setFieldValue(fieldRef, sugestion?.id);
 };
 
-const onChangeInput = async ({ setSugestions, text, inputRef }) => {
+export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, sugestions }) => {
+  if (fieldRef === 'birthplace.description') {
+    formRef.current.setFieldValue('birthplace.placeId', null);
+  }
+
+  if (fieldRef === 'graduation.description') {
+    formRef.current.setFieldValue('graduation.placeId', null);
+  }
+
+  if (fieldRef === 'residence.description') {
+    formRef.current.setFieldValue('residence.placeId', null);
+  }
+
   if (text.length > 3) {
     const result = await getCitiesByName({
       name: text,
-      type: inputRef === 'graduation.description' ? 'establishment' : '%28cities%29'
+      type: fieldRef === 'graduation.description' ? 'establishment' : '(cities)'
     });
 
-    setSugestions(result);
+    setSugestions({ ...sugestions, [fieldRef]: result && result?.length > 0 ? result : null });
 
     return true;
   }
-  return false;
+
+  return setSugestions({ ...sugestions, [fieldRef]: null });
 };
+
+export const onPressInputButton = ({ field, formRef }) =>
+  formRef?.current?.setFieldValue(field, '');
 
 const ProfileEditionContainer = ({ navigation }) => {
   const formRef = useRef();
@@ -91,7 +163,7 @@ const ProfileEditionContainer = ({ navigation }) => {
   const {
     data: { profile },
     loading: loadingQuery
-  } = useQuery(GET_PROFILE, {});
+  } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
 
   const [editProfile, { loading: loadingMutationEdit }] = useMutation(EDIT_PROFILE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao salvar edição'),
@@ -145,17 +217,14 @@ const ProfileEditionContainer = ({ navigation }) => {
         .string()
         .min(3)
         .required()
-        .test('BIRTHPLACE_VALIDATION', 'error', value => {
+        .test('BIRTHPLACE_VALIDATION', 'error', () => {
           const { birthplace } = formRef?.current?.values;
 
-          if (
-            birthplace?.placeId === profile?.birthplace?.placeId &&
-            value !== profile?.birthplace?.description
-          ) {
-            return false;
+          if (birthplace?.placeId) {
+            return true;
           }
 
-          return true;
+          return false;
         }),
       placeId: yup.string().required()
     }),
@@ -163,40 +232,34 @@ const ProfileEditionContainer = ({ navigation }) => {
       description: yup
         .string()
         .min(3)
-        .test('GRADUATION_VALIDATION', 'error', value => {
+        .test('GRADUATION_VALIDATION', 'error', () => {
           const { graduation } = formRef?.current?.values;
 
           if (graduation?.description?.length === 0) {
             return true;
           }
 
-          if (
-            graduation?.placeId === profile?.graduation?.placeId &&
-            value !== profile?.graduation?.description
-          ) {
-            return false;
+          if (graduation?.placeId) {
+            return true;
           }
-          return true;
+          return false;
         })
     }),
     residence: yup.object().shape({
       description: yup
         .string()
         .min(3)
-        .test('RESIDENCE_VALIDATION', 'error', value => {
+        .test('RESIDENCE_VALIDATION', 'error', () => {
           const { residence } = formRef?.current?.values;
 
           if (residence?.description?.length === 0) {
             return true;
           }
 
-          if (
-            residence?.placeId === profile?.residence?.placeId &&
-            value !== profile?.residence?.description
-          ) {
-            return false;
+          if (residence?.placeId) {
+            return true;
           }
-          return true;
+          return false;
         })
     })
   });
@@ -205,20 +268,36 @@ const ProfileEditionContainer = ({ navigation }) => {
     <ProfileEditionComponent
       formInitialSchema={{
         ...profile,
-        birthday: moment(Number(profile.birthday)).format('DD/MM/YYYY HH:mm')
+        birthday: moment(Number(profile.birthday))
+          .utc()
+          .format('DD/MM/YYYY HH:mm')
       }}
       formRef={formRef}
       formSchema={formSchema}
       profile={profile}
-      onSubmitForm={() => onSubmitForm({ formRef, editProfile, navigation })}
-      onPressSugestion={({ sugestion, ref }) =>
-        onPressSugestion({ sugestion, formRef, setSugestions, fieldRef: ref })
+      onSubmitForm={() =>
+        onSubmitForm({
+          formRef,
+          editProfile,
+          navigation
+        })
+      }
+      onPressSugestion={({ item, referencedInputName }) =>
+        onPressSugestion({
+          setSugestions: () => false,
+          sugestion: item,
+          fieldRef: referencedInputName,
+          formRef
+        })
       }
       onChangeInput={({ text, inputRef }) =>
         onChangeInput({
           text,
           setSugestions,
-          inputRef
+          inputRef,
+          fieldRef: inputRef,
+          formRef,
+          sugestions
         })
       }
       sugestions={sugestions}
@@ -230,18 +309,8 @@ const ProfileEditionContainer = ({ navigation }) => {
           }
         })
       }
-      onPressInputButton={field => formRef?.current?.setFieldValue(field, '')}
-      onPressImage={() =>
-        ImagePicker.show(imagePickerOptions, {
-          onError: () => DropDownHolder.show('error', '', 'Failed on select image'),
-          onSuccess: ({ file }) =>
-            addProfileImage({
-              variables: {
-                file
-              }
-            })
-        })
-      }
+      onPressInputButton={field => onPressInputButton({ field, formRef })}
+      onPressImage={() => onPressImage({ addProfileImage })}
     />
   );
 };

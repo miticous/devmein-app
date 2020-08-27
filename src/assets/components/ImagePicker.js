@@ -1,5 +1,4 @@
 import RNImagePicker from 'react-native-image-picker';
-import reactotron from 'reactotron-react-native';
 import { Platform } from 'react-native';
 
 //   const openPicker = () =>

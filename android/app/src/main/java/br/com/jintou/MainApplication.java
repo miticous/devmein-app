@@ -1,4 +1,4 @@
-package com.jintou;
+package br.com.jintou;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import reactotron from 'reactotron-react-native';
 import DropDownHolder from '../helpers/DropDownHolder';
 
 export const login = async ({ email, password, navigation, setFieldError, setIsLoading }) => {
@@ -8,10 +7,10 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
     setIsLoading(true);
 
     const {
-      data: { token, hasProfile, _id }
+      data: { token, profileStatus, _id }
     } = await axios({
       method: 'post',
-      url: 'http://localhost:4000/users/login',
+      url: 'https://nifty-memory-284816.rj.r.appspot.com/users/login',
       data: {
         email,
         password
@@ -19,8 +18,8 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
     });
 
     await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
-    if (hasProfile) {
-      return navigation.replace('Home');
+    if (profileStatus === 'COMPLETED') {
+      return navigation.replace('Tabs');
     }
     return navigation.replace('CreateProfile');
   } catch ({
@@ -40,7 +39,7 @@ export const signUp = async ({ email, password, navigation }) => {
   try {
     await axios({
       method: 'post',
-      url: 'http://localhost:4000/users',
+      url: 'https://nifty-memory-284816.rj.r.appspot.com/users',
       data: {
         email,
         password
@@ -53,7 +52,7 @@ export const signUp = async ({ email, password, navigation }) => {
       data: { error }
     }
   }) {
-    return DropDownHolder.show('error', '', error);
+    return DropDownHolder.show('error', '', 'Usuario ja existe');
   }
 };
 
@@ -61,15 +60,15 @@ export const validate = async ({ navigation, token }) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: 'http://localhost:4000/users/auth',
+      url: 'https://nifty-memory-284816.rj.r.appspot.com/users/auth',
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    if (data) {
-      return navigation.replace('Home');
+    if (data === 'COMPLETED') {
+      return navigation.replace('Tabs');
     }
     return navigation.replace('CreateProfile');
   } catch (error) {
-    return navigation.navigate('Login');
+    return navigation.replace('Login');
   }
 };

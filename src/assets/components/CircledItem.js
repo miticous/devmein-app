@@ -21,14 +21,16 @@ const CircledItem = ({ children, size, color, containerStyle, testID }) => (
 CircledItem.defaultProps = {
   containerStyle: {},
   children: <></>,
-  testID: undefined
+  testID: undefined,
+  color: null
 };
 
 CircledItem.propTypes = {
   children: PropTypes.shape({}),
   size: PropTypes.number.isRequired,
   containerStyle: PropTypes.shape({}),
-  testID: PropTypes.string
+  testID: PropTypes.string,
+  color: PropTypes.string
 };
 
 export default CircledItem;

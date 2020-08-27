@@ -1,21 +1,84 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Button } from 'react-native';
-import HomeContainer from './screens/containers/HomeContainer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ProfilesContainer from './screens/containers/ProfilesContainer';
 import AuthContainer from './screens/containers/AuthContainer';
 import LoginContainer from './screens/containers/LoginContainer';
 import SignUpContainer from './screens/containers/SignUpContainer';
 import CreateProfileContainer from './screens/containers/CreateProfileContainer';
-import ChatContainer from './screens/containers/ChatContainer';
-import MatchesContainer from './screens/containers/MatchesContainer';
 import { COLORS } from './assets/styles/colors';
 import ProfileContainer from './screens/containers/ProfileContainer';
-import ConfigsContainer from './screens/containers/ConfigsContainer';
-import GenreSelectionContainer from './screens/containers/GenreSelectionContainer';
-import { headerTitleStyle, headerStyle } from './assets/styles';
+import { headerTitleStyle, headerStyle, bottomTabBar } from './assets/styles';
 import ProfileEditionContainer from './screens/containers/ProfileEditionContainer';
+import TabIcon from './assets/components/TabIcon';
+import HomeContainer from './screens/containers/HomeContainer';
+import ChatContainer from './screens/containers/ChatContainer';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const Tabs = () => (
+  <Tab.Navigator
+    initialRouteName="Home"
+    tabBarOptions={{
+      style: bottomTabBar.style,
+      tabStyle: bottomTabBar.tabStyle,
+      labelStyle: bottomTabBar.labelStyle
+    }}
+  >
+    <Tab.Screen
+      name="Love"
+      component={ProfilesContainer}
+      initialParams={{ searchType: 'LOVE' }}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon="Love"
+            label="Amor"
+            backgroundColor="#ffe3f0"
+            color="#D25890"
+          />
+        ),
+        tabBarLabel: () => false
+      }}
+    />
+    <Tab.Screen
+      name="Home"
+      component={HomeContainer}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon="Home"
+            label="Home"
+            backgroundColor="#e6d8e5"
+            color="#75396F"
+          />
+        ),
+        tabBarLabel: () => false
+      }}
+    />
+    <Tab.Screen
+      name="Friendship"
+      component={ProfilesContainer}
+      initialParams={{ searchType: 'FRIENDSHIP' }}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <TabIcon
+            focused={focused}
+            icon="Friendship"
+            label="Amizade"
+            backgroundColor="#e0ffdb"
+            color="#1CCB00"
+          />
+        ),
+        tabBarLabel: () => false
+      }}
+    />
+  </Tab.Navigator>
+);
 
 const Routes = () => (
   <Stack.Navigator initialRouteName="Auth">
@@ -23,6 +86,11 @@ const Routes = () => (
     <Stack.Screen
       name="Login"
       component={LoginContainer}
+      options={{ headerLeft: false, headerShown: false }}
+    />
+    <Stack.Screen
+      name="Tabs"
+      component={Tabs}
       options={{ headerLeft: false, headerShown: false }}
     />
     <Stack.Screen
@@ -38,7 +106,10 @@ const Routes = () => (
       name="CreateProfile"
       component={CreateProfileContainer}
       options={{
-        headerShown: false
+        title: 'CADASTRO',
+        headerStyle,
+        headerTitleStyle,
+        gestureEnabled: false
       }}
     />
     <Stack.Screen
@@ -60,18 +131,20 @@ const Routes = () => (
       }}
     />
     <Stack.Screen
-      name="Home"
-      component={HomeContainer}
-      options={({ navigation }) => ({
-        title: 'Home',
-        headerRight: () => (
-          <Button onPress={() => navigation.navigate('Matches')} title="Matches" />
-        ),
-        headerLeft: () => <Button onPress={() => navigation.navigate('Profile')} title="Perfil" />
-      })}
+      name="Chat"
+      component={ChatContainer}
+      options={{
+        title: 'JIÀNTOU',
+        headerStyle: {
+          ...headerStyle,
+          backgroundColor: '#75396F'
+        },
+        headerTitleStyle: {
+          ...headerTitleStyle,
+          color: 'white'
+        }
+      }}
     />
-    <Stack.Screen name="Chat" component={ChatContainer} options={{ title: 'Chat' }} />
-    <Stack.Screen name="Matches" component={MatchesContainer} options={{ title: 'Matches' }} />
   </Stack.Navigator>
 );
 

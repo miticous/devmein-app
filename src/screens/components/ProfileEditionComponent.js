@@ -6,6 +6,7 @@ import ImageGrid from '../../assets/components/ImageGrid';
 import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import TextInput from '../../assets/components/TextInput';
+import PickerList from '../../assets/components/PickerList';
 
 const Container = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
@@ -51,7 +52,7 @@ const ProfileEditionComponent = ({
       onSubmit={onSubmitForm}
       validateOnChange
     >
-      {() => (
+      {({ values }) => (
         <>
           <Content>
             <TextInput name="name" label="Meu nome é" onPressButton={onPressInputButton} />
@@ -71,10 +72,15 @@ const ProfileEditionComponent = ({
               name="residence.description"
               label="Moro em"
               onChange={onChangeInput}
-              sugestions={sugestions}
-              onPressSugestion={onPressSugestion}
               onPressButton={onPressInputButton}
-              optional
+            />
+            <PickerList
+              data={sugestions?.['residence.description']}
+              itemsIdKey="id"
+              itemsTitleKey="label"
+              checkedItemId={values?.residence?.placeId}
+              onPressItem={onPressSugestion}
+              referencedInputName="residence.description"
             />
           </Content>
           <Separator />
@@ -90,9 +96,15 @@ const ProfileEditionComponent = ({
               name="graduation.description"
               label="Estudo em"
               onChange={onChangeInput}
-              sugestions={sugestions}
               onPressSugestion={onPressSugestion}
-              optional
+            />
+            <PickerList
+              data={sugestions?.['graduation.description']}
+              itemsIdKey="id"
+              itemsTitleKey="label"
+              checkedItemId={values?.graduation?.placeId}
+              onPressItem={onPressSugestion}
+              referencedInputName="graduation.description"
             />
           </Content>
           <Content detached>
@@ -108,6 +120,14 @@ const ProfileEditionComponent = ({
               sugestions={sugestions}
               onPressButton={onPressInputButton}
               onPressSugestion={onPressSugestion}
+            />
+            <PickerList
+              data={sugestions?.['birthplace.description']}
+              itemsIdKey="id"
+              itemsTitleKey="label"
+              checkedItemId={values?.birthplace?.placeId}
+              onPressItem={onPressSugestion}
+              referencedInputName="birthplace.description"
             />
           </Content>
         </>

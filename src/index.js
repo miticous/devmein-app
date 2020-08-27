@@ -18,13 +18,17 @@ require('./config/reactotronConfig');
 
 const cache = new InMemoryCache({ addTypename: false });
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'https://nifty-memory-284816.rj.r.appspot.com/graphql'
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/graphql`,
+  uri: `ws://nifty-memory-284816.rj.r.appspot.com/graphql`,
   options: {
-    reconnect: true
+    reconnect: true,
+    lazy: true,
+    connectionParams: async () => ({
+      token: await AsyncStorage.getItem('@jintou:token')
+    })
   }
 });
 
@@ -57,7 +61,8 @@ const client = new ApolloClient({
     watchQuery: {
       fetchPolicy: 'cache-and-network'
     }
-  }
+  },
+  assumeImmutableResults: false
 });
 
 const App = () => (

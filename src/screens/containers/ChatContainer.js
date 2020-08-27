@@ -1,111 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import AsyncStorage from '@react-native-community/async-storage';
-import reactotron from 'reactotron-react-native';
 import ChatComponent from '../components/ChatComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
+import { GET_PROFILE, GET_CHAT } from '../../graphQL/query';
+import { SEND_MESSAGE } from '../../graphQL/mutation';
 
-const CHAT_SUB = gql`
-  subscription updateChat {
-    updateChat {
-      participants {
-        _id
-        name
-      }
-      messages {
-        _id
-        text
-        sender_id
-        receiver_id
-        sentAt
-      }
-    }
-  }
-`;
-const GET_CHAT = gql`
-  query GET_CHAT($matchId: String) {
-    chat(matchId: $matchId) {
-      participants {
-        _id
-        name
-      }
-      messages {
-        _id
-        text
-        sender_id
-        receiver_id
-        sentAt
-      }
-    }
-  }
-`;
-const SEND_MESSAGE = gql`
-  mutation($matchId: String!, $message: String!) {
-    sendMessage(matchId: $matchId, message: $message) {
-      participants {
-        _id
-        name
-      }
-      messages {
-        _id
-        text
-        sender_id
-        receiver_id
-        sentAt
-      }
-    }
-  }
-`;
+import Icon from '../../assets/components/Icon';
+import { CHAT_SUB } from '../../graphQL/subscription';
 
 const ChatContainer = ({ navigation, route: { params } }) => {
-  const [state, setState] = useState({});
-  const { matchId } = params;
+  const { match } = params;
 
-  useQuery(GET_CHAT, {
-    onCompleted: ({ chat }) => setState({ ...state, chat: { ...chat } }),
-    variables: {
-      matchId
-    }
+  const messagesBodyRef = React.useRef();
+  const [inputValue, setInputValue] = React.useState('');
+
+  const { data: profileData, profileLoading } = useQuery(GET_PROFILE, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-first'
   });
 
-  const [sendMessage] = useMutation(SEND_MESSAGE, {
+  const { data, loading: chatLoading } = useQuery(GET_CHAT, {
+    variables: {
+      matchId: match?._id
+    }
+  });
+  const [sendMessage, { loading: mutationLoading }] = useMutation(SEND_MESSAGE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao enviar/receber mensagens')
   });
 
-  useSubscription(CHAT_SUB, {
-    onSubscriptionData: ({
-      subscriptionData: {
-        data: { updateChat }
-      }
-    }) => setState({ ...state, chat: { ...updateChat } })
+  const { data: subscriptionData } = useSubscription(CHAT_SUB, {
+    variables: {
+      matchId: match?._id
+    }
   });
 
-  useEffect(() => {
-    AsyncStorage.getItem('@jintou:userId').then(res => {
-      setState({ ...state, userId: res });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
+          <Icon name="Back" width={40} height={40} />
+        </TouchableOpacity>
+      )
     });
   }, []);
-  const { chat, userId } = state;
-
-  // const { name } = chat ? chat.participants.find(participant => participant._id !== userId) : '';
 
   return (
     <ChatComponent
-      // loading={mutationLoading}
-      // participant={name}
-      messages={chat && chat.messages}
-      userId={userId}
-      inputValue={state.inputValue}
-      onChangeInput={text => setState({ ...state, inputValue: text })}
+      loading={mutationLoading || profileLoading || chatLoading}
+      userProfile={profileData?.profile}
+      matchType={match?.type}
+      messages={subscriptionData?.newMessage?.messages || data?.chat?.messages}
+      inputValue={inputValue}
+      participant={subscriptionData?.newMessage?.participant || data?.chat?.participant || match}
+      onChangeInput={text => setInputValue(text)}
+      messagesBodyRef={messagesBodyRef}
+      onLayout={() => messagesBodyRef?.current.scrollToEnd({ animated: true })}
       onSubmit={() => {
         sendMessage({
           variables: {
-            matchId,
-            message: state.inputValue
+            matchId: match._id,
+            message: inputValue
           }
         });
-        setState({ ...state, inputValue: '' });
+        setInputValue('');
       }}
     />
   );

@@ -4,17 +4,21 @@ import styled from 'styled-components/native';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
 import CircledItem from './CircledItem';
+import NavigationHelperInitial from './NavigationHelperInitial';
+import NavigationHelperFinal from './NavigationHelperFinal';
+import { SCREEN_HEIGHT } from '../styles';
 
 const Container = styled.View`
   border-radius: 24px;
   overflow: hidden;
-  height: 480px;
+  height: ${SCREEN_HEIGHT * 0.68}px;
   border: 1px solid #e0e0e0;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
 `;
 const ImageArea = styled.View`
   position: relative;
   flex: 2;
+  background-color: ${COLORS.backgroundColor};
 `;
 const Image = styled.Image`
   width: 100%;
@@ -60,15 +64,38 @@ const ItemListText = styled.Text`
   line-height: 19px;
   color: #131415;
 `;
+const ButtonNext = styled.TouchableOpacity`
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+`;
 
-const ProfileBox = ({ sign, image, name, birthplace, occupation, graduation }) => (
+const ProfileBox = ({
+  sign,
+  image,
+  name,
+  residence,
+  occupation,
+  graduation,
+  onPressNext,
+  showHelperInitial,
+  showHelperFinal,
+  tutorialDone,
+  onPressMandala
+}) => (
   <Container>
+    <ButtonNext onPress={onPressNext} />
+    {!tutorialDone && showHelperFinal && <NavigationHelperFinal />}
+    {!tutorialDone && showHelperInitial && <NavigationHelperInitial />}
     <ImageArea>
       <Zodiac>
         <Icon name={sign} width={74} height={23} />
       </Zodiac>
-      <Image source={{ uri: image }} />
-      <Mandala>
+      <Image source={{ uri: image }} resizeMode="cover" />
+      <Mandala onPress={onPressMandala}>
         <CircledItem size={60} color={COLORS.white}>
           <Icon name="Mandala" width={50} height={50} />
         </CircledItem>
@@ -79,15 +106,24 @@ const ProfileBox = ({ sign, image, name, birthplace, occupation, graduation }) =
         <Name>{name}</Name>
         <ItemList>
           <Icon name="Location" width={14} height={18} />
-          <ItemListText> {birthplace}</ItemListText>
+          <ItemListText>
+            {'   '}
+            {residence}
+          </ItemListText>
         </ItemList>
         <ItemList>
           <Icon name="Occupation" width={16} height={14} />
-          <ItemListText> {occupation}</ItemListText>
+          <ItemListText>
+            {'   '}
+            {occupation}
+          </ItemListText>
         </ItemList>
         <ItemList>
-          <Icon name="Graduation" width={16} height={14} />
-          <ItemListText> {graduation}</ItemListText>
+          <Icon name="Graduation" width={20} height={20} />
+          <ItemListText>
+            {'  '}
+            {graduation}
+          </ItemListText>
         </ItemList>
       </About>
     </AboutArea>
@@ -103,9 +139,14 @@ ProfileBox.propTypes = {
   sign: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  birthplace: PropTypes.string.isRequired,
+  residence: PropTypes.string.isRequired,
   occupation: PropTypes.string,
-  graduation: PropTypes.string
+  graduation: PropTypes.string,
+  onPressNext: PropTypes.func.isRequired,
+  showHelperInitial: PropTypes.bool.isRequired,
+  showHelperFinal: PropTypes.bool.isRequired,
+  tutorialDone: PropTypes.bool.isRequired,
+  onPressMandala: PropTypes.func.isRequired
 };
 
 export default ProfileBox;

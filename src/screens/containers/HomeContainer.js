@@ -1,137 +1,72 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, Text, Alert, Button } from 'react-native';
-import reactotron from 'reactotron-react-native';
-import gql from 'graphql-tag';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import Geolocation from '@react-native-community/geolocation';
-import { isNil, not } from 'ramda';
-import AsyncStorage from '@react-native-community/async-storage';
+import { SEND_GEOLOCATION } from '../../graphQL/mutation';
+import { GET_HOME, GET_PROFILE } from '../../graphQL/query';
 import HomeComponent from '../components/HomeComponent';
 
-const GET_HOME = gql`
-  query {
-    home {
-      name
-      _id
-      images {
-        image
-      }
-      loc {
-        coordinates
-      }
-      birthday
-    }
-    matches {
-      matches {
-        _id
-        name
-        images {
-          image
-        }
-        birthday
-      }
-    }
-  }
-`;
-
-const LIKE = gql`
-  mutation($userLikedId: String!) {
-    likeSomeone(userLikedId: $userLikedId) {
-      _id
-      startedAt
-      matches {
-        _id
-        name
-        images {
-          image
-        }
-        birthday
-      }
-    }
-  }
-`;
-
-const SEND_GEOLOCATION = gql`
-  mutation($latitude: String!, $longitude: String!) {
-    sendGeoLocation(latitude: $latitude, longitude: $longitude)
-  }
-`;
-
-const matchDone = ({ state, setState, likeSomeone }) => {
-  const { matches } = likeSomeone;
-  const profileMatched = matches.find(match => match._id !== state.userId);
-
-  return setState({ ...state, newMatch: profileMatched, matchModalVisible: true });
-};
-
 const HomeContainer = ({ navigation }) => {
-  const [state, setState] = useState({
-    latitude: null,
-    longitude: null,
-    geolocationSent: false,
-    matchModalVisible: false,
-    newMatch: undefined,
-    userId: null
+  const [geoLocationSent, setGeoLocationSent] = useState(false);
+  const client = useApolloClient();
+
+  const { data: profileQuery, loading: loadingProfileQuery } = useQuery(GET_PROFILE, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-first',
+    skip: !geoLocationSent
   });
 
-  const { loading: loadingQuery, data } = useQuery(GET_HOME, {
-    skip: !state.geolocationSent
-  });
-
-  const [likeSomeone] = useMutation(LIKE, {
-    onCompleted: ({ likeSomeone }) => {
-      if (likeSomeone._id) {
-        matchDone({ state, setState, likeSomeone });
-      }
-    },
-    refetchQueries: [{ query: GET_HOME }]
+  const { data: homeQuery } = useQuery(GET_HOME, {
+    notifyOnNetworkStatusChange: true,
+    skip: !geoLocationSent,
+    pollInterval: 15000
   });
 
   const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
-    onCompleted: () => setState({ ...state, geolocationSent: true })
+    onCompleted: () => {
+      client.cache.writeData({
+        data: {
+          geoLocationSent: true
+        }
+      });
+      return setGeoLocationSent(true);
+    }
   });
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button title={`Matches[${data && data.matches ? data.matches.length : 0}]`} />
-      )
-    });
-  }, [data, loadingQuery]);
-
   useEffect(() => {
-    AsyncStorage.getItem('@jintou:userId').then(userId => {
-      Geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) =>
-        setState({ ...state, longitude, latitude, userId })
-      );
-    });
-  }, []);
-
-  useEffect(() => {
-    if (not(isNil(state.latitude)) && not(isNil(state.longitude))) {
+    Geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) =>
       sendGeoLocation({
-        variables: { latitude: state.latitude.toString(), longitude: state.longitude.toString() }
-      });
-    }
-  }, [state.latitude, state.longitude]);
+        variables: {
+          latitude: latitude.toString(),
+          longitude: longitude.toString()
+        }
+      })
+    );
+  }, []);
 
   return (
     <HomeComponent
-      userLocation={[state.latitude, state.longitude]}
-      isProfilesLoading={loadingQuery}
-      profiles={data && data.home}
-      matchModalVisible={state.matchModalVisible}
-      newMatch={state.newMatch}
-      onPressProfile={profileId =>
-        likeSomeone({
-          variables: {
-            userLikedId: profileId
-          }
-        })
-      }
+      isProfilesLoading={loadingProfileQuery}
+      matches={homeQuery?.matches}
+      onPressCarouselItem={item => navigation.navigate('Chat', { match: item })}
+      userProfile={profileQuery?.profile}
+      onPressHeaderLeft={() => navigation.navigate('Profile')}
+      onMoveBottom={() => false}
     />
   );
+};
+
+HomeContainer.propTypes = {
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      searchType: PropTypes.string.isRequired
+    })
+  }).isRequired
 };
 
 export default HomeContainer;

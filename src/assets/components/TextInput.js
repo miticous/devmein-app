@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
 import { useField } from 'formik';
 import styled from 'styled-components/native';
 import VMasker from 'vanilla-masker';
@@ -25,7 +24,9 @@ const ButtonArea = styled.TouchableOpacity`
   right: 10px;
   top: 10px;
 `;
-const RNTextInput = styled.TextInput``;
+const RNTextInput = styled.TextInput`
+  color: ${({ isFocused }) => (isFocused ? COLORS.black : COLORS.textSecondaryColor)};
+`;
 const LabelArea = styled.View`
   flex-direction: row;
   align-items: center;
@@ -46,16 +47,6 @@ const OptionalInput = styled.Text`
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #c4c4c4;
-`;
-const SugestionArea = styled.View``;
-const SugestionText = styled.Text`
-  font-size: 18px;
-  line-height: 30px;
-`;
-const Separator = styled.View`
-  height: 1px;
-  margin: 10px 0px;
-  background-color: ${COLORS.textSecondaryColor};
 `;
 
 const getBorderColor = ({ error, isFocused }) => {
@@ -86,24 +77,8 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
   );
 };
 
-const renderSugestions = ({ sugestions, onPressSugestion, ref }) =>
-  sugestions.map(sugestion => (
-    <TouchableOpacity onPress={() => onPressSugestion({ sugestion, ref })} key={sugestion.id}>
-      <SugestionText>{sugestion.label}</SugestionText>
-    </TouchableOpacity>
-  ));
-
 const TextInput = props => {
-  const {
-    placeholder,
-    name,
-    onPressButton,
-    label,
-    optional,
-    sugestions,
-    onChange,
-    onPressSugestion
-  } = props;
+  const { placeholder, name, onPressButton, label, optional, onChange } = props;
   const [isFocused, setIsFocused] = useState(false);
   const [field, meta] = useField(name);
   const [timer, setTimer] = useState(0);
@@ -118,19 +93,19 @@ const TextInput = props => {
         <InputArea>
           <RNTextInput
             style={{ padding: 5 }}
-            color={isFocused ? COLORS.black : COLORS.textSecondaryColor}
+            isFocused={isFocused}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             value={field.value}
             onChangeText={text => onChangeText({ field, onChange, text, timer, setTimer })}
             placeholder={placeholder}
           />
-          {sugestions?.length > 0 && isFocused && (
+          {/* {sugestions?.length > 0 && isFocused && (
             <SugestionArea>
               <Separator />
               {renderSugestions({ sugestions, onPressSugestion, ref: field.name })}
             </SugestionArea>
-          )}
+          )} */}
         </InputArea>
         {isFocused && (
           <ButtonArea onPress={() => onPressButton(field.name)}>
@@ -144,8 +119,6 @@ const TextInput = props => {
 
 TextInput.defaultProps = {
   onChange: () => false,
-  sugestions: null,
-  onPressSugestion: () => false,
   optional: true,
   placeholder: ''
 };
@@ -156,9 +129,7 @@ TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   onPressButton: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  optional: PropTypes.bool,
-  sugestions: PropTypes.arrayOf(PropTypes.shape({})),
-  onPressSugestion: PropTypes.func
+  optional: PropTypes.bool
 };
 
 export default TextInput;

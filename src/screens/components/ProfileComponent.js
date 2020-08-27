@@ -16,11 +16,11 @@ const ProfileComponent = ({ loading, profile, onPressEditButton }) => (
     <Container>
       {profile && (
         <ProfileBox
-          sign={profile?.sign}
+          sign={profile?.astral?.zodiac}
           name={profile?.name}
           occupation={profile?.occupation}
           image={profile?.images[0]?.image}
-          birthplace={profile?.birthplace?.description}
+          residence={profile?.residence?.description}
           graduation={`${profile?.graduation.class} @${profile?.graduation?.description}`}
         />
       )}
