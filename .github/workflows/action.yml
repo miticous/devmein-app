@@ -21,7 +21,7 @@ jobs:
       uses: wzieba/AppCenter-Github-Action@v1.2.1
       with:
         appName: mam17/Jintou
-        token: f28febd4dfb740d9216c6b077407f4df6f72529f
+        token: a6d16a1b0149ecdafb7095e03137de39726ebe3e
         group: Internal
         file: android/app/build/outputs/apk/release/app-release.apk
         notifyTesters: true
