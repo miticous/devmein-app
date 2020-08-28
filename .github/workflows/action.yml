@@ -16,7 +16,7 @@ jobs:
     - name: Install node packages
       run: yarn install
     - name: build release
-      run: cd android && ./gradlew assembleRelease
+      run: cd android && ENVFILE=.env.production ./gradlew assembleRelease
     - name: upload artefact to App Center
       uses: wzieba/AppCenter-Github-Action@v1.2.1
       with:
