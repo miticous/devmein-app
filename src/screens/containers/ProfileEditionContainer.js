@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
+import reactotron from 'reactotron-react-native';
 import ProfileEditionComponent from '../components/ProfileEditionComponent';
 import Icon from '../../assets/components/Icon';
 import ImagePicker from '../../assets/components/ImagePicker';
@@ -36,6 +37,27 @@ export const onPressImage = async ({ addProfileImage }) => {
       })
   });
 };
+
+const updateSelectedTexts = ({ item, texts }) => {
+  const isItemAlreadyAdded = texts?.some(text => text === item);
+
+  if (isItemAlreadyAdded)
+    return texts?.reduce((accumulator, text) => {
+      if (text === item) {
+        return accumulator;
+      }
+
+      return [...accumulator, text];
+    }, []);
+
+  return [...texts, item];
+};
+
+const onPressTextsCardItem = ({ formRef, cardItem }) =>
+  formRef?.current?.setValues({
+    ...formRef.current.values,
+    shownTexts: updateSelectedTexts({ item: cardItem, texts: formRef?.current?.values?.shownTexts })
+  });
 
 const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   try {
@@ -263,7 +285,7 @@ const ProfileEditionContainer = ({ navigation }) => {
         })
     })
   });
-
+  reactotron.log(formRef?.current?.values);
   return (
     <ProfileEditionComponent
       formInitialSchema={{
@@ -273,6 +295,7 @@ const ProfileEditionContainer = ({ navigation }) => {
           .format('DD/MM/YYYY HH:mm')
       }}
       user={user}
+      onPressTextsCardItem={({ cardItem }) => onPressTextsCardItem({ cardItem, formRef })}
       formRef={formRef}
       formSchema={formSchema}
       profile={profile}

@@ -41,6 +41,7 @@ export const GET_PROFILE = gql`
         description
       }
       sexualOrientations
+      shownTexts
     }
     user {
       plan

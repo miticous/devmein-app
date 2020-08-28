@@ -23,6 +23,7 @@ export const EDIT_PROFILE = gql`
     $birthplace: BirthplaceInput!
     $graduation: GraduationInput
     $residence: ResidenceInput
+    $shownTexts: [String]!
   ) {
     editProfile(
       name: $name
@@ -34,6 +35,7 @@ export const EDIT_PROFILE = gql`
       birthplace: $birthplace
       graduation: $graduation
       residence: $residence
+      shownTexts: $shownTexts
     ) {
       _id
       images {

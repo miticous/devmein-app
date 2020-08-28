@@ -11,6 +11,12 @@ import PickerList from '../../assets/components/PickerList';
 import { checkTextAvalability } from './CreateProfileComponent';
 import AstralTextCard from '../../assets/components/AstralTextCard';
 
+const isTextChecked = ({ checkedItems, textType }) => {
+  const _isTextChecked = checkedItems?.some(checkedItem => checkedItem === textType);
+
+  return _isTextChecked;
+};
+
 const Container = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
 `;
@@ -39,7 +45,8 @@ const ProfileEditionComponent = ({
   onPressSugestion,
   onSubmitForm,
   onPressInputButton,
-  user
+  user,
+  onPressTextsCardItem
 }) => (
   <Container nestedScrollEnabled keyboardShouldPersistTaps="always">
     <Content>
@@ -143,13 +150,25 @@ const ProfileEditionComponent = ({
               marginVertical: 20,
               height: 300
             }}
-            renderItem={({ item }) => (
-              <AstralTextCard
-                title={item?.title}
-                subtitle={item?.text}
-                checked={checkTextAvalability({ plan: user?.plan, textType: item?.type })}
-              />
-            )}
+            renderItem={({ item }) => {
+              const isItemAvailable = checkTextAvalability({
+                plan: user?.plan,
+                textType: item?.type
+              });
+              const isItemChecked =
+                user?.plan === 'MERCURIO'
+                  ? isItemAvailable
+                  : isTextChecked({ textType: item?.type, checkedItems: values.shownTexts });
+
+              return (
+                <AstralTextCard
+                  onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
+                  title={item?.title}
+                  subtitle={item?.text}
+                  checked={isItemChecked}
+                />
+              );
+            }}
           />
         </>
       )}
@@ -175,7 +194,8 @@ ProfileEditionComponent.propTypes = {
   sugestions: PropTypes.arrayOf(PropTypes.shape({})),
   onPressSugestion: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
-  onPressInputButton: PropTypes.func.isRequired
+  onPressInputButton: PropTypes.func.isRequired,
+  onPressTextsCardItem: PropTypes.func.isRequired
 };
 
 export default ProfileEditionComponent;

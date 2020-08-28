@@ -11,13 +11,26 @@ import { onPressDetailsNext, onPressDetailsPrev } from '../../assets/components/
 import ProfileDetailsBox from '../../assets/components/ProfileDetailsBox';
 import { checkTextAvalability } from './CreateProfileComponent';
 
-const filterAvailableTexts = ({ plan, texts }) => {
+const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
   const _texts = texts.reduce((accumulator, text) => {
-    const isAvailableText = checkTextAvalability({ plan, textType: text?.type });
+    if (plan === 'JUPITER') {
+      const shouldAddText = shownTexts?.some(_text => _text === text?.type);
 
-    if (isAvailableText) {
-      return [...accumulator, text];
+      if (shouldAddText) {
+        return [...accumulator, text];
+      }
+      return accumulator;
     }
+
+    if (plan === 'MERCURIO') {
+      const isAvailableText = checkTextAvalability({ plan, textType: text?.type });
+
+      if (isAvailableText) {
+        return [...accumulator, text];
+      }
+      return accumulator;
+    }
+
     return accumulator;
   }, []);
 
@@ -32,6 +45,11 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
   const [showMandala, setShowMandala] = React.useState(false);
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
+  const filteredTexts = filterAvailableTexts({
+    plan: user?.plan,
+    texts: profile?.astral?.texts,
+    shownTexts: profile?.shownTexts
+  });
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.backgroundColor }}>
@@ -42,16 +60,13 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
             {showProfileDetails && (
               <ProfileDetailsBox
                 images={profile?.images}
-                texts={filterAvailableTexts({ plan: user?.plan, texts: profile?.astral?.texts })}
+                texts={filteredTexts}
                 activeIndex={activeTextsIndex}
                 onPressNext={() =>
                   onPressDetailsNext({
                     activeTextsIndex,
                     setActiveTextsIndex,
-                    texts: filterAvailableTexts({
-                      plan: user?.plan,
-                      texts: profile?.astral?.texts
-                    }),
+                    texts: filteredTexts,
                     setShowProfileDetails,
                     tutorialDone: true
                   })

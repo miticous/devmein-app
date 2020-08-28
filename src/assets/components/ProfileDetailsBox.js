@@ -107,11 +107,11 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
           <Icon name="ArrowHearth" width={16} height={20} />
           <DetailsBoxTitle>
             {'  '}
-            {texts[activeIndex].title}
+            {texts?.[activeIndex]?.title}
           </DetailsBoxTitle>
         </DetailsBoxHeader>
-        <DetailsBoxSubtitle>{texts[activeIndex].subtitle}</DetailsBoxSubtitle>
-        <DetailsBoxResume>{texts[activeIndex].text}</DetailsBoxResume>
+        <DetailsBoxSubtitle>{texts?.[activeIndex]?.subtitle}</DetailsBoxSubtitle>
+        <DetailsBoxResume>{texts?.[activeIndex]?.text}</DetailsBoxResume>
       </DetailsBox>
       {fullScreen.visible && (
         <FullScreenImage
