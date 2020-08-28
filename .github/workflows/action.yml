@@ -22,6 +22,6 @@ jobs:
       with:
         appName: mam17/Jintou
         token: f28febd4dfb740d9216c6b077407f4df6f72529f
-        group: Testers
+        group: Internal
         file: android/app/build/outputs/apk/release/app-release.apk
         notifyTesters: true
