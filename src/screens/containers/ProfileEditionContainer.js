@@ -53,7 +53,7 @@ const updateSelectedTexts = ({ item, texts }) => {
   return [...texts, item];
 };
 
-const onPressTextsCardItem = ({ formRef, cardItem }) =>
+export const onPressTextsCardItem = ({ formRef, cardItem }) =>
   formRef?.current?.setValues({
     ...formRef.current.values,
     shownTexts: updateSelectedTexts({ item: cardItem, texts: formRef?.current?.values?.shownTexts })

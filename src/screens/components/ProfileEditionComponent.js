@@ -8,10 +8,25 @@ import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import TextInput from '../../assets/components/TextInput';
 import PickerList from '../../assets/components/PickerList';
-import { checkTextAvalability } from './CreateProfileComponent';
 import AstralTextCard from '../../assets/components/AstralTextCard';
 
-const isTextChecked = ({ checkedItems, textType }) => {
+export const MercurioPlanTexts = ['EMOTION', 'INSTINCT', 'INTELLECT', 'PERSONALITY'];
+
+export const checkTextAvalability = ({ plan, textType }) => {
+  if (plan === 'MERCURIO') {
+    const isAvailableText = MercurioPlanTexts.some(_plan => _plan === textType);
+
+    return isAvailableText;
+  }
+
+  if (plan === 'JUPITER') {
+    return true;
+  }
+
+  return false;
+};
+
+export const isTextChecked = ({ checkedItems, textType }) => {
   const _isTextChecked = checkedItems?.some(checkedItem => checkedItem === textType);
 
   return _isTextChecked;

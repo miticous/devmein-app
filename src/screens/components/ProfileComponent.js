@@ -9,7 +9,7 @@ import ProfileBox from '../../assets/components/ProfileBox';
 import Mandala from '../../assets/components/Mandala';
 import { onPressDetailsNext, onPressDetailsPrev } from '../../assets/components/ProfileCard';
 import ProfileDetailsBox from '../../assets/components/ProfileDetailsBox';
-import { checkTextAvalability } from './CreateProfileComponent';
+import { checkTextAvalability } from './ProfileEditionComponent';
 
 const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
   const _texts = texts.reduce((accumulator, text) => {

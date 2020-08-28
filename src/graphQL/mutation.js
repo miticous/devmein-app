@@ -62,6 +62,7 @@ export const CREATE_PROFILE = gql`
     $searchLoveGenre: String!
     $searchFriendGenre: String!
     $profileStatus: String!
+    $shownTexts: [String]!
   ) {
     editProfile(
       name: $name
@@ -73,6 +74,7 @@ export const CREATE_PROFILE = gql`
       birthplace: $birthplace
       graduation: $graduation
       residence: $residence
+      shownTexts: $shownTexts
     ) {
       _id
       images {
@@ -87,6 +89,7 @@ export const CREATE_PROFILE = gql`
           type
         }
       }
+      shownTexts
     }
     saveUserConfigs(
       searchLoveAgeRange: $searchLoveAgeRange

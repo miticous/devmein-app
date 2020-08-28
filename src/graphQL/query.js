@@ -110,6 +110,7 @@ export const GET_PROFILE_CREATION = gql`
         description
       }
       sexualOrientations
+      shownTexts
     }
     user {
       configs {

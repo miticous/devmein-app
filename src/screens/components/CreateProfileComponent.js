@@ -14,22 +14,7 @@ import DefaultButton from '../../assets/components/DefaultButton';
 import SliderPicker from '../../assets/components/SliderPicker';
 import ImageGrid from '../../assets/components/ImageGrid';
 import AstralTextCard from '../../assets/components/AstralTextCard';
-
-export const MercurioPlanTexts = ['EMOTION', 'INSTINCT', 'INTELLECT', 'PERSONALITY'];
-
-export const checkTextAvalability = ({ plan, textType }) => {
-  if (plan === 'MERCURIO') {
-    const isAvailableText = MercurioPlanTexts.some(_plan => _plan === textType);
-
-    return isAvailableText;
-  }
-
-  if (plan === 'JUPITER') {
-    return true;
-  }
-
-  return false;
-};
+import { checkTextAvalability, isTextChecked } from './ProfileEditionComponent';
 
 const Content = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
@@ -123,7 +108,8 @@ const CreateProfileComponent = ({
   onPressImage,
   onPressRemoveImage,
   profile,
-  user
+  user,
+  onPressTextsCardItem
 }) => (
   <KeyboardAvoidingView
     style={{ flex: 1, backgroundColor: COLORS.lighter }}
@@ -341,13 +327,25 @@ const CreateProfileComponent = ({
                     paddingHorizontal: 20,
                     height: 300
                   }}
-                  renderItem={({ item }) => (
-                    <AstralTextCard
-                      title={item?.title}
-                      subtitle={item?.text}
-                      checked={checkTextAvalability({ plan: user?.plan, textType: item?.type })}
-                    />
-                  )}
+                  renderItem={({ item }) => {
+                    const isItemAvailable = checkTextAvalability({
+                      plan: user?.plan,
+                      textType: item?.type
+                    });
+                    const isItemChecked =
+                      user?.plan === 'MERCURIO'
+                        ? isItemAvailable
+                        : isTextChecked({ textType: item?.type, checkedItems: values.shownTexts });
+
+                    return (
+                      <AstralTextCard
+                        onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
+                        title={item?.title}
+                        subtitle={item?.text}
+                        checked={isItemChecked}
+                      />
+                    );
+                  }}
                 />
               </SwitcherItem>
             </Switcher>
@@ -390,7 +388,8 @@ CreateProfileComponent.propTypes = {
   onChangeSliderValues: PropTypes.func.isRequired,
   onPressImage: PropTypes.func.isRequired,
   onPressRemoveImage: PropTypes.func.isRequired,
-  user: PropTypes.shape({}).isRequired
+  user: PropTypes.shape({}).isRequired,
+  onPressTextsCardItem: PropTypes.func.isRequired
 };
 
 export default CreateProfileComponent;

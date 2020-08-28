@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
+import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import Icon from '../../assets/components/Icon';
@@ -11,7 +12,8 @@ import {
   onChangeInput,
   onPressSugestion,
   onPressInputButton,
-  onPressImage
+  onPressImage,
+  onPressTextsCardItem
 } from './ProfileEditionContainer';
 import { CREATE_PROFILE, ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE } from '../../graphQL/mutation';
 import { GET_PROFILE_CREATION } from '../../graphQL/query';
@@ -222,11 +224,12 @@ const CreateProfileContainer = ({ navigation }) => {
       normalizeFormValues({ formRef, data, setActiveItemIndex });
     }
   }, [data]);
-
+  reactotron.log(formRef?.current?.values);
   return (
     <CreateProfileComponent
       formRef={formRef}
       user={data?.user}
+      onPressTextsCardItem={({ cardItem }) => onPressTextsCardItem({ cardItem, formRef })}
       profile={data?.profile || null}
       onSubmitForm={() =>
         onSubmitForm({
