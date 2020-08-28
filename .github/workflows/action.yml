@@ -20,7 +20,7 @@ jobs:
     - name: upload artefact to App Center
       uses: wzieba/AppCenter-Github-Action@v1.2.1
       with:
-        appName: Jintou
+        appName: mam17/Jintou
         token: f28febd4dfb740d9216c6b077407f4df6f72529f
         group: Testers
         file: app/build/outputs/apk/release/app-release.apk
