@@ -43,6 +43,7 @@
     "react-native-dropdownalert": "^4.2.1",
     "react-native-gesture-handler": "^1.6.0",
     "react-native-google-places-autocomplete": "^1.4.1",
+    "react-native-iap": "^4.5.3",
     "react-native-image-picker": "^2.3.0",
     "react-native-linear-gradient": "react-native-community/react-native-linear-gradient",
     "react-native-masked-text": "^1.13.0",
