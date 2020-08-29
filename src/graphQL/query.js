@@ -41,6 +41,10 @@ export const GET_PROFILE = gql`
         description
       }
       sexualOrientations
+      shownTexts
+    }
+    user {
+      plan
     }
   }
 `;
@@ -106,6 +110,7 @@ export const GET_PROFILE_CREATION = gql`
         description
       }
       sexualOrientations
+      shownTexts
     }
     user {
       configs {
@@ -119,6 +124,7 @@ export const GET_PROFILE_CREATION = gql`
         }
       }
       profileStatus
+      plan
     }
   }
 `;

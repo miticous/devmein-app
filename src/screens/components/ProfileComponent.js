@@ -9,15 +9,47 @@ import ProfileBox from '../../assets/components/ProfileBox';
 import Mandala from '../../assets/components/Mandala';
 import { onPressDetailsNext, onPressDetailsPrev } from '../../assets/components/ProfileCard';
 import ProfileDetailsBox from '../../assets/components/ProfileDetailsBox';
+import { checkTextAvalability } from './ProfileEditionComponent';
+
+const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
+  const _texts = texts.reduce((accumulator, text) => {
+    if (plan === 'JUPITER') {
+      const shouldAddText = shownTexts?.some(_text => _text === text?.type);
+
+      if (shouldAddText) {
+        return [...accumulator, text];
+      }
+      return accumulator;
+    }
+
+    if (plan === 'MERCURIO') {
+      const isAvailableText = checkTextAvalability({ plan, textType: text?.type });
+
+      if (isAvailableText) {
+        return [...accumulator, text];
+      }
+      return accumulator;
+    }
+
+    return accumulator;
+  }, []);
+
+  return _texts;
+};
 
 const Container = styled.View`
   margin: 0px 20px;
 `;
 
-const ProfileComponent = ({ loading, profile, onPressEditButton }) => {
+const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
   const [showMandala, setShowMandala] = React.useState(false);
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
+  const filteredTexts = filterAvailableTexts({
+    plan: user?.plan,
+    texts: profile?.astral?.texts,
+    shownTexts: profile?.shownTexts
+  });
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.backgroundColor }}>
@@ -28,13 +60,13 @@ const ProfileComponent = ({ loading, profile, onPressEditButton }) => {
             {showProfileDetails && (
               <ProfileDetailsBox
                 images={profile?.images}
-                texts={profile?.astral?.texts}
+                texts={filteredTexts}
                 activeIndex={activeTextsIndex}
                 onPressNext={() =>
                   onPressDetailsNext({
                     activeTextsIndex,
                     setActiveTextsIndex,
-                    texts: profile?.astral?.texts,
+                    texts: filteredTexts,
                     setShowProfileDetails,
                     tutorialDone: true
                   })
@@ -88,6 +120,7 @@ ProfileComponent.defaultProps = {
 ProfileComponent.propTypes = {
   loading: PropTypes.bool.isRequired,
   profile: PropTypes.shape({}),
+  user: PropTypes.shape({}).isRequired,
   onPressEditButton: PropTypes.func.isRequired
 };
 
