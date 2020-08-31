@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "rnri": "ENVFILE=.env.dev react-native run-ios --simulator 'iPhone 8'",
+    "rnri": "ENVFILE=.env.production react-native run-ios --simulator 'iPhone 8'",
     "test": "jest",
     "lint": "eslint ."
   },
