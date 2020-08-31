@@ -4,7 +4,6 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
-import reactotron from 'reactotron-react-native';
 import CreateProfileComponent from '../components/CreateProfileComponent';
 import DropDownHolder from '../../helpers/DropDownHolder';
 import Icon from '../../assets/components/Icon';
@@ -37,8 +36,8 @@ const formInitialValues = {
 //   cancelButtonTitle: 'Cancelar'
 // };
 
-const normalizeFormValues = ({ formRef, data, setActiveItemIndex }) => {
-  const { profile, user } = data;
+const normalizeFormValues = ({ formRef, data }) => {
+  const { profile, user } = data ?? {};
   formRef.current.setValues(
     {
       ...profile,
@@ -57,7 +56,6 @@ const normalizeFormValues = ({ formRef, data, setActiveItemIndex }) => {
     },
     true
   );
-  return setActiveItemIndex(8);
 };
 
 const onSubmitForm = async ({
@@ -103,7 +101,8 @@ const CreateProfileContainer = ({ navigation }) => {
   const { data, loading: queryLoading } = useQuery(GET_PROFILE_CREATION);
 
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil')
+    onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
+    refetchQueries: [{ query: GET_PROFILE_CREATION }]
   });
 
   const [addProfileImage, { loading: loadingAddImage }] = useMutation(ADD_PROFILE_IMAGE, {
@@ -149,7 +148,7 @@ const CreateProfileContainer = ({ navigation }) => {
       })
     }),
     graduation: yup.object().shape({
-      placeId: yup.string(),
+      placeId: yup.string().nullable(),
       description: yup
         .string()
         .min(3)
@@ -160,9 +159,10 @@ const CreateProfileContainer = ({ navigation }) => {
           }
           return true;
         })
+        .nullable()
     }),
     residence: yup.object().shape({
-      placeId: yup.string(),
+      placeId: yup.string().nullable(),
       description: yup
         .string()
         .min(3)
@@ -173,6 +173,7 @@ const CreateProfileContainer = ({ navigation }) => {
           }
           return true;
         })
+        .nullable()
     }),
     genre: yup.string().when('_', {
       is: () => activeItemIndex > 3,
@@ -222,9 +223,16 @@ const CreateProfileContainer = ({ navigation }) => {
   useEffect(() => {
     if (data?.user?.profileStatus === 'CREATION' && activeItemIndex <= 7) {
       normalizeFormValues({ formRef, data, setActiveItemIndex });
+      setActiveItemIndex(8);
     }
   }, [data]);
-  reactotron.log(formRef?.current?.values);
+
+  useEffect(() => {
+    if (activeItemIndex > 6) {
+      normalizeFormValues({ formRef, data, setActiveItemIndex });
+    }
+  }, [data?.user?.profileStatus]);
+
   return (
     <CreateProfileComponent
       formRef={formRef}
