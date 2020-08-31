@@ -3363,6 +3363,11 @@ domutils@^1.7.0:
     dom-serializer "0"
     domelementtype "1"
 
+dooboolab-welcome@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/dooboolab-welcome/-/dooboolab-welcome-1.2.0.tgz#295818ce85a8e97dc90c0ec0510b4008e2d722dc"
+  integrity sha512-XgEbjJHAsKLge/e8jtuHsv84Ovg1Gx0GvnOTOmOlVGV1643nduTAkT3fyo/mxKbzvyXBr47RHaJAY4R2toI0UA==
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.npmjs.org/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -6945,6 +6950,13 @@ react-native-google-places-autocomplete@^1.4.1:
     lodash.debounce "^4.0.8"
     prop-types "^15.5.10"
     qs "^5.2.0"
+
+react-native-iap@^4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-4.5.3.tgz#f5eb68199faaa442c6d062121e7382eecc30c17c"
+  integrity sha512-jaWMAUpXmkwy5EqVmOiGtqIisaqLXjbjc0wWg5mmXjnYh5pxKX3Zmtpe7BfJaC4lIyyO8ZI3PiWUTMNnELU8vA==
+  dependencies:
+    dooboolab-welcome "^1.2.0"
 
 react-native-image-picker@^2.3.0:
   version "2.3.0"

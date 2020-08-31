@@ -27,6 +27,7 @@ const ProfileContainer = ({ navigation }) => {
   return (
     <ProfileComponent
       profile={data?.profile}
+      user={data?.user}
       loading={loadingQuery}
       onPressEditButton={() => navigation.navigate('ProfileEdition')}
     />
