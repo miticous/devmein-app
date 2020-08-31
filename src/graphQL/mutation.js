@@ -23,7 +23,7 @@ export const EDIT_PROFILE = gql`
     $birthplace: BirthplaceInput!
     $graduation: GraduationInput
     $residence: ResidenceInput
-    $shownTexts: [String]!
+    $shownTexts: [String]
   ) {
     editProfile(
       name: $name
@@ -62,7 +62,7 @@ export const CREATE_PROFILE = gql`
     $searchLoveGenre: String!
     $searchFriendGenre: String!
     $profileStatus: String!
-    $shownTexts: [String]!
+    $shownTexts: [String]
   ) {
     editProfile(
       name: $name
