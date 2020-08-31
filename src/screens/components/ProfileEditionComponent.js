@@ -2,11 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
+import { FlatList } from 'react-native';
 import ImageGrid from '../../assets/components/ImageGrid';
 import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import TextInput from '../../assets/components/TextInput';
 import PickerList from '../../assets/components/PickerList';
+import AstralTextCard from '../../assets/components/AstralTextCard';
+
+export const MercurioPlanTexts = ['EMOTION', 'INSTINCT', 'INTELLECT', 'PERSONALITY'];
+
+export const checkTextAvalability = ({ plan, textType }) => {
+  if (plan === 'MERCURIO') {
+    const isAvailableText = MercurioPlanTexts.some(_plan => _plan === textType);
+
+    return isAvailableText;
+  }
+
+  if (plan === 'JUPITER') {
+    return true;
+  }
+
+  return false;
+};
+
+export const isTextChecked = ({ checkedItems, textType }) => {
+  const _isTextChecked = checkedItems?.some(checkedItem => checkedItem === textType);
+
+  return _isTextChecked;
+};
 
 const Container = styled.ScrollView`
   background-color: ${COLORS.backgroundColor};
@@ -35,7 +59,9 @@ const ProfileEditionComponent = ({
   sugestions,
   onPressSugestion,
   onSubmitForm,
-  onPressInputButton
+  onPressInputButton,
+  user,
+  onPressTextsCardItem
 }) => (
   <Container nestedScrollEnabled keyboardShouldPersistTaps="always">
     <Content>
@@ -130,6 +156,35 @@ const ProfileEditionComponent = ({
               referencedInputName="birthplace.description"
             />
           </Content>
+          <FlatList
+            data={profile?.astral?.texts}
+            horizontal
+            ItemSeparatorComponent={() => <Separator />}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              marginVertical: 20,
+              height: 300
+            }}
+            renderItem={({ item }) => {
+              const isItemAvailable = checkTextAvalability({
+                plan: user?.plan,
+                textType: item?.type
+              });
+              const isItemChecked =
+                user?.plan === 'MERCURIO'
+                  ? isItemAvailable
+                  : isTextChecked({ textType: item?.type, checkedItems: values.shownTexts });
+
+              return (
+                <AstralTextCard
+                  onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
+                  title={item?.title}
+                  subtitle={item?.text}
+                  checked={isItemChecked}
+                />
+              );
+            }}
+          />
         </>
       )}
     </Formik>
@@ -144,6 +199,7 @@ ProfileEditionComponent.defaultProps = {
 ProfileEditionComponent.propTypes = {
   onPressImage: PropTypes.func.isRequired,
   profile: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,
   onPressRemove: PropTypes.func.isRequired,
   formInitialSchema: PropTypes.shape({}).isRequired,
@@ -153,7 +209,8 @@ ProfileEditionComponent.propTypes = {
   sugestions: PropTypes.arrayOf(PropTypes.shape({})),
   onPressSugestion: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
-  onPressInputButton: PropTypes.func.isRequired
+  onPressInputButton: PropTypes.func.isRequired,
+  onPressTextsCardItem: PropTypes.func.isRequired
 };
 
 export default ProfileEditionComponent;

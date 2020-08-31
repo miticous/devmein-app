@@ -5,9 +5,8 @@ import { View, Animated } from 'react-native';
 import { SCREEN_WIDTH } from '../styles';
 import DefaultButton from './DefaultButton';
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
-  justify-content: flex-start;
 `;
 const SwitcherItemContainer = styled.View``;
 const SwitcherItemHeader = styled.View`

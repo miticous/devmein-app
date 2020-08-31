@@ -20,6 +20,13 @@ export const GET_PROFILE = gql`
       astral {
         zodiac
         indexes
+        mandala
+        texts {
+          text
+          title
+          subtitle
+          type
+        }
       }
       genre
       eyes
@@ -34,6 +41,10 @@ export const GET_PROFILE = gql`
         description
       }
       sexualOrientations
+      shownTexts
+    }
+    user {
+      plan
     }
   }
 `;
@@ -79,8 +90,12 @@ export const GET_PROFILE_CREATION = gql`
         lng
       }
       astral {
-        zodiac
-        indexes
+        texts {
+          text
+          title
+          subtitle
+          type
+        }
       }
       genre
       eyes
@@ -95,6 +110,7 @@ export const GET_PROFILE_CREATION = gql`
         description
       }
       sexualOrientations
+      shownTexts
     }
     user {
       configs {
@@ -108,6 +124,7 @@ export const GET_PROFILE_CREATION = gql`
         }
       }
       profileStatus
+      plan
     }
   }
 `;

@@ -29,10 +29,14 @@ const getUsersDistance = ({ coordinates, userLocation }) => {
   return 0;
 };
 
-const onPressDetailsPrev = ({ activeTextsIndex, setShowProfileDetails, setActiveTextsIndex }) =>
+export const onPressDetailsPrev = ({
+  activeTextsIndex,
+  setShowProfileDetails,
+  setActiveTextsIndex
+}) =>
   activeTextsIndex === 0 ? setShowProfileDetails(false) : setActiveTextsIndex(activeTextsIndex - 1);
 
-const onPressDetailsNext = ({
+export const onPressDetailsNext = ({
   activeTextsIndex,
   setActiveTextsIndex,
   texts,
