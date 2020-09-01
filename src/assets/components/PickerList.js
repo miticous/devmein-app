@@ -4,9 +4,8 @@ import styled from 'styled-components/native';
 import Icon from './Icon';
 import { COLORS } from '../styles/colors';
 
-const Container = styled.ScrollView`
+const Container = styled.View`
   margin: 12px 0px;
-  height: 200px;
 `;
 const ContentItem = styled.TouchableOpacity`
   justify-content: center;

@@ -5,19 +5,14 @@ import { View, Animated } from 'react-native';
 import { SCREEN_WIDTH } from '../styles';
 import DefaultButton from './DefaultButton';
 
-const Container = styled.ScrollView`
-  flex: 1;
-`;
-const SwitcherItemContainer = styled.View``;
+const Container = styled.View``;
+const SwitcherItemContainer = styled.ScrollView``;
 const SwitcherItemHeader = styled.View`
-  flex: 0.3;
-  justify-content: center;
   padding: 0px 20px;
 `;
 const SwitcherItemBody = styled.View`
-  flex: 1;
   width: 100%;
-  justify-content: center;
+  margin: 30px 0px;
   padding: ${({ fluid }) => (fluid ? '0px 20px' : '0px')};
 `;
 const TextTitle = styled.Text`
@@ -58,10 +53,9 @@ const Switcher = React.forwardRef((props, ref) => {
 
   return (
     <Container ref={ref}>
-      <View style={{ width: SCREEN_WIDTH, flex: 0.8 }}>
+      <View style={{ width: SCREEN_WIDTH }}>
         <Animated.View
           style={{
-            flex: 1,
             width: SWITCHER_SIZE,
             flexDirection: 'row',
             transform: [{ translateX: scrollToIndex }]
@@ -70,16 +64,18 @@ const Switcher = React.forwardRef((props, ref) => {
           {children}
         </Animated.View>
       </View>
-      <View style={{ flex: 0.2, justifyContent: 'flex-end' }}>
-        <View style={{ padding: 20 }}>
-          <DefaultButton text={buttonTitle} action={onPressSubmit} inverted />
-        </View>
-      </View>
     </Container>
   );
 });
 
-const SwitcherItem = ({ children, title, subtitle, containerFluid }) => (
+const SwitcherItem = ({
+  children,
+  title,
+  subtitle,
+  containerFluid,
+  buttonTitle,
+  onPressSubmit
+}) => (
   <SwitcherItemContainer width={SCREEN_WIDTH}>
     {title && subtitle && (
       <SwitcherItemHeader>
@@ -88,6 +84,9 @@ const SwitcherItem = ({ children, title, subtitle, containerFluid }) => (
       </SwitcherItemHeader>
     )}
     <SwitcherItemBody fluid={containerFluid}>{children}</SwitcherItemBody>
+    <View style={{ padding: 20 }}>
+      <DefaultButton text={buttonTitle} action={onPressSubmit} inverted />
+    </View>
   </SwitcherItemContainer>
 );
 

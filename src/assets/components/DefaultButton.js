@@ -23,7 +23,7 @@ const Label = styled.Text`
 
 const DefaultButton = ({ text, action, disabled, inverted }) => (
   <Container onPress={disabled ? false : action} inverted={inverted}>
-    <Label inverted={inverted}>{text.toUpperCase()}</Label>
+    <Label inverted={inverted}>{text?.toUpperCase()}</Label>
   </Container>
 );
 
