@@ -12,6 +12,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { SafeAreaView } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import Routes from './routes';
 import DropDownHolder from './helpers/DropDownHolder';
 
@@ -66,21 +67,27 @@ const client = new ApolloClient({
   assumeImmutableResults: false
 });
 
-const App = () => (
-  <ApolloProvider client={client}>
-    <SafeAreaView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Routes />
-        <DropdownAlert
-          ref={ref => DropDownHolder.setDropDown(ref)}
-          closeInterval={3000}
-          translucent={false}
-          activeStatusBarStyle="light-content"
-          messageNumOfLines={3}
-        />
-      </NavigationContainer>
-    </SafeAreaView>
-  </ApolloProvider>
-);
+const App = () => {
+  React.useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
+  return (
+    <ApolloProvider client={client}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Routes />
+          <DropdownAlert
+            ref={ref => DropDownHolder.setDropDown(ref)}
+            closeInterval={3000}
+            translucent={false}
+            activeStatusBarStyle="light-content"
+            messageNumOfLines={3}
+          />
+        </NavigationContainer>
+      </SafeAreaView>
+    </ApolloProvider>
+  );
+};
 
 export default App;
