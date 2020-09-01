@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, FlatList, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { COLORS } from '../../assets/styles/colors';
@@ -16,21 +16,14 @@ import ImageGrid from '../../assets/components/ImageGrid';
 import AstralTextCard from '../../assets/components/AstralTextCard';
 import { checkTextAvalability, isTextChecked } from './ProfileEditionComponent';
 
-const Content = styled.ScrollView`
+const Content = styled.View`
   background-color: ${COLORS.backgroundColor};
   flex: 1;
 `;
-const SwitcherContainer = styled.View`
-  flex: 1;
+const SwitcherContainer = styled.View``;
+const BirthdayInputArea = styled.View`
+  flex-direction: row;
 `;
-// const ImagePickerArea = styled.TouchableOpacity`
-//   flex: 1;
-//   background-color: ${COLORS.iceColor};
-//   border-radius: 20px;
-//   justify-content: center;
-//   align-items: center;
-//   overflow: hidden;
-// `;
 const StepActive = styled.View`
   height: 6px;
   overflow: hidden;
@@ -63,6 +56,13 @@ const InnerSubtitle = styled.Text`
   line-height: 19px;
   color: #828282;
   margin: 20px;
+`;
+const TextAlert = styled.Text`
+  color: ${COLORS.error};
+`;
+const TextInfo = styled.Text`
+  color: ${COLORS.textSecondaryColor};
+  margin-top: 20px;
 `;
 const Separator = styled.View`
   margin: 5px;
@@ -110,252 +110,315 @@ const CreateProfileComponent = ({
   profile,
   user,
   onPressTextsCardItem
-}) => (
-  <KeyboardAvoidingView
-    style={{ flex: 1, backgroundColor: COLORS.lighter }}
-    behavior={`${Platform.OS === 'ios' ? 'padding' : 'height'}`}
-  >
-    <View style={{ height: 6, width: SCREEN_WIDTH }}>
-      <StepActive
-        width={`${((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) * 100}%`}
-      />
-      <StepArea />
-    </View>
-    <Content>
-      <SwitcherContainer>
-        <Formik
-          validationSchema={formSchema}
-          innerRef={formRef}
-          initialValues={formInitialValues}
-          onSubmit={onSubmitForm}
-          validateOnChange
-        >
-          {({ setFieldTouched, values, errors, ...props }) => (
-            <Switcher
-              {...props}
-              onPressSubmit={onPressSwitcherButton}
-              buttonTitle={activeItemIndex === 8 ? 'FINALIZAR' : 'PRÓXIMO PASSO'}
-              activeIndex={activeItemIndex}
-              ref={switcherRef}
-            >
-              <SwitcherItem title="Vamos começar" subtitle="Insira seus dados abaixo">
-                <TextInput
-                  name="name"
-                  label="Meu nome é"
-                  onChange={() => false}
-                  onPressButton={() => false}
-                  optional={false}
-                />
-                <TextInput
-                  name="eyes"
-                  label="A cor dos meus olhos é"
-                  optional
-                  onPressButton={() => false}
-                />
-                <TextInput
-                  name="occupation"
-                  label="Minha profissão é"
-                  optional
-                  onPressButton={() => false}
-                />
-              </SwitcherItem>
-              <SwitcherItem containerFluid={false}>
-                <ContainerFluid>
+}) => {
+  const switcherButtonTitle =
+    activeItemIndex === switcherRef?.current?.childrensAmount - 1 ? 'FINALIZAR' : 'PRÓXIMO PASSO';
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: COLORS.lighter }}
+      behavior={`${Platform.OS === 'ios' ? 'padding' : 'height'}`}
+    >
+      <View style={{ height: 6, width: SCREEN_WIDTH }}>
+        <StepActive
+          width={`${((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) * 100}%`}
+        />
+        <StepArea />
+      </View>
+      <Content>
+        <SwitcherContainer>
+          <Formik
+            validationSchema={formSchema}
+            innerRef={formRef}
+            initialValues={formInitialValues}
+            onSubmit={onSubmitForm}
+            validateOnChange
+          >
+            {({ setFieldTouched, values, errors, ...props }) => (
+              <Switcher {...props} activeIndex={activeItemIndex} ref={switcherRef}>
+                <SwitcherItem
+                  title="Vamos começar"
+                  subtitle="Insira seus dados abaixo"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
                   <TextInput
-                    name="residence.description"
-                    label="Moro em"
-                    onChange={onChangeInput}
-                    onPressButton={onPressInputButton}
+                    name="name"
+                    label="Meu nome é"
+                    onChange={() => false}
+                    onPressButton={() => false}
+                    optional={false}
                   />
-                  <InfoBox width={16} height={19} />
-                </ContainerFluid>
-                <PickerList
-                  data={sugestions?.['residence.description']}
-                  itemsIdKey="id"
-                  itemsTitleKey="label"
-                  checkedItemId={values?.residence?.placeId}
-                  onPressItem={onPressSugestion}
-                  referencedInputName="residence.description"
-                />
-                <ContainerFluid>
-                  <DefaultButton text="Prefiro não compartilhar" />
-                </ContainerFluid>
-              </SwitcherItem>
-              <SwitcherItem
-                title="Conta mais sobre você"
-                containerFluid={false}
-                subtitle="Quanto mais você compartilha, mais fácil é de alguém se interessar"
-              >
-                <ContainerFluid>
                   <TextInput
-                    name="graduation.class"
-                    label="Estudante de"
+                    name="eyes"
+                    label="A cor dos meus olhos é"
                     optional
-                    onPressButton={onPressInputButton}
+                    onPressButton={() => false}
                   />
                   <TextInput
-                    onPressButton={onPressInputButton}
-                    name="graduation.description"
-                    label="Estudo em"
+                    name="occupation"
+                    label="Minha profissão é"
+                    optional
+                    onPressButton={() => false}
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  containerFluid={false}
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <ContainerFluid>
+                    <TextInput
+                      name="residence.description"
+                      label="Moro em"
+                      onChange={onChangeInput}
+                      onPressButton={onPressInputButton}
+                    />
+                    <InfoBox width={16} height={19} />
+                  </ContainerFluid>
+                  <PickerList
+                    data={sugestions?.['residence.description']}
+                    itemsIdKey="id"
+                    itemsTitleKey="label"
+                    checkedItemId={values?.residence?.placeId}
+                    onPressItem={onPressSugestion}
+                    referencedInputName="residence.description"
+                  />
+                  <ContainerFluid>
+                    <DefaultButton text="Prefiro não compartilhar" />
+                  </ContainerFluid>
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Conta mais sobre você"
+                  containerFluid={false}
+                  subtitle="Quanto mais você compartilha, mais fácil é de alguém se interessar"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <ContainerFluid>
+                    <TextInput
+                      name="graduation.class"
+                      label="Estudante de"
+                      optional
+                      onPressButton={onPressInputButton}
+                    />
+                    <TextInput
+                      onPressButton={onPressInputButton}
+                      name="graduation.description"
+                      label="Estudo em"
+                      onChange={onChangeInput}
+                      sugestions={sugestions}
+                      onPressSugestion={onPressSugestion}
+                      optional
+                    />
+                  </ContainerFluid>
+                  <PickerList
+                    data={sugestions?.['graduation.description']}
+                    itemsIdKey="id"
+                    itemsTitleKey="label"
+                    checkedItemId={values?.graduation?.placeId}
+                    onPressItem={onPressSugestion}
+                    referencedInputName="graduation.description"
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Mapa astral"
+                  subtitle="Com esses dados, seu mapa astral será calculado para que o Jiàntou funcione"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <BirthdayInputArea>
+                    <TextInput
+                      name="birthdate"
+                      label="Data de nascimento"
+                      placeholder="00/00/0000"
+                      optional={false}
+                      containerStyle={{ flex: 1 }}
+                      onPressButton={onPressInputButton}
+                    />
+                    <TextInput
+                      name="birthtime"
+                      label="Hora"
+                      placeholder="00:00"
+                      containerStyle={{ flex: 1 }}
+                      optional={false}
+                      onPressButton={onPressInputButton}
+                    />
+                  </BirthdayInputArea>
+                  <TextAlert>
+                    Atenção! Para que todos os dados referentes ao seu mapa astral apareça
+                    corretamente é necessário que a{' '}
+                    <Text style={{ fontWeight: 'bold' }}>hora de seu nascimento</Text> esteja a mais
+                    exata possível; uma vez que esteja incorreta as informações sobre você serão
+                    totalmente incoerentes.
+                  </TextAlert>
+                  <TextInfo>
+                    Você pode encontrar na sua{' '}
+                    <Text style={{ fontWeight: 'bold' }}>certidão de nascimento</Text> ou contatando
+                    seus familiares
+                  </TextInfo>
+                  <TextInput
+                    name="birthplace.description"
+                    label="Cidade em que nasceu"
+                    optional={false}
                     onChange={onChangeInput}
                     sugestions={sugestions}
+                    onPressButton={onPressInputButton}
                     onPressSugestion={onPressSugestion}
-                    optional
                   />
-                </ContainerFluid>
-                <PickerList
-                  data={sugestions?.['graduation.description']}
-                  itemsIdKey="id"
-                  itemsTitleKey="label"
-                  checkedItemId={values?.graduation?.placeId}
-                  onPressItem={onPressSugestion}
-                  referencedInputName="graduation.description"
-                />
-              </SwitcherItem>
-              <SwitcherItem
-                title="Mapa astral"
-                subtitle="Com esses dados, seu mapa astral será calculado para que o Jiàntou funcione"
-              >
-                <TextInput
-                  name="birthday"
-                  label="Data e hora de nascimento"
-                  optional={false}
-                  onPressButton={onPressInputButton}
-                />
-                <TextInput
-                  name="birthplace.description"
-                  label="Cidade em que nasceu"
-                  optional={false}
-                  onChange={onChangeInput}
-                  sugestions={sugestions}
-                  onPressButton={onPressInputButton}
-                  onPressSugestion={onPressSugestion}
-                />
-                <PickerList
-                  data={sugestions?.['birthplace.description']}
-                  itemsIdKey="id"
-                  itemsTitleKey="label"
-                  checkedItemId={values?.birthplace?.placeId}
-                  onPressItem={onPressSugestion}
-                  referencedInputName="birthplace.description"
-                />
-              </SwitcherItem>
-              <SwitcherItem title="Me identifico como" subtitle="Fique à vontade">
-                <PickerList
-                  data={SexTypes}
-                  hasError={errors.genre}
-                  itemsIdKey="id"
-                  itemsTitleKey="description"
-                  checkedItemId={values?.genre}
-                  onPressItem={onPressSugestion}
-                  referencedInputName="genre"
-                />
-              </SwitcherItem>
-              <SwitcherItem
-                title="Orientação sexual"
-                subtitle="Fique à vontade, escolha quantas quiser"
-              >
-                <PickerList
-                  hasError={errors.sexualOrientations}
-                  data={SexualOrientationTypes}
-                  itemsIdKey="id"
-                  itemsTitleKey="description"
-                  checkedItemId={values?.sexualOrientations}
-                  multipleChoices
-                  onPressItem={onPressSugestion}
-                  referencedInputName="sexualOrientation"
-                />
-              </SwitcherItem>
-              <SwitcherItem title="Amor" subtitle="Quem você procura no campo do amor?">
-                <PickerList
-                  hasError={errors.searchLoveGenre}
-                  data={SearchGenre}
-                  itemsIdKey="id"
-                  itemsTitleKey="description"
-                  checkedItemId={values?.searchLoveGenre}
-                  onPressItem={onPressSugestion}
-                  referencedInputName="searchLoveGenre"
-                />
+                  <PickerList
+                    data={sugestions?.['birthplace.description']}
+                    itemsIdKey="id"
+                    itemsTitleKey="label"
+                    checkedItemId={values?.birthplace?.placeId}
+                    onPressItem={onPressSugestion}
+                    referencedInputName="birthplace.description"
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Me identifico como"
+                  subtitle="Fique à vontade"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <PickerList
+                    data={SexTypes}
+                    hasError={errors.genre}
+                    itemsIdKey="id"
+                    itemsTitleKey="description"
+                    checkedItemId={values?.genre}
+                    onPressItem={onPressSugestion}
+                    referencedInputName="genre"
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Orientação sexual"
+                  subtitle="Fique à vontade, escolha quantas quiser"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <PickerList
+                    hasError={errors.sexualOrientations}
+                    data={SexualOrientationTypes}
+                    itemsIdKey="id"
+                    itemsTitleKey="description"
+                    checkedItemId={values?.sexualOrientations}
+                    multipleChoices
+                    onPressItem={onPressSugestion}
+                    referencedInputName="sexualOrientation"
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Amor"
+                  subtitle="Quem você procura no campo do amor?"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <PickerList
+                    hasError={errors.searchLoveGenre}
+                    data={SearchGenre}
+                    itemsIdKey="id"
+                    itemsTitleKey="description"
+                    checkedItemId={values?.searchLoveGenre}
+                    onPressItem={onPressSugestion}
+                    referencedInputName="searchLoveGenre"
+                  />
 
-                <SliderPicker
-                  onChangeSliderValues={onChangeSliderValues}
-                  label="Faixa etária"
-                  fieldRef="searchLoveAgeRange"
-                  startRange={values?.searchLoveAgeRange?.[0]}
-                  endRange={values?.searchLoveAgeRange?.[1]}
-                />
-              </SwitcherItem>
-              <SwitcherItem title="Amizades" subtitle="E pra bater um papo?">
-                <PickerList
-                  hasError={errors.searchFriendGenre}
-                  data={SearchGenre}
-                  itemsIdKey="id"
-                  itemsTitleKey="description"
-                  checkedItemId={values?.searchFriendGenre}
-                  onPressItem={onPressSugestion}
-                  referencedInputName="searchFriendGenre"
-                />
-                <SliderPicker
-                  onChangeSliderValues={onChangeSliderValues}
-                  label="Faixa etária"
-                  fieldRef="searchFriendAgeRange"
-                  startRange={values?.searchFriendAgeRange?.[0]}
-                  endRange={values?.searchFriendAgeRange?.[1]}
-                />
-              </SwitcherItem>
-              <SwitcherItem title="Arrasa na foto" subtitle="Envie fotos que te representam!">
-                <ImageGrid
-                  data={profile?.images?.map(image => image?.image)}
-                  onPressImage={onPressImage}
-                  onPressRemove={onPressRemoveImage}
-                />
-              </SwitcherItem>
-              <SwitcherItem
-                title="Por último..."
-                subtitle="Com a leitura do seu Mapa astral, nós já sabemos muuuuito sobre você. Agora só precisa escolher o que você quer compartilhar publicamente:"
-                containerFluid={false}
-              >
-                <InnerTitle>O que os astros dizem</InnerTitle>
-                <InnerSubtitle>
-                  Escolha os tópicos que as pessoas irão ver no seu perfil
-                </InnerSubtitle>
-                <FlatList
-                  data={profile?.astral?.texts}
-                  horizontal
-                  ItemSeparatorComponent={() => <Separator />}
-                  contentContainerStyle={{
-                    paddingHorizontal: 20,
-                    height: 300
-                  }}
-                  renderItem={({ item }) => {
-                    const isItemAvailable = checkTextAvalability({
-                      plan: user?.plan,
-                      textType: item?.type
-                    });
-                    const isItemChecked =
-                      user?.plan === 'MERCURIO'
-                        ? isItemAvailable
-                        : isTextChecked({ textType: item?.type, checkedItems: values.shownTexts });
+                  <SliderPicker
+                    onChangeSliderValues={onChangeSliderValues}
+                    label="Faixa etária"
+                    fieldRef="searchLoveAgeRange"
+                    startRange={values?.searchLoveAgeRange?.[0]}
+                    endRange={values?.searchLoveAgeRange?.[1]}
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Amizades"
+                  subtitle="E pra bater um papo?"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <PickerList
+                    hasError={errors.searchFriendGenre}
+                    data={SearchGenre}
+                    itemsIdKey="id"
+                    itemsTitleKey="description"
+                    checkedItemId={values?.searchFriendGenre}
+                    onPressItem={onPressSugestion}
+                    referencedInputName="searchFriendGenre"
+                  />
+                  <SliderPicker
+                    onChangeSliderValues={onChangeSliderValues}
+                    label="Faixa etária"
+                    fieldRef="searchFriendAgeRange"
+                    startRange={values?.searchFriendAgeRange?.[0]}
+                    endRange={values?.searchFriendAgeRange?.[1]}
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Arrasa na foto"
+                  subtitle="Envie fotos que te representam!"
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <ImageGrid
+                    data={profile?.images?.map(image => image?.image)}
+                    onPressImage={onPressImage}
+                    onPressRemove={onPressRemoveImage}
+                  />
+                </SwitcherItem>
+                <SwitcherItem
+                  title="Por último..."
+                  subtitle="Com a leitura do seu Mapa astral, nós já sabemos muuuuito sobre você. Agora só precisa escolher o que você quer compartilhar publicamente:"
+                  containerFluid={false}
+                  onPressSubmit={onPressSwitcherButton}
+                  buttonTitle={switcherButtonTitle}
+                >
+                  <InnerTitle>O que os astros dizem</InnerTitle>
+                  <InnerSubtitle>
+                    Escolha os tópicos que as pessoas irão ver no seu perfil
+                  </InnerSubtitle>
+                  <FlatList
+                    data={profile?.astral?.texts}
+                    horizontal
+                    ItemSeparatorComponent={() => <Separator />}
+                    contentContainerStyle={{
+                      paddingHorizontal: 20,
+                      height: 300
+                    }}
+                    renderItem={({ item }) => {
+                      const isItemAvailable = checkTextAvalability({
+                        plan: user?.plan,
+                        textType: item?.type
+                      });
+                      const isItemChecked =
+                        user?.plan === 'MERCURIO'
+                          ? isItemAvailable
+                          : isTextChecked({
+                              textType: item?.type,
+                              checkedItems: values.shownTexts
+                            });
 
-                    return (
-                      <AstralTextCard
-                        onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
-                        title={item?.title}
-                        subtitle={item?.text}
-                        checked={isItemChecked}
-                      />
-                    );
-                  }}
-                />
-              </SwitcherItem>
-            </Switcher>
-          )}
-        </Formik>
-      </SwitcherContainer>
-    </Content>
-    {isLoading && <ModalLoading visible={isLoading} />}
-  </KeyboardAvoidingView>
-);
+                      return (
+                        <AstralTextCard
+                          onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
+                          title={item?.title}
+                          subtitle={item?.text}
+                          checked={isItemChecked}
+                        />
+                      );
+                    }}
+                  />
+                </SwitcherItem>
+              </Switcher>
+            )}
+          </Formik>
+        </SwitcherContainer>
+      </Content>
+      {isLoading && <ModalLoading visible={isLoading} />}
+    </KeyboardAvoidingView>
+  );
+};
 CreateProfileComponent.defaultProps = {
   profile: {
     images: [

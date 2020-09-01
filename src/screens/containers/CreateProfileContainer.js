@@ -38,6 +38,7 @@ const formInitialValues = {
 
 const normalizeFormValues = ({ formRef, data }) => {
   const { profile, user } = data ?? {};
+
   formRef.current.setValues(
     {
       ...profile,
@@ -50,13 +51,18 @@ const normalizeFormValues = ({ formRef, data }) => {
       searchLoveAgeRange: user?.configs?.love?.range,
       searchFriendGenre: user?.configs?.friendShip?.genre,
       searchFriendAgeRange: user?.configs?.friendShip?.range,
-      birthday: moment(Number(profile?.birthday))
+      birthdate: moment(Number(profile?.birthday))
         .utc()
-        .format('DD/MM/YYYY HH:mm')
+        .format('DD/MM/YYYY'),
+      birthtime: moment(Number(profile?.birthday))
+        .utc()
+        .format('HH:mm')
     },
     true
   );
 };
+
+const convertToDateTimePattern = ({ date, time }) => `${date} ${time}`;
 
 const onSubmitForm = async ({
   navigation,
@@ -71,6 +77,10 @@ const onSubmitForm = async ({
       await createProfile({
         variables: {
           ...formRef?.current?.values,
+          birthday: convertToDateTimePattern({
+            date: formRef?.current?.values?.birthdate,
+            time: formRef?.current?.values?.birthtime
+          }),
           profileStatus: 'CREATION'
         }
       });
@@ -80,6 +90,10 @@ const onSubmitForm = async ({
       await createProfile({
         variables: {
           ...formRef?.current?.values,
+          birthday: convertToDateTimePattern({
+            date: formRef?.current?.values?.birthdate,
+            time: formRef?.current?.values?.birthtime
+          }),
           profileStatus: 'COMPLETED'
         }
       });
@@ -121,13 +135,21 @@ const CreateProfileContainer = ({ navigation }) => {
       .min(4)
       .required('Seu nome nao pode conter menos de 4 caracteres'),
     eye: yup.string().min(3),
-    birthday: yup.string().when('_', {
+    birthdate: yup.string().when('_', {
       is: () => activeItemIndex > 2,
       then: yup
         .string()
-        .min(16, 'Ops! Digite data e hora de nascimento.')
-        .test('TST', 'error', values => moment(values, 'DD/MM/YYYY HH:mm').isValid())
+        .min(10, 'Ops! Digite data de nascimento.')
+        .test('TST', 'error', values => moment(values, 'DD/MM/YYYY').isValid())
         .required('Digite uma data válida')
+    }),
+    birthtime: yup.string().when('_', {
+      is: () => activeItemIndex > 2,
+      then: yup
+        .string()
+        .min(5, 'Ops! Digite hora de nascimento.')
+        .test('TST', 'error', values => moment(values, 'HH:mm').isValid())
+        .required('Digite uma hora válida')
     }),
     birthplace: yup.object().shape({
       placeId: yup.string(),

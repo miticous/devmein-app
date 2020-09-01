@@ -6,10 +6,11 @@ import VMasker from 'vanilla-masker';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
 
-const maskedDate = text => VMasker.toPattern(text, '99/99/9999 99:99');
+const maskedDate = text => VMasker.toPattern(text, '99/99/9999');
+const maskedTime = text => VMasker.toPattern(text, '99:99');
 
 const Container = styled.View`
-  margin: 5px 0px;
+  margin: 5px 1px;
 `;
 const Content = styled.View`
   background-color: ${COLORS.white};
@@ -60,8 +61,12 @@ const getBorderColor = ({ error, isFocused }) => {
 };
 
 const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
-  if (field.name === 'birthday') {
+  if (field.name === 'birthdate') {
     return field.onChange(field.name)(maskedDate(text));
+  }
+
+  if (field.name === 'birthtime') {
+    return field.onChange(field.name)(maskedTime(text));
   }
 
   field.onChange(field.name)(text);
@@ -78,13 +83,13 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
 };
 
 const TextInput = props => {
-  const { placeholder, name, onPressButton, label, optional, onChange } = props;
+  const { placeholder, name, onPressButton, label, optional, onChange, containerStyle } = props;
   const [isFocused, setIsFocused] = useState(false);
   const [field, meta] = useField(name);
   const [timer, setTimer] = useState(0);
 
   return (
-    <Container>
+    <Container style={containerStyle}>
       <LabelArea>
         <Label>{label}</Label>
         <OptionalInputArea>{optional && <OptionalInput>OPCIONAL</OptionalInput>}</OptionalInputArea>
