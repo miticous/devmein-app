@@ -9,11 +9,11 @@ import { GET_PROFILE } from '../../graphQL/query';
 const ProfileContainer = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      // headerRight: () => (
-      //   <TouchableOpacity style={{ paddingHorizontal: 20 }}>
-      //     <Icon name="Config" width={40} height={40} />
-      //   </TouchableOpacity>
-      // ),
+      headerRight: () => (
+        <TouchableOpacity style={{ paddingHorizontal: 20 }}>
+          {/* <Icon name="Config" width={40} height={40} /> */}
+        </TouchableOpacity>
+      ),
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
