@@ -117,7 +117,7 @@ const ProfileCard = ({
               coordinates: item?.loc?.coordinates,
               userLocation: userProfile?.loc?.coordinates
             })}km, ${item?.residence?.description}`}
-            graduation={`${item?.graduation.class} @${item?.graduation?.description}`}
+            graduation={item?.graduation?.class && `${item?.graduation?.class} @${item?.graduation?.description}`}
           />
         )}
         <Mandala

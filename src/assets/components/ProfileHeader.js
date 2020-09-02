@@ -27,10 +27,10 @@ const Info = styled.Text`
   font-size: 16px;
   line-height: 25px;
 `;
-const ButtonRight = styled.TouchableOpacity`
-  flex: 1;
-  align-items: flex-end;
-`;
+// const ButtonRight = styled.TouchableOpacity`
+//   flex: 1;
+//   align-items: flex-end;
+// `;
 
 const ProfileHeader = ({ imageSource, name, icon, onPress }) => (
   <Container onPress={onPress}>
@@ -43,9 +43,9 @@ const ProfileHeader = ({ imageSource, name, icon, onPress }) => (
       <Info>{name}</Info>
       <Icon name={icon} width={74} height={23} />
     </InfoBox>
-    <ButtonRight>
+    {/* <ButtonRight>
       <Icon name="Config" width={40} height={40} />
-    </ButtonRight>
+    </ButtonRight> */}
   </Container>
 );
 

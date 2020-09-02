@@ -104,27 +104,33 @@ const ProfileBox = ({
     <AboutArea>
       <About>
         <Name>{name}</Name>
-        <ItemList>
-          <Icon name="Location" width={14} height={18} />
-          <ItemListText>
-            {'   '}
-            {residence}
-          </ItemListText>
-        </ItemList>
-        <ItemList>
-          <Icon name="Occupation" width={16} height={14} />
-          <ItemListText>
-            {'   '}
-            {occupation}
-          </ItemListText>
-        </ItemList>
-        <ItemList>
-          <Icon name="Graduation" width={20} height={20} />
-          <ItemListText>
-            {'  '}
-            {graduation}
-          </ItemListText>
-        </ItemList>
+        {residence && (
+          <ItemList>
+            <Icon name="Location" width={14} height={18} />
+            <ItemListText>
+              {'   '}
+              {residence}
+            </ItemListText>
+          </ItemList>
+        )}
+        {occupation && (
+          <ItemList>
+            <Icon name="Occupation" width={16} height={14} />
+            <ItemListText>
+              {'   '}
+              {occupation}
+            </ItemListText>
+          </ItemList>
+        )}
+        {graduation && (
+          <ItemList>
+            <Icon name="Graduation" width={20} height={20} />
+            <ItemListText>
+              {'  '}
+              {graduation}
+            </ItemListText>
+          </ItemList>
+        )}
       </About>
     </AboutArea>
   </Container>
