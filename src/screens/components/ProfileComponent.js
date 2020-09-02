@@ -92,7 +92,10 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
                 occupation={profile?.occupation}
                 image={profile?.images?.[0]?.image}
                 residence={profile?.residence?.descriptionr}
-                graduation={`${profile?.graduation.class} @${profile?.graduation?.description}`}
+                graduation={
+                  profile?.graduation?.class &&
+                  `${profile?.graduation.class} @${profile?.graduation?.description}`
+                }
               />
             )}
 

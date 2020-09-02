@@ -4,7 +4,6 @@ import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
-import reactotron from 'reactotron-react-native';
 import ProfileEditionComponent from '../components/ProfileEditionComponent';
 import Icon from '../../assets/components/Icon';
 import ImagePicker from '../../assets/components/ImagePicker';
@@ -285,7 +284,7 @@ const ProfileEditionContainer = ({ navigation }) => {
         })
     })
   });
-  reactotron.log(formRef?.current?.values);
+
   return (
     <ProfileEditionComponent
       formInitialSchema={{

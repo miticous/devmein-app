@@ -5,7 +5,7 @@ import { FlatList } from 'react-native';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
 import FullScreenImage from './FullScreenImage';
-import { SCREEN_HEIGHT } from '../styles';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles';
 
 const Container = styled.View`
   background-color: ${COLORS.backgroundColor};
@@ -34,6 +34,7 @@ const ImageSeparator = styled.View`
 `;
 const DetailsBox = styled.View`
   margin: 20px;
+  flex: 1;
 `;
 const DetailsBoxHeader = styled.View`
   align-items: center;
@@ -53,6 +54,10 @@ const DetailsBoxSubtitle = styled.Text`
   line-height: 22px;
   color: #75396f;
 `;
+const DetailsBoxResumeBox = styled.ScrollView`
+  flex: 1;
+  height: 400px;
+`;
 const DetailsBoxResume = styled.Text`
   font-style: normal;
   font-weight: normal;
@@ -61,28 +66,27 @@ const DetailsBoxResume = styled.Text`
   color: #131415;
   margin-top: 10px;
 `;
-const DetailBoxButtonNext = styled.TouchableOpacity`
-  width: 50%;
-  height: 50%;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-`;
-const DetailBoxButtonPrev = styled.TouchableOpacity`
-  width: 50%;
-  height: 50%;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 1;
-`;
+
+const onPressResumeBox = ({ pageX, onPressNext, onPressPrev, isScrolling }) => {
+  if (isScrolling) {
+    return false;
+  }
+  const HALF_SCREEN_SIZE = SCREEN_WIDTH / 2;
+
+  if (pageX > HALF_SCREEN_SIZE) {
+    return onPressNext();
+  }
+
+  return onPressPrev();
+};
 
 const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPrev }) => {
   const [fullScreen, setFullScreen] = React.useState({
     visible: false,
     initialIndex: 0
   });
+
+  const [isScrolling, setIsScrolling] = React.useState(false);
 
   return (
     <Container>
@@ -100,8 +104,6 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
           )}
         />
       </ImageListBox>
-      <DetailBoxButtonNext onPress={onPressNext} />
-      <DetailBoxButtonPrev onPress={onPressPrev} />
       <DetailsBox>
         <DetailsBoxHeader>
           <Icon name="ArrowHearth" width={16} height={20} />
@@ -111,7 +113,21 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
           </DetailsBoxTitle>
         </DetailsBoxHeader>
         <DetailsBoxSubtitle>{texts?.[activeIndex]?.subtitle}</DetailsBoxSubtitle>
-        <DetailsBoxResume>{texts?.[activeIndex]?.text}</DetailsBoxResume>
+        <DetailsBoxResumeBox
+          onTouchEnd={e =>
+            onPressResumeBox({
+              pageX: e?.nativeEvent?.pageX,
+              onPressNext,
+              onPressPrev,
+              isScrolling
+            })
+          }
+          showsVerticalScrollIndicator={false}
+          onScrollBeginDrag={() => setIsScrolling(true)}
+          onScrollEndDrag={() => setIsScrolling(false)}
+        >
+          <DetailsBoxResume>{texts?.[activeIndex]?.text}</DetailsBoxResume>
+        </DetailsBoxResumeBox>
       </DetailsBox>
       {fullScreen.visible && (
         <FullScreenImage

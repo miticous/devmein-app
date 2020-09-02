@@ -43,9 +43,7 @@ const ProfileHeader = ({ imageSource, name, icon, onPress }) => (
       <Info>{name}</Info>
       <Icon name={icon} width={74} height={23} />
     </InfoBox>
-    <ButtonRight>
-      <Icon name="Config" width={40} height={40} />
-    </ButtonRight>
+    <ButtonRight>{/* <Icon name="Config" width={40} height={40} /> */}</ButtonRight>
   </Container>
 );
 

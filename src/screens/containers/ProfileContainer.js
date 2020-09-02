@@ -11,7 +11,7 @@ const ProfileContainer = ({ navigation }) => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={{ paddingHorizontal: 20 }}>
-          <Icon name="Config" width={40} height={40} />
+          {/* <Icon name="Config" width={40} height={40} /> */}
         </TouchableOpacity>
       ),
       headerLeft: () => (
