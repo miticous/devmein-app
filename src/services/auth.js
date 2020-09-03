@@ -69,6 +69,7 @@ export const validate = async ({ navigation, token }) => {
     }
     return navigation.replace('CreateProfile');
   } catch (error) {
+    await AsyncStorage.removeItem('@jintou:token');
     return navigation.replace('Login');
   }
 };
