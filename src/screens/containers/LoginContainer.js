@@ -29,6 +29,30 @@ const formLoginSchema = yup.object().shape({
     .required('Digite uma senha válida')
 });
 
+const onSubmitForm = async ({
+  email,
+  password,
+  rememberPassword,
+  setFieldError,
+  navigation,
+  setIsLoading
+}) => {
+  try {
+    await login({ email, password, setFieldError, navigation, setIsLoading });
+
+    if (rememberPassword) {
+      return AsyncStorage.multiSet([
+        ['@jintou:storedEmail', email],
+        ['@jintou:storedPassword', password]
+      ]);
+    }
+
+    return AsyncStorage.multiRemove(['@jintou:storedEmail', '@jintou:storedPassword']);
+  } catch (error) {
+    return false;
+  }
+};
+
 const LoginContainer = ({ navigation }) => {
   const formRef = React.useRef();
 
@@ -51,7 +75,15 @@ const LoginContainer = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.clear().then(() => false);
+    AsyncStorage.multiGet(['@jintou:storedEmail', '@jintou:storedPassword']).then(res => {
+      const email = res?.[0]?.[1];
+      const password = res?.[1]?.[1];
+
+      if (email && password) {
+        return formRef?.current?.setValues({ email, password });
+      }
+      return false;
+    });
   }, []);
 
   return (
@@ -59,7 +91,7 @@ const LoginContainer = ({ navigation }) => {
       formRef={formRef}
       isLoading={isLoading}
       onSubmitForm={async ({ email, password, setFieldError }) =>
-        login({ email, password, setFieldError, navigation, setIsLoading })
+        onSubmitForm({ email, password, rememberPassword, setFieldError, navigation, setIsLoading })
       }
       onPressLogin={() => formRef?.current?.submitForm()}
       formLoginSchema={formLoginSchema}

@@ -7,6 +7,7 @@ import Icon from './Icon';
 const Container = styled.TouchableOpacity`
   height: 70px;
   width: 100%;
+  margin-top: 20px;
   padding: 0px 20px;
   align-items: center;
   flex-direction: row;
