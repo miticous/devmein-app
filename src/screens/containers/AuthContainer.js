@@ -1,15 +1,22 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { CommonActions } from '@react-navigation/native';
 import { validate, logout } from '../../services/auth';
+import ModalLoading from '../../assets/components/ModalLoading';
 
 const AuthContainer = ({ navigation }) => {
   useEffect(() => {
     AsyncStorage.getItem('@jintou:token')
       .then(token => {
         if (!token) {
-          return navigation.replace('Login');
+          return navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'Welcome' }]
+            })
+          );
         }
         return validate({ navigation, token });
       })
@@ -17,8 +24,8 @@ const AuthContainer = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" />
+    <View style={{ flex: 1 }}>
+      <ModalLoading />
     </View>
   );
 };
@@ -26,7 +33,8 @@ const AuthContainer = ({ navigation }) => {
 AuthContainer.propTypes = {
   navigation: PropTypes.shape({
     replace: PropTypes.func.isRequired,
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired
   }).isRequired
 };
 

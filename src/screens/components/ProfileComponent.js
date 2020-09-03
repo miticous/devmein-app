@@ -38,7 +38,7 @@ const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
 };
 
 const Container = styled.View`
-  margin: 0px 20px;
+  margin: 20px;
 `;
 
 const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLogout }) => {

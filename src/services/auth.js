@@ -11,7 +11,7 @@ export const logout = async ({ navigation }) => {
     return navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'Login' }]
+        routes: [{ name: 'Welcome' }]
       })
     );
   } catch (error) {
@@ -63,7 +63,7 @@ export const signUp = async ({ email, password, navigation }) => {
       }
     });
     DropDownHolder.show('success', '', 'Usuário criado com sucesso');
-    return navigation.navigate('Login');
+    return navigation.replace('Login');
   } catch ({
     response: {
       data: { error }

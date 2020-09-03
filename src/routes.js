@@ -81,7 +81,7 @@ const Tabs = () => (
 );
 
 const Routes = () => (
-  <Stack.Navigator initialRouteName="Welcome">
+  <Stack.Navigator initialRouteName="Auth">
     <Stack.Screen name="Auth" component={AuthContainer} options={{ headerShown: false }} />
     <Stack.Screen
       name="Welcome"
