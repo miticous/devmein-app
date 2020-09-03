@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
-import { not } from 'ramda';
 import AsyncStorage from '@react-native-community/async-storage';
+import { TouchableOpacity } from 'react-native';
 import LoginComponent from '../components/LoginComponent';
 import { login } from '../../services/auth';
+import Icon from '../../assets/components/Icon';
 
 yup.setLocale({
   mixed: {
@@ -24,12 +25,14 @@ const formLoginSchema = yup.object().shape({
     .required('Digite um email válido'),
   password: yup
     .string()
-    .required('Digite uma senha válida')
     .min(6)
+    .required('Digite uma senha válida')
 });
 
 const LoginContainer = ({ navigation }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const formRef = React.useRef();
+
+  const [rememberPassword, setRememberPassword] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const formLoginInitialSchema = {
@@ -37,29 +40,40 @@ const LoginContainer = ({ navigation }) => {
     password: ''
   };
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => false} style={{ paddingHorizontal: 20 }}>
+          <Icon name="Back" width={40} height={40} />
+        </TouchableOpacity>
+      )
+    });
+  }, []);
+
   useEffect(() => {
     AsyncStorage.clear().then(() => false);
   }, []);
 
   return (
     <LoginComponent
+      formRef={formRef}
       isLoading={isLoading}
-      onPressLogin={async ({ email, password, setFieldError }) =>
+      onSubmitForm={async ({ email, password, setFieldError }) =>
         login({ email, password, setFieldError, navigation, setIsLoading })
       }
+      onPressLogin={() => formRef?.current?.submitForm()}
       formLoginSchema={formLoginSchema}
       formLoginInitialSchema={formLoginInitialSchema}
-      showPassword={showPassword}
-      onPressSingUp={() => navigation.navigate('SignUp')}
-      // onPressRecoverButton={() => navigation.navigate('ForgotPassword')}
-      onPressEyeIcon={() => setShowPassword(not(showPassword))}
+      onPressRememberButton={() => setRememberPassword(!rememberPassword)}
+      rememberPassword={rememberPassword}
     />
   );
 };
 
 LoginContainer.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired
   }).isRequired
 };
 

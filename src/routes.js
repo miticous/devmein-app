@@ -86,7 +86,12 @@ const Routes = () => (
     <Stack.Screen
       name="Login"
       component={LoginContainer}
-      options={{ headerLeft: false, headerShown: false }}
+      options={{
+        title: 'LOGIN',
+        headerStyle,
+        headerTitleStyle,
+        gestureEnabled: false
+      }}
     />
     <Stack.Screen
       name="Tabs"

@@ -5,10 +5,10 @@ export const SCREEN_WIDTH = Dimensions.get('screen').width;
 export const SCREEN_HEIGHT = Dimensions.get('screen').height;
 export const headerStyle = {
   backgroundColor: COLORS.backgroundColor,
-  height: 70,
-  shadowRadius: 0,
+  height: 90,
+  shadowRadius: 40,
   shadowOffset: {
-    height: 0
+    height: 8
   }
 };
 export const headerTitleStyle = {

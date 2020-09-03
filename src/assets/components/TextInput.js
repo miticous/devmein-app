@@ -50,8 +50,8 @@ const OptionalInput = styled.Text`
   color: #c4c4c4;
 `;
 
-const getBorderColor = ({ error, isFocused }) => {
-  if (error) {
+const getBorderColor = ({ error, isFocused, touched }) => {
+  if ((error && touched) || isFocused) {
     return COLORS.error;
   }
   if (isFocused && !error) {
@@ -69,6 +69,10 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
     return field.onChange(field.name)(maskedTime(text));
   }
 
+  if (field.name === 'email') {
+    return field.onChange(field.name)(text.replace(/\s/g, ''));
+  }
+
   field.onChange(field.name)(text);
 
   if (timer) {
@@ -83,9 +87,21 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
 };
 
 const TextInput = props => {
-  const { placeholder, name, onPressButton, label, optional, onChange, containerStyle } = props;
+  const {
+    placeholder,
+    name,
+    onPressButton,
+    label,
+    optional,
+    onChange,
+    containerStyle,
+    textType,
+    keyboardType,
+    buttonType,
+    secure
+  } = props;
   const [isFocused, setIsFocused] = useState(false);
-  const [field, meta] = useField(name);
+  const [field, meta, helpers] = useField(name);
   const [timer, setTimer] = useState(0);
 
   return (
@@ -94,27 +110,26 @@ const TextInput = props => {
         <Label>{label}</Label>
         <OptionalInputArea>{optional && <OptionalInput>OPCIONAL</OptionalInput>}</OptionalInputArea>
       </LabelArea>
-      <Content borderColor={getBorderColor({ isFocused, error: meta.error })}>
+      <Content
+        borderColor={getBorderColor({ isFocused, error: meta.error, touched: meta?.touched })}
+      >
         <InputArea>
           <RNTextInput
             style={{ padding: 5 }}
             isFocused={isFocused}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onBlur={() => [setIsFocused(false), helpers?.setTouched(field?.name)]}
             value={field.value}
+            secureTextEntry={secure}
+            textContentType={textType}
+            keyboardType={keyboardType}
             onChangeText={text => onChangeText({ field, onChange, text, timer, setTimer })}
             placeholder={placeholder}
           />
-          {/* {sugestions?.length > 0 && isFocused && (
-            <SugestionArea>
-              <Separator />
-              {renderSugestions({ sugestions, onPressSugestion, ref: field.name })}
-            </SugestionArea>
-          )} */}
         </InputArea>
         {isFocused && (
           <ButtonArea onPress={() => onPressButton(field.name)}>
-            <Icon name="Close" width={25} height={25} />
+            <Icon name={buttonType} width={25} height={25} />
           </ButtonArea>
         )}
       </Content>
@@ -125,7 +140,12 @@ const TextInput = props => {
 TextInput.defaultProps = {
   onChange: () => false,
   optional: true,
-  placeholder: ''
+  placeholder: '',
+  buttonType: 'Close',
+  containerStyle: null,
+  textType: null,
+  keyboardType: null,
+  secure: false
 };
 
 TextInput.propTypes = {
@@ -134,7 +154,12 @@ TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   onPressButton: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  optional: PropTypes.bool
+  optional: PropTypes.bool,
+  buttonType: PropTypes.string,
+  containerStyle: PropTypes.shape({}),
+  textType: PropTypes.string,
+  keyboardType: PropTypes.string,
+  secure: PropTypes.bool
 };
 
 export default TextInput;

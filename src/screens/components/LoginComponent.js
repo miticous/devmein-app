@@ -1,179 +1,109 @@
 import React from 'react';
-import { Platform, Text } from 'react-native';
+import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
-import { not, isEmpty } from 'ramda';
 import { COLORS } from '../../assets/styles/colors';
-import Button from '../../assets/components/Button';
-import StatusBar from '../../assets/components/StatusBar';
-import Icon from '../../assets/components/Icon';
-import InputBox from '../../assets/components/InputBox';
+import TextInput from '../../assets/components/TextInput';
+import ButtonCheck from '../../assets/components/ButtonCheck';
+import DefaultButton from '../../assets/components/DefaultButton';
+import ModalLoading from '../../assets/components/ModalLoading';
 
 const Container = styled.KeyboardAvoidingView`
   flex: 1;
   background-color: ${COLORS.backgroundColor};
   padding: 0px 20px;
 `;
-const LoginTitle = styled.Text`
-  color: ${COLORS.textPrimaryColor};
-  font-size: 22px;
+const Header = styled.View`
+  flex: 0.5;
+  margin: 40px 0px;
+  height: 70px;
+  justify-content: space-between;
+`;
+const Title = styled.Text`
+  font-style: normal;
   font-weight: bold;
-  letter-spacing: 0.12px;
-  line-height: 26px;
-  margin: 4px 0px;
-  text-align: center;
+  font-size: 24px;
+  line-height: 38px;
 `;
-const LoginSubtitle = styled.Text`
-  color: ${COLORS.textPrimaryColor};
-  font-size: 14px;
-  letter-spacing: -0.2px;
-  line-height: 18px;
-  margin: 4px 0px;
-  text-align: center;
+const Subtitle = styled.Text`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #828282;
 `;
-const RecoverPasswordText = styled.Text`
-  color: ${COLORS.secondaryColor};
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.2px;
-  line-height: 18px;
-  text-align: center;
-`;
-const RecoverPasswordArea = styled.TouchableOpacity``;
-const ContentHeader = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
-const ContentBody = styled.View`
-  justify-content: center;
+const Body = styled.View`
   flex: 3;
 `;
-const ContentFooter = styled.View`
-  flex: 0.5;
-  justify-content: space-evenly;
+const Footer = styled.View`
+  flex: 1;
+`;
+const RememberPasswordBox = styled.TouchableOpacity`
+  margin: 20px 0px;
+  flex-direction: row;
+  align-items: center;
+`;
+const RememberPasswordText = styled.Text`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 const LoginComponent = ({
+  isLoading,
+  onSubmitForm,
   onPressLogin,
   formLoginSchema,
   formLoginInitialSchema,
-  onPressRecoverButton,
-  onPressSingUp,
-  showPassword,
-  onPressEyeIcon,
-  isLoading
+  onPressRememberButton,
+  rememberPassword,
+  formRef
 }) => (
   <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'} enabled>
-    <StatusBar color={COLORS.backgroundColor} barStyle="dark-content" />
-    <ContentHeader>
-      <Icon name="ArrowLove" width={96} height={96} fill={COLORS.primaryColor} />
-      <Text
-        style={{
-          fontSize: 20,
-          color: COLORS.secondaryColor,
-          fontWeight: 'bold',
-          marginTop: 20
-        }}
-      >
-        Jiantou
-      </Text>
-    </ContentHeader>
-    <ContentBody>
-      <LoginTitle>Login</LoginTitle>
-      <LoginSubtitle>Faça login para conhecer a pessoa ideal!</LoginSubtitle>
+    <Header>
+      <Title>Boas-vindas</Title>
+      <Subtitle>Insira seu e-mail e senha para entrar </Subtitle>
+    </Header>
+    <Body>
       <Formik
+        innerRef={formRef}
         initialValues={formLoginInitialSchema}
         validationSchema={formLoginSchema}
-        onSubmit={async (values, actions) => onPressLogin({ ...values, ...actions })}
+        validateOnChange
+        onSubmit={async (values, actions) => onSubmitForm({ ...values, ...actions })}
       >
-        {({
-          values,
-          handleChange,
-          errors,
-          setFieldTouched,
-          touched,
-          submitForm,
-          setFieldValue
-        }) => {
-          const passwordIconName = showPassword ? 'ClosedEye' : 'OpenedEye';
-
-          return (
-            <>
-              <InputBox
-                label="E-mail"
-                showLabel={not(isEmpty(values.email))}
-                isValid={!errors.email && touched.email}
-                hasError={errors.email && touched.email}
-                errorMessage={errors.email}
-                value={values.email}
-                onType={handleChange('email')}
-                height={60}
-                large
-                placeholder="E-mail"
-                onFocusOut={() => {
-                  setFieldTouched('email');
-                }}
-                editable={not(isLoading)}
-                onPressIcon={() => not(isLoading) && setFieldValue('email', '')}
-                icon={values.email ? 'CloseCircled' : undefined}
-                returnKeyType="next"
-              />
-              <InputBox
-                label="Senha"
-                showLabel={not(isEmpty(values.password))}
-                isValid={!errors.password && touched.password}
-                hasError={errors.password && touched.password}
-                errorMessage={errors.password}
-                value={values.password}
-                secure={not(showPassword)}
-                height={60}
-                large
-                editable={not(isLoading)}
-                placeholder="Senha"
-                onType={handleChange('password')}
-                onFocusOut={() => {
-                  setFieldTouched('password');
-                }}
-                onPressIcon={onPressEyeIcon}
-                icon={values.password ? passwordIconName : undefined}
-                returnKeyType="done"
-                onSubmitEditing={() => submitForm()}
-              />
-              <RecoverPasswordArea
-                activeOpacity={1}
-                onPress={onPressRecoverButton}
-                id="Login-RecoveryPassword"
-              >
-                <RecoverPasswordText>Esqueci minha senha</RecoverPasswordText>
-              </RecoverPasswordArea>
-              <ContentFooter>
-                <Button
-                  buttonLoading={isLoading}
-                  text="Entrar"
-                  color={COLORS.primaryColor}
-                  action={() => submitForm()}
-                  buttonStyle={{
-                    width: '100%',
-                    height: 46
-                  }}
-                />
-                <Button
-                  buttonLoading={isLoading}
-                  text="Criar conta"
-                  color={COLORS.secondaryColor}
-                  action={onPressSingUp}
-                  buttonStyle={{
-                    width: '100%'
-                  }}
-                />
-              </ContentFooter>
-            </>
-          );
-        }}
+        {({ setFieldValue }) => (
+          <>
+            <TextInput
+              label="E-mail"
+              optional={false}
+              name="email"
+              textType="emailAddress"
+              keyboardType="email-address"
+              onPressButton={field => setFieldValue(field, '')}
+            />
+            <TextInput
+              label="Senha"
+              optional={false}
+              secure
+              name="password"
+              textType="password"
+              onPressButton={field => setFieldValue(field, '')}
+            />
+            <RememberPasswordBox onPress={onPressRememberButton}>
+              <ButtonCheck checked={rememberPassword} />
+              <RememberPasswordText>{'  '}Lembrar senha</RememberPasswordText>
+            </RememberPasswordBox>
+          </>
+        )}
       </Formik>
-    </ContentBody>
+    </Body>
+    <Footer>
+      <DefaultButton text="ENTRAR" inverted action={onPressLogin} />
+    </Footer>
+    {isLoading && <ModalLoading visible={isLoading} />}
   </Container>
 );
 
@@ -181,11 +111,11 @@ LoginComponent.propTypes = {
   onPressLogin: PropTypes.func.isRequired,
   formLoginSchema: PropTypes.shape({}).isRequired,
   formLoginInitialSchema: PropTypes.shape({}).isRequired,
-  onPressRecoverButton: PropTypes.func.isRequired,
-  showPassword: PropTypes.bool.isRequired,
-  onPressEyeIcon: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  onPressSingUp: PropTypes.func.isRequired
+  onPressRememberButton: PropTypes.func.isRequired,
+  rememberPassword: PropTypes.bool.isRequired,
+  formRef: PropTypes.shape({}).isRequired,
+  onSubmitForm: PropTypes.func.isRequired
 };
 
 export default LoginComponent;
