@@ -51,7 +51,7 @@ const OptionalInput = styled.Text`
 `;
 
 const getBorderColor = ({ error, isFocused, touched }) => {
-  if ((error && touched) || isFocused) {
+  if (error && (touched || isFocused)) {
     return COLORS.error;
   }
   if (isFocused && !error) {
