@@ -70,6 +70,7 @@ const ProfileCard = ({
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
   const [showMandala, setShowMandala] = React.useState(false);
+  const { class: graduationClass } = item?.graduation?.class ?? {};
 
   return (
     <Content>
@@ -117,7 +118,7 @@ const ProfileCard = ({
               coordinates: item?.loc?.coordinates,
               userLocation: userProfile?.loc?.coordinates
             })}km, ${item?.residence?.description}`}
-            graduation={item?.graduation?.class && `${item?.graduation?.class} @${item?.graduation?.description}`}
+            graduation={graduationClass && `${graduationClass} @${item?.graduation?.description}`}
           />
         )}
         <Mandala

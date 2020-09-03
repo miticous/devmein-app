@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Icon from '../../assets/components/Icon';
 import ProfileComponent from '../components/ProfileComponent';
 import { GET_PROFILE } from '../../graphQL/query';
+import { logout } from '../../services/auth';
 
 const ProfileContainer = ({ navigation }) => {
   React.useLayoutEffect(() => {
@@ -30,6 +31,7 @@ const ProfileContainer = ({ navigation }) => {
       user={data?.user}
       loading={loadingQuery}
       onPressEditButton={() => navigation.navigate('ProfileEdition')}
+      onPressLogout={() => logout({ navigation })}
     />
   );
 };
