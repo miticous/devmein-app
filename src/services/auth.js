@@ -1,6 +1,23 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { CommonActions } from '@react-navigation/native';
+
 import DropDownHolder from '../helpers/DropDownHolder';
+
+export const logout = async ({ navigation }) => {
+  try {
+    await AsyncStorage.removeItem('@jintou:token');
+
+    return navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Login' }]
+      })
+    );
+  } catch (error) {
+    return DropDownHolder.show('error', '', 'Erro desconhecido');
+  }
+};
 
 export const login = async ({ email, password, navigation, setFieldError, setIsLoading }) => {
   try {
@@ -69,6 +86,6 @@ export const validate = async ({ navigation, token }) => {
     }
     return navigation.replace('CreateProfile');
   } catch (error) {
-    return navigation.replace('Login');
+    return logout({ navigation });
   }
 };

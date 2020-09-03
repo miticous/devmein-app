@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { validate } from '../../services/auth';
+import { validate, logout } from '../../services/auth';
 
 const AuthContainer = ({ navigation }) => {
   useEffect(() => {
@@ -13,7 +13,7 @@ const AuthContainer = ({ navigation }) => {
         }
         return validate({ navigation, token });
       })
-      .catch(() => navigation.replace('Login'));
+      .catch(() => logout({ navigation }));
   }, []);
 
   return (

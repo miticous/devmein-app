@@ -6,6 +6,7 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
+import { onError } from 'apollo-link-error';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -35,7 +36,6 @@ const wsLink = new WebSocketLink({
 });
 
 const link = split(
-  // split based on operation type
   ({ query }) => {
     const definition = getMainDefinition(query);
     return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
@@ -43,6 +43,21 @@ const link = split(
   wsLink,
   httpLink
 );
+
+const linkError = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(
+      ({ message, locations, path }) =>
+        __DEV__ &&
+        DropDownHolder.show(
+          'error',
+          '',
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+    );
+  if (networkError)
+    DropDownHolder.show('error', '', 'O Jintou encontrou um problema ao conectar-se ao servidor');
+});
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem('@jintou:token');
@@ -56,7 +71,7 @@ const authLink = setContext(async (_, { headers }) => {
 
 const client = new ApolloClient({
   cache,
-  link: authLink.concat(link),
+  link: linkError.concat(authLink.concat(link)),
   name: 'react-web-client',
   version: '1.3',
   defaultOptions: {

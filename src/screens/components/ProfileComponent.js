@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { View, ActivityIndicator } from 'react-native';
+import { ScrollView, ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../assets/styles/colors';
 import DefaultButton from '../../assets/components/DefaultButton';
@@ -41,7 +41,7 @@ const Container = styled.View`
   margin: 0px 20px;
 `;
 
-const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
+const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLogout }) => {
   const [showMandala, setShowMandala] = React.useState(false);
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
@@ -50,9 +50,10 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
     texts: profile?.astral?.texts,
     shownTexts: profile?.shownTexts
   });
+  const { class: graduationClass } = profile?.graduation?.class ?? {};
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.backgroundColor }}>
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.backgroundColor }}>
       {loading && <ActivityIndicator size="large" />}
       <Container>
         {profile && (
@@ -93,8 +94,7 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
                 image={profile?.images?.[0]?.image}
                 residence={profile?.residence?.descriptionr}
                 graduation={
-                  profile?.graduation?.class &&
-                  `${profile?.graduation.class} @${profile?.graduation?.description}`
+                  graduationClass && `${graduationClass} @${profile?.graduation?.description}`
                 }
               />
             )}
@@ -111,8 +111,9 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton }) => {
           </>
         )}
         <DefaultButton text="EDITAR PERFIL" action={onPressEditButton} />
+        <DefaultButton text="Sair" action={onPressLogout} inverted />
       </Container>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -124,7 +125,8 @@ ProfileComponent.propTypes = {
   loading: PropTypes.bool.isRequired,
   profile: PropTypes.shape({}),
   user: PropTypes.shape({}).isRequired,
-  onPressEditButton: PropTypes.func.isRequired
+  onPressEditButton: PropTypes.func.isRequired,
+  onPressLogout: PropTypes.func.isRequired
 };
 
 export default ProfileComponent;
