@@ -23,19 +23,6 @@ const formInitialValues = {
   searchFriendAgeRange: [18, 26]
 };
 
-// const imagePickerOptions = {
-//   title: 'Selecione uma foto',
-//   storageOptions: {
-//     skipBackup: true,
-//     path: 'images',
-//     cameraRoll: true,
-//     waitUntilSaved: true
-//   },
-//   takePhotoButtonTitle: 'Tirar foto',
-//   chooseFromLibraryButtonTitle: 'Escolher na galeria',
-//   cancelButtonTitle: 'Cancelar'
-// };
-
 const normalizeFormValues = ({ formRef, data }) => {
   const { profile, user } = data ?? {};
 
@@ -65,7 +52,6 @@ const normalizeFormValues = ({ formRef, data }) => {
 const convertToDateTimePattern = ({ date, time }) => `${date} ${time}`;
 
 const onSubmitForm = async ({
-  navigation,
   formRef,
   activeItemIndex,
   setActiveItemIndex,
@@ -78,7 +64,7 @@ const onSubmitForm = async ({
       return DropDownHolder.show('warn', '', 'Adiciona uma imagem aí vai... Não custa nada!');
     }
     if (activeItemIndex === 7) {
-      await createProfile({
+      return await createProfile({
         variables: {
           ...formRef?.current?.values,
           birthday: convertToDateTimePattern({
@@ -88,10 +74,9 @@ const onSubmitForm = async ({
           profileStatus: 'CREATION'
         }
       });
-      return setActiveItemIndex(activeItemIndex + 1);
     }
     if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
-      await createProfile({
+      return await createProfile({
         variables: {
           ...formRef?.current?.values,
           birthday: convertToDateTimePattern({
@@ -101,7 +86,6 @@ const onSubmitForm = async ({
           profileStatus: 'COMPLETED'
         }
       });
-      return navigation.replace('Tabs');
     }
     return setActiveItemIndex(activeItemIndex + 1);
   } catch (error) {
@@ -120,6 +104,15 @@ const CreateProfileContainer = ({ navigation }) => {
 
   const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
+    onCompleted: () => {
+      if (activeItemIndex === 7) {
+        return setActiveItemIndex(activeItemIndex + 1);
+      }
+      if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
+        return navigation.replace('Tabs');
+      }
+      return false;
+    },
     refetchQueries: [{ query: GET_PROFILE_CREATION }]
   });
 
@@ -313,7 +306,8 @@ const CreateProfileContainer = ({ navigation }) => {
 
 CreateProfileContainer.propTypes = {
   navigation: PropTypes.shape({
-    setOptions: PropTypes.func.isRequired
+    setOptions: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired
   }).isRequired
 };
 
