@@ -69,7 +69,7 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
     return field.onChange(field.name)(maskedTime(text));
   }
 
-  if (field.name === 'email') {
+  if (field.name === 'email' || field.name === 'password' || field.name === 'confirmPassword') {
     return field.onChange(field.name)(text.replace(/\s/g, ''));
   }
 

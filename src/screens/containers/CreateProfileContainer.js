@@ -70,9 +70,13 @@ const onSubmitForm = async ({
   activeItemIndex,
   setActiveItemIndex,
   switcherRef,
-  createProfile
+  createProfile,
+  profile
 }) => {
   try {
+    if (activeItemIndex === 8 && profile?.images?.length === 0) {
+      return DropDownHolder.show('warn', '', 'Adiciona uma imagem aí vai... Não custa nada!');
+    }
     if (activeItemIndex === 7) {
       await createProfile({
         variables: {
@@ -268,7 +272,8 @@ const CreateProfileContainer = ({ navigation }) => {
           setActiveItemIndex,
           switcherRef,
           createProfile,
-          navigation
+          navigation,
+          profile: data?.profile
         })
       }
       onChangeInput={({ inputRef, text }) =>
