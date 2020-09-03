@@ -67,7 +67,7 @@ const LoginContainer = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <TouchableOpacity onPress={() => false} style={{ paddingHorizontal: 20 }}>
+        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
       )
@@ -105,7 +105,8 @@ const LoginContainer = ({ navigation }) => {
 LoginContainer.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    setOptions: PropTypes.func.isRequired
+    setOptions: PropTypes.func.isRequired,
+    pop: PropTypes.func.isRequired
   }).isRequired
 };
 

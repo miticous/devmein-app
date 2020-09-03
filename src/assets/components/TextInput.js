@@ -127,7 +127,7 @@ const TextInput = props => {
             placeholder={placeholder}
           />
         </InputArea>
-        {isFocused && (
+        {isFocused && onPressButton && (
           <ButtonArea onPress={() => onPressButton(field.name)}>
             <Icon name={buttonType} width={25} height={25} />
           </ButtonArea>

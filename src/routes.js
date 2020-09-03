@@ -7,13 +7,13 @@ import AuthContainer from './screens/containers/AuthContainer';
 import LoginContainer from './screens/containers/LoginContainer';
 import SignUpContainer from './screens/containers/SignUpContainer';
 import CreateProfileContainer from './screens/containers/CreateProfileContainer';
-import { COLORS } from './assets/styles/colors';
 import ProfileContainer from './screens/containers/ProfileContainer';
 import { headerTitleStyle, headerStyle, bottomTabBar } from './assets/styles';
 import ProfileEditionContainer from './screens/containers/ProfileEditionContainer';
 import TabIcon from './assets/components/TabIcon';
 import HomeContainer from './screens/containers/HomeContainer';
 import ChatContainer from './screens/containers/ChatContainer';
+import WelcomeContainer from './screens/containers/WelcomeContainer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -81,8 +81,13 @@ const Tabs = () => (
 );
 
 const Routes = () => (
-  <Stack.Navigator initialRouteName="Auth">
+  <Stack.Navigator initialRouteName="Welcome">
     <Stack.Screen name="Auth" component={AuthContainer} options={{ headerShown: false }} />
+    <Stack.Screen
+      name="Welcome"
+      component={WelcomeContainer}
+      options={{ headerLeft: false, headerShown: false }}
+    />
     <Stack.Screen
       name="Login"
       component={LoginContainer}
@@ -102,9 +107,10 @@ const Routes = () => (
       name="SignUp"
       component={SignUpContainer}
       options={{
-        title: 'Criar conta',
-        headerBackTitleVisible: false,
-        headerTintColor: COLORS.primaryColor
+        title: 'CADASTRO',
+        headerStyle,
+        headerTitleStyle,
+        gestureEnabled: false
       }}
     />
     <Stack.Screen

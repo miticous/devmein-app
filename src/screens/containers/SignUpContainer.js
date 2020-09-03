@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
+import { TouchableOpacity } from 'react-native';
 import { signUp } from '../../services/auth';
 import SignUpComponent from '../components/SignUpComponent';
+import Icon from '../../assets/components/Icon';
 
 const formInitialSchema = {
   name: '',
@@ -12,6 +14,8 @@ const formInitialSchema = {
 };
 
 const SignUpContainer = ({ navigation }) => {
+  const formRef = React.useRef();
+
   yup.setLocale({
     mixed: {
       default: 'Verifique os valores informados'
@@ -38,17 +42,32 @@ const SignUpContainer = ({ navigation }) => {
       .required('É necessário confirmar sua senha')
   });
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
+          <Icon name="Back" width={40} height={40} />
+        </TouchableOpacity>
+      )
+    });
+  }, []);
+
   return (
     <SignUpComponent
+      formRef={formRef}
       formLoginSchema={formSchema}
       formLoginInitialSchema={{ ...formInitialSchema }}
       onPressSignUp={async values => signUp({ ...values, navigation })}
+      onPressCreate={() => formRef?.current?.submitForm()}
     />
   );
 };
 
 SignUpContainer.propTypes = {
-  navigation: PropTypes.shape({}).isRequired
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
+    pop: PropTypes.func.isRequired
+  }).isRequired
 };
 
 export default SignUpContainer;

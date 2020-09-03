@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 const Container = styled.TouchableOpacity`
   height: 56px;
-  margin: 20px 0px;
+  margin-top: 20px;
   background-color: ${({ inverted }) => (inverted ? '#75396f' : '#ffffff')};
   border: 1px solid #e0e0e0;
   border-radius: 12px;
