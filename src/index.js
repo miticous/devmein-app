@@ -50,6 +50,8 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
       ({ message, locations, path }) =>
         __DEV__ &&
         DropDownHolder.show(
+          'error',
+          '',
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         )
     );
