@@ -1,0 +1,18 @@
+name: App Center
+on:
+  push:
+    branches:
+      - 'bugfix/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install node packages
+      run: yarn install
+    - name: Deploy to Codepush
+      uses: NishanthShankar/codepush-action@master
+      with:
+        args: release-react -d Alpha
+      env:
+        APPCENTER_ACCESS_TOKEN: ${{ secrets.APP_CENTER_TOKEN }}
