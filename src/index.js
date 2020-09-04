@@ -13,6 +13,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import SplashScreen from 'react-native-splash-screen';
+import codePush from 'react-native-code-push';
 import Routes from './routes';
 import DropDownHolder from './helpers/DropDownHolder';
 
@@ -81,6 +82,8 @@ const client = new ApolloClient({
   assumeImmutableResults: false
 });
 
+const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
+
 const App = () => {
   React.useEffect(() => {
     SplashScreen.hide();
@@ -102,4 +105,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default codePush(codePushOptions)(App);
