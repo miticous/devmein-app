@@ -11,7 +11,7 @@ jobs:
     - name: Install node packages
       run: yarn install
     - name: Deploy to Codepush
-      uses: mam17/Jintou
+      uses: NishanthShankar/codepush-action@master
       with:
         args: release-react -d Alpha
       env:
