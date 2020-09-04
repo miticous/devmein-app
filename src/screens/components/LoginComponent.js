@@ -9,7 +9,7 @@ import ButtonCheck from '../../assets/components/ButtonCheck';
 import DefaultButton from '../../assets/components/DefaultButton';
 import ModalLoading from '../../assets/components/ModalLoading';
 
-const Container = styled.KeyboardAvoidingView`
+const Container = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.backgroundColor};
   padding: 0px 20px;

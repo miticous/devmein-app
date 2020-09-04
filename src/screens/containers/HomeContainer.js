@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import Geolocation from '@react-native-community/geolocation';
-import { AppState, Alert } from 'react-native';
+import { AppState, Alert, Platform } from 'react-native';
 import { SEND_GEOLOCATION } from '../../graphQL/mutation';
 import { GET_HOME, GET_PROFILE } from '../../graphQL/query';
 import HomeComponent from '../components/HomeComponent';
@@ -30,7 +30,11 @@ const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) =
     ({ PERMISSION_DENIED }) => {
       if (PERMISSION_DENIED === 1) {
         setGeoLocation({ latitude: null, longitude: null, sent: false });
-        Geolocation.requestAuthorization();
+
+        if (Platform.OS === 'ios') {
+          Geolocation.requestAuthorization();
+        }
+
         return Alert.alert(
           'Não foi possível obter sua localização, voce deve ativá-la para usar o jiantou'
         );
@@ -39,7 +43,8 @@ const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) =
     },
     {
       maximumAge: 0,
-      timeout: 10000
+      timeout: 10000,
+      enableHighAccuracy: true
     }
   );
 };

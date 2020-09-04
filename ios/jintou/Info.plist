@@ -37,6 +37,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>CodePushDeploymentKey</key>
+	<string>8X6p67eph6-P1lLqtaGtTtCwP9SdPHsbD9wVF</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Precisamos de acesso á sua localizaçāo</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
