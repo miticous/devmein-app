@@ -1,4 +1,4 @@
-name: App Center
+name: AppCenter Action
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       uses: wzieba/AppCenter-Github-Action@v1.2.1
       with:
         appName: mam17/Jintou
-        token: a6d16a1b0149ecdafb7095e03137de39726ebe3e
+        token: ${{ secrets.APPCENTER_ACCESS_TOKEN }}
         group: Internal
         file: android/app/build/outputs/apk/release/app-release.apk
         notifyTesters: true
