@@ -53,7 +53,7 @@ const WelcomeComponent = ({ onPressSignUp, onPressLogin }) => (
         </AppReference>
       </Header>
       <Body>
-        <DefaultButton text="FAZER MEU CADRASTO" inverted action={onPressSignUp} />
+        <DefaultButton text="FAZER MEU CADASTRO" inverted action={onPressSignUp} />
         <DefaultButton text="JÁ TENHO UMA CONTA" action={onPressLogin} />
       </Body>
     </Content>
