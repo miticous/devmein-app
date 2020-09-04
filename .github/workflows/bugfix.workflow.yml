@@ -13,6 +13,6 @@ jobs:
     - name: Deploy to Codepush
       uses: NishanthShankar/codepush-action@master
       with:
-        args: release-react -d Alpha
+        args: release-react -a mam17/Jintou -d Alpha
       env:
         APPCENTER_ACCESS_TOKEN: ${{ secrets.APP_CENTER_TOKEN }}
