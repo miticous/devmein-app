@@ -44,7 +44,7 @@ const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) =
     {
       maximumAge: 0,
       timeout: 10000,
-      enableHighAccuracy: true
+      enableHighAccuracy: false
     }
   );
 };

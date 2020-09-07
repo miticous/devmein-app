@@ -28,3 +28,9 @@ jobs:
         group: Internal
         file: android/app/build/outputs/apk/release/app-release.apk
         notifyTesters: true
+    - name: Deploy to Codepush
+      uses: NishanthShankar/codepush-action@master
+      with:
+        args: release-react -a mam17/Jintou -d Alpha
+      env:
+        APPCENTER_ACCESS_TOKEN: ${{ secrets.APP_CENTER_TOKEN }}
