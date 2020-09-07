@@ -175,6 +175,7 @@ export const GET_PROFILES = gql`
 export const GET_CHAT = gql`
   query GET_CHAT($matchId: String!) {
     chat(matchId: $matchId) {
+      _id
       participant {
         _id
         name

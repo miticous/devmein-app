@@ -1,8 +1,9 @@
 import gql from 'graphql-tag';
 
 export const CHAT_SUB = gql`
-  subscription newMessage {
-    newMessage {
+  subscription newMessage($matchId: String!) {
+    newMessage(matchId: $matchId) {
+      _id
       participant {
         _id
         name
