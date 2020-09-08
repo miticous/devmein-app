@@ -1,0 +1,1 @@
+This sofware has developed for UniAstro CNPJ 19.695.748/0001-84. Any sale of this source code for third party will result in crime against of my intellectual property and a new legal action could be applied.
