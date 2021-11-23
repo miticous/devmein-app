@@ -7,7 +7,7 @@ your *setup* or those shits that no sense we publish on instagram, chat mensage.
   maintained 100% by the community... The mobile app that consumes this app can be found [here](https://github.com/miticous/devmein-app)
 
 
-![App](/docs/images/example.gif)
+![App](/docs/images/showcase.gif)
 
 
 #### What we have today
