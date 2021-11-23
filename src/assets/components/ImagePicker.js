@@ -1,4 +1,4 @@
-import RNImagePicker from 'react-native-image-picker';
+import * as RNImagePicker from 'react-native-image-picker';
 import { Platform } from 'react-native';
 
 //   const openPicker = () =>
@@ -19,16 +19,18 @@ import { Platform } from 'react-native';
 
 const ImagePicker = {
   show: (options, { onError, onSuccess }) =>
-    RNImagePicker.showImagePicker(options, response => {
+    RNImagePicker.launchImageLibrary(options, response => {
       if (response.error) {
         return onError();
       }
       if (response.didCancel) {
         return false;
       }
-      const path = Platform.OS === 'ios' ? response.uri.replace('file//', '') : response.uri;
 
-      return onSuccess({ path, file: response.data });
+      const path =
+        Platform.OS === 'ios' ? response.assets[0].uri.replace('file://', '') : response.uri;
+
+      return onSuccess({ path, file: response.assets[0].base64 });
     })
 };
 

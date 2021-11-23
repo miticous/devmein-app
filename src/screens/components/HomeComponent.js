@@ -9,9 +9,11 @@ import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import Carousel from '../../assets/components/Carousel';
 import ChatCard from '../../assets/components/ChatCard';
+import { StatusBarHeight } from '../../helpers/StatusBarHeight';
 
 const Container = styled.View`
   flex: 1;
+  padding-top: ${StatusBarHeight}px;
   background-color: ${COLORS.backgroundColor};
 `;
 const Content = styled.View`
@@ -87,7 +89,8 @@ HomeComponent.propTypes = {
   isProfilesLoading: PropTypes.bool.isRequired,
   userProfile: PropTypes.shape({}).isRequired,
   onPressHeaderLeft: PropTypes.func.isRequired,
-  matches: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  matches: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onPressCarouselItem: PropTypes.func.isRequired
 };
 
 export default HomeComponent;

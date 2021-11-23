@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { CommonActions } from '@react-navigation/native';
+import Config from 'react-native-config';
 
 import DropDownHolder from '../helpers/DropDownHolder';
 
@@ -27,7 +28,7 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
       data: { token, profileStatus, _id }
     } = await axios({
       method: 'post',
-      url: 'https://nifty-memory-284816.rj.r.appspot.com/users/login',
+      url: `${Config.API_BASE_URL}/users/login`,
       data: {
         email,
         password
@@ -56,7 +57,7 @@ export const signUp = async ({ email, password, navigation }) => {
   try {
     await axios({
       method: 'post',
-      url: 'https://nifty-memory-284816.rj.r.appspot.com/users',
+      url: `${Config.API_BASE_URL}/users`,
       data: {
         email,
         password
@@ -77,7 +78,7 @@ export const validate = async ({ navigation, token }) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: 'https://nifty-memory-284816.rj.r.appspot.com/users/auth',
+      url: `${Config.API_BASE_URL}/users/auth`,
       headers: { Authorization: `Bearer ${token}` }
     });
 
