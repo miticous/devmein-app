@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "br.com.jintou"
+        applicationId "br.com.devmein"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 14

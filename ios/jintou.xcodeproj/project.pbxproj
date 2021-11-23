@@ -627,7 +627,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = br.com.jintou;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.devmein;
 				PRODUCT_NAME = jintou;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -647,7 +647,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = br.com.jintou;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.devmein;
 				PRODUCT_NAME = jintou;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
