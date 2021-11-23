@@ -33,13 +33,7 @@ const Tabs = () => (
       initialParams={{ searchType: 'LOVE' }}
       options={{
         tabBarIcon: ({ focused }) => (
-          <TabIcon
-            focused={focused}
-            icon="Love"
-            label="Amor"
-            backgroundColor="#ffe3f0"
-            color="#D25890"
-          />
+          <TabIcon focused={focused} icon="Love" backgroundColor="#ffe3f0" color="#D25890" />
         ),
         tabBarLabel: () => false
       }}

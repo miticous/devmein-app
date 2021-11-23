@@ -1,9 +1,13 @@
+import { NativeModules } from 'react-native';
 import Reactotron from 'reactotron-react-native';
-import { reactotronRedux } from 'reactotron-redux';
 
-const reactotron = Reactotron.configure()
-  .use(reactotronRedux())
+const reactotron = Reactotron.configure({
+  host: NativeModules.SourceCode.scriptURL.split('://')[1].split(':')[0]
+})
   .useReactNative()
   .connect();
+
+// eslint-disable-next-line no-console
+console.tron = reactotron;
 
 export default reactotron;

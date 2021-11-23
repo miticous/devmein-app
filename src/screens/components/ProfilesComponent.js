@@ -6,10 +6,12 @@ import { COLORS } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import ProfileCard from '../../assets/components/ProfileCard';
+import { StatusBarHeight } from '../../helpers/StatusBarHeight';
 
 const Container = styled.View`
   flex: 1;
   position: relative;
+  padding-top: ${StatusBarHeight}px;
   background-color: ${COLORS.backgroundColor};
 `;
 

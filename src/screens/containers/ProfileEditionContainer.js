@@ -13,16 +13,21 @@ import { ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE, EDIT_PROFILE } from '../../gra
 import { getCitiesByName } from '../../services/google-apis';
 
 const imagePickerOptions = {
-  title: 'Selecione uma foto',
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-    cameraRoll: true,
-    waitUntilSaved: true
-  },
-  takePhotoButtonTitle: 'Tirar foto',
-  chooseFromLibraryButtonTitle: 'Escolher na galeria',
-  cancelButtonTitle: 'Cancelar'
+  maxHeight: 200,
+  maxWidth: 200,
+  selectionLimit: 0,
+  mediaType: 'photo',
+  includeBase64: true
+  // title: 'Selecione uma foto',
+  // storageOptions: {
+  //   skipBackup: true,
+  //   path: 'images',
+  //   cameraRoll: true,
+  //   waitUntilSaved: true
+  // },
+  // takePhotoButtonTitle: 'Tirar foto',
+  // chooseFromLibraryButtonTitle: 'Escolher na galeria',
+  // cancelButtonTitle: 'Cancelar'
 };
 
 export const onPressImage = async ({ addProfileImage }) => {

@@ -20,13 +20,13 @@ export const headerTitleStyle = {
 };
 export const bottomTabBar = {
   style: {
+    position: 'absolute',
+    marginBottom: 30,
+    right: 20,
+    left: 20,
     height: 60,
     borderRadius: 32,
     backgroundColor: COLORS.white,
-    position: 'absolute',
-    left: 20,
-    right: 20,
-    bottom: 20,
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 20,
     shadowColor: 'black',

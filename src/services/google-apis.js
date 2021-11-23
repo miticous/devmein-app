@@ -1,8 +1,11 @@
 import axios from 'axios';
+import Config from 'react-native-config';
 
 const getCitiesByName = async ({ name, type }) => {
-  const key = 'AIzaSyAsceWUlXxulQJohZddfRPstfcNl7FcE2s';
+  const key = Config.MAPS_API_KEY;
+
   const sessionToken = '12381247512';
+
   await new Promise(resolve =>
     setTimeout(() => {
       resolve();
@@ -34,7 +37,8 @@ const getCitiesByName = async ({ name, type }) => {
 };
 
 const getCitieById = async ({ placeId, state, setState, setLoading, label }) => {
-  const key = 'AIzaSyAsceWUlXxulQJohZddfRPstfcNl7FcE2s';
+  const key = Config.MAPS_API_KEY;
+
   setLoading(true);
 
   const {

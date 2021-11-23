@@ -2,7 +2,7 @@ PODS:
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
-    - React
+    - React-Core
   - CodePush (6.3.0):
     - Base64 (~> 1.1)
     - JWT (~> 3.0.0-beta.12)
@@ -27,7 +27,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - JWT (3.0.0-beta.12):
+  - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
@@ -198,8 +198,8 @@ PODS:
     - React
   - react-native-geolocation (2.0.2):
     - React
-  - react-native-image-picker (2.3.0):
-    - React
+  - react-native-image-picker (4.3.0):
+    - React-Core
   - react-native-safe-area-context (0.7.3):
     - React
   - react-native-slider (2.0.8):
@@ -405,14 +405,14 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: 60a475b2edfe7707deda00278cb8ce9bfe70e669
+  BVLinearGradient: 48f1964a78bddfae412d1aac5f386c2949fe0306
   CodePush: 69186fd1143f7e5e5c6f65383cf14f4927e28213
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: aaeaf388755e4f29cd74acbc9e3b8da6d807c37f
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
+  JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -424,7 +424,7 @@ SPEC CHECKSUMS:
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-config: 9a061347e0136fdb32d43a34d60999297d672361
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
-  react-native-image-picker: c8a4faf0e75ef3619f215463394388f1c222236b
+  react-native-image-picker: 869530859570f2af86ae57bc48886a5e2367a825
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -450,6 +450,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: b9f783d9ed36e9e327bc407617bbfd5c6b6bac20
+PODFILE CHECKSUM: 63841f5a05216a9010f66b496020260c6f73640c
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.2
