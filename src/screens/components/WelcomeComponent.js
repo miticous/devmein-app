@@ -45,13 +45,6 @@ const Body = styled.View`
 const WelcomeComponent = ({ onPressSignUp, onPressLogin }) => (
   <Container>
     <Content>
-      <Header>
-        <Image source={WelcomeImage} resizeMode="contain" />
-        <AppReference>
-          <AppReferenceImage source={JintouImage} resizeMode="contain" />
-          <AppReferenceText>Encontre pessoas que tenham a ver com você</AppReferenceText>
-        </AppReference>
-      </Header>
       <Body>
         <DefaultButton text="FAZER MEU CADASTRO" inverted action={onPressSignUp} />
         <DefaultButton text="JÁ TENHO UMA CONTA" action={onPressLogin} />
