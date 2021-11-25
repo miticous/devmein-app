@@ -30,12 +30,12 @@ const Title = styled.Text`
 `;
 
 const normalizeCarouselData = ({ matches }) =>
-  matches?.map(match => ({
+  matches?.map((match) => ({
     _id: match?._id,
     image: match?.profileMatched?.images?.[0].image,
     name: match?.profileMatched?.name,
     type: match?.type,
-    birthday: match?.profileMatched?.birthday
+    birthday: match?.profileMatched?.birthday,
   }));
 
 const HomeComponent = ({
@@ -43,7 +43,7 @@ const HomeComponent = ({
   userProfile,
   onPressHeaderLeft,
   matches,
-  onPressCarouselItem
+  onPressCarouselItem,
 }) => (
   <Container>
     <ProfileHeader
@@ -90,7 +90,7 @@ HomeComponent.propTypes = {
   userProfile: PropTypes.shape({}).isRequired,
   onPressHeaderLeft: PropTypes.func.isRequired,
   matches: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  onPressCarouselItem: PropTypes.func.isRequired
+  onPressCarouselItem: PropTypes.func.isRequired,
 };
 
 export default HomeComponent;

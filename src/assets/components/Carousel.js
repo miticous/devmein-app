@@ -48,7 +48,7 @@ const Carousel = ({ data, onPressItem }) => (
   <Container>
     <FlatList
       data={data}
-      keyExtractor={item => item?._id}
+      keyExtractor={(item) => item?._id}
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ paddingLeft: 20 }}
@@ -66,14 +66,14 @@ const Carousel = ({ data, onPressItem }) => (
                 width: '100%',
                 height: '100%',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <CircledItem size={83} color="white">
                 <CircledItem size={70}>
                   <Image
                     source={{
-                      uri: item?.image
+                      uri: item?.image,
                     }}
                     resizeMode="cover"
                   />
@@ -101,7 +101,7 @@ const Carousel = ({ data, onPressItem }) => (
 );
 
 Carousel.propTypes = {
-  data: PropTypes.shape({}).isRequired
+  data: PropTypes.shape({}).isRequired,
 };
 
 export default Carousel;

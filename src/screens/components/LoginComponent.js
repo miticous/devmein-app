@@ -59,7 +59,7 @@ const LoginComponent = ({
   formLoginInitialSchema,
   onPressRememberButton,
   rememberPassword,
-  formRef
+  formRef,
 }) => (
   <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'} enabled>
     <Header>
@@ -82,7 +82,7 @@ const LoginComponent = ({
               name="email"
               textType="emailAddress"
               keyboardType="email-address"
-              onPressButton={field => setFieldValue(field, '')}
+              onPressButton={(field) => setFieldValue(field, '')}
             />
             <TextInput
               label="Senha"
@@ -90,7 +90,7 @@ const LoginComponent = ({
               secure
               name="password"
               textType="password"
-              onPressButton={field => setFieldValue(field, '')}
+              onPressButton={(field) => setFieldValue(field, '')}
             />
             <RememberPasswordBox onPress={onPressRememberButton}>
               <ButtonCheck checked={rememberPassword} />
@@ -115,7 +115,7 @@ LoginComponent.propTypes = {
   onPressRememberButton: PropTypes.func.isRequired,
   rememberPassword: PropTypes.bool.isRequired,
   formRef: PropTypes.shape({}).isRequired,
-  onSubmitForm: PropTypes.func.isRequired
+  onSubmitForm: PropTypes.func.isRequired,
 };
 
 export default LoginComponent;

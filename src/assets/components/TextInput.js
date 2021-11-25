@@ -6,8 +6,8 @@ import VMasker from 'vanilla-masker';
 import { COLORS } from '../styles/colors';
 import Icon from './Icon';
 
-const maskedDate = text => VMasker.toPattern(text, '99/99/9999');
-const maskedTime = text => VMasker.toPattern(text, '99:99');
+const maskedDate = (text) => VMasker.toPattern(text, '99/99/9999');
+const maskedTime = (text) => VMasker.toPattern(text, '99:99');
 
 const Container = styled.View`
   margin: 5px 1px;
@@ -82,11 +82,11 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
   return setTimer(
     setTimeout(() => {
       onChange({ text, inputRef: field.name });
-    }, 1000)
+    }, 1000),
   );
 };
 
-const TextInput = props => {
+const TextInput = (props) => {
   const {
     placeholder,
     name,
@@ -98,7 +98,7 @@ const TextInput = props => {
     textType,
     keyboardType,
     buttonType,
-    secure
+    secure,
   } = props;
   const [isFocused, setIsFocused] = useState(false);
   const [field, meta, helpers] = useField(name);
@@ -123,7 +123,7 @@ const TextInput = props => {
             secureTextEntry={secure}
             textContentType={textType}
             keyboardType={keyboardType}
-            onChangeText={text => onChangeText({ field, onChange, text, timer, setTimer })}
+            onChangeText={(text) => onChangeText({ field, onChange, text, timer, setTimer })}
             placeholder={placeholder}
           />
         </InputArea>
@@ -145,7 +145,7 @@ TextInput.defaultProps = {
   containerStyle: null,
   textType: null,
   keyboardType: null,
-  secure: false
+  secure: false,
 };
 
 TextInput.propTypes = {
@@ -159,7 +159,7 @@ TextInput.propTypes = {
   containerStyle: PropTypes.shape({}),
   textType: PropTypes.string,
   keyboardType: PropTypes.string,
-  secure: PropTypes.bool
+  secure: PropTypes.bool,
 };
 
 export default TextInput;

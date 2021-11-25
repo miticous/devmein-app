@@ -14,7 +14,7 @@ export const MercurioPlanTexts = ['EMOTION', 'INSTINCT', 'INTELLECT', 'PERSONALI
 
 export const checkTextAvalability = ({ plan, textType }) => {
   if (plan === 'MERCURIO') {
-    const isAvailableText = MercurioPlanTexts.some(_plan => _plan === textType);
+    const isAvailableText = MercurioPlanTexts.some((_plan) => _plan === textType);
 
     return isAvailableText;
   }
@@ -27,7 +27,7 @@ export const checkTextAvalability = ({ plan, textType }) => {
 };
 
 export const isTextChecked = ({ checkedItems, textType }) => {
-  const _isTextChecked = checkedItems?.some(checkedItem => checkedItem === textType);
+  const _isTextChecked = checkedItems?.some((checkedItem) => checkedItem === textType);
 
   return _isTextChecked;
 };
@@ -61,12 +61,12 @@ const ProfileEditionComponent = ({
   onSubmitForm,
   onPressInputButton,
   user,
-  onPressTextsCardItem
+  onPressTextsCardItem,
 }) => (
   <Container nestedScrollEnabled keyboardShouldPersistTaps="always">
     <Content>
       <ImageGrid
-        data={profile?.images?.map(image => image?.image)}
+        data={profile?.images?.map((image) => image?.image)}
         onPressImage={onPressImage}
         onPressRemove={onPressRemove}
       />
@@ -163,12 +163,12 @@ const ProfileEditionComponent = ({
             contentContainerStyle={{
               paddingHorizontal: 20,
               marginVertical: 20,
-              height: 300
+              height: 300,
             }}
             renderItem={({ item }) => {
               const isItemAvailable = checkTextAvalability({
                 plan: user?.plan,
-                textType: item?.type
+                textType: item?.type,
               });
               const isItemChecked =
                 user?.plan === 'MERCURIO'
@@ -193,7 +193,7 @@ const ProfileEditionComponent = ({
 );
 
 ProfileEditionComponent.defaultProps = {
-  sugestions: null
+  sugestions: null,
 };
 
 ProfileEditionComponent.propTypes = {
@@ -210,7 +210,7 @@ ProfileEditionComponent.propTypes = {
   onPressSugestion: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
   onPressInputButton: PropTypes.func.isRequired,
-  onPressTextsCardItem: PropTypes.func.isRequired
+  onPressTextsCardItem: PropTypes.func.isRequired,
 };
 
 export default ProfileEditionComponent;

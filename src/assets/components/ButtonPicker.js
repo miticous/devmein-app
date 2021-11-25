@@ -32,7 +32,7 @@ const Label = styled.Text`
 
 const renderOptions = ({ options, activeId, onSelect }) => {
   if (not(isEmpty(options))) {
-    return options.map(option => {
+    return options.map((option) => {
       const { label, id } = option;
       const isActive = activeId === id;
 
@@ -56,7 +56,7 @@ const ButtonPicker = ({ options, name }) => {
       {renderOptions({
         options,
         activeId: field.value,
-        onSelect: value => helpers.setValue(value)
+        onSelect: (value) => helpers.setValue(value),
       })}
     </View>
   );
@@ -64,7 +64,7 @@ const ButtonPicker = ({ options, name }) => {
 
 ButtonPicker.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
 };
 
 export default ButtonPicker;

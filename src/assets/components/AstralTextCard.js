@@ -53,7 +53,7 @@ AstralTextCard.propTypes = {
   checked: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
-  onPressCard: PropTypes.func.isRequired
+  onPressCard: PropTypes.func.isRequired,
 };
 
 export default AstralTextCard;

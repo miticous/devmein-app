@@ -17,11 +17,11 @@ const ButtonCheck = ({ checked }) => (
 );
 
 ButtonCheck.defaultProps = {
-  checked: false
+  checked: false,
 };
 
 ButtonCheck.propTypes = {
-  checked: PropTypes.bool
+  checked: PropTypes.bool,
 };
 
 export default ButtonCheck;

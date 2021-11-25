@@ -11,8 +11,8 @@ const WelcomeContainer = ({ navigation }) => (
 
 WelcomeContainer.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired
-  }).isRequired
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default WelcomeContainer;

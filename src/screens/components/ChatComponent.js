@@ -107,7 +107,7 @@ const Button = styled.TouchableOpacity`
 `;
 
 const renderMessages = ({ messages, userProfile, receiverTimedMessage }) =>
-  messages?.map(message => {
+  messages?.map((message) => {
     const mySelf = message?.senderId === userProfile?._id;
 
     return (
@@ -136,7 +136,7 @@ const ChatComponent = ({
   matchType,
   messagesBodyRef,
   onLayout,
-  receiverTimedMessage
+  receiverTimedMessage,
 }) => (
   <Container>
     <ContentDetached />

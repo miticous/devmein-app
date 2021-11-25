@@ -20,7 +20,7 @@ const getUsersDistance = ({ coordinates, userLocation }) => {
   ) {
     const distance = getDistance(
       { latitude: userLocation[1], longitude: userLocation[0] },
-      { latitude: coordinates[1], longitude: coordinates[0] }
+      { latitude: coordinates[1], longitude: coordinates[0] },
     );
     const kilometersDistance = distance / 1000;
 
@@ -32,7 +32,7 @@ const getUsersDistance = ({ coordinates, userLocation }) => {
 export const onPressDetailsPrev = ({
   activeTextsIndex,
   setShowProfileDetails,
-  setActiveTextsIndex
+  setActiveTextsIndex,
 }) =>
   activeTextsIndex === 0 ? setShowProfileDetails(false) : setActiveTextsIndex(activeTextsIndex - 1);
 
@@ -43,7 +43,7 @@ export const onPressDetailsNext = ({
   setShowProfileDetails,
   setShowHelperFinal,
   setShowHelperInitial,
-  tutorialDone
+  tutorialDone,
 }) => {
   if (!tutorialDone) {
     setShowHelperInitial(false);
@@ -65,7 +65,7 @@ const ProfileCard = ({
   showHelperInitial,
   showHelperFinal,
   tutorialDone,
-  item
+  item,
 }) => {
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
@@ -91,14 +91,14 @@ const ProfileCard = ({
                 setShowProfileDetails,
                 setShowHelperFinal,
                 setShowHelperInitial,
-                tutorialDone
+                tutorialDone,
               })
             }
             onPressPrev={() =>
               onPressDetailsPrev({
                 activeTextsIndex,
                 setShowProfileDetails,
-                setActiveTextsIndex
+                setActiveTextsIndex,
               })
             }
           />
@@ -116,7 +116,7 @@ const ProfileCard = ({
             image={item?.images?.[0]?.image}
             residence={`${getUsersDistance({
               coordinates: item?.loc?.coordinates,
-              userLocation: userProfile?.loc?.coordinates
+              userLocation: userProfile?.loc?.coordinates,
             })}km, ${item?.residence?.description}`}
             graduation={graduationClass && `${graduationClass} @${item?.graduation?.description}`}
           />
@@ -125,9 +125,7 @@ const ProfileCard = ({
           image={item?.astral?.mandala}
           visible={showMandala}
           thirtyText={item?.birthplace?.description}
-          secondText={moment(Number(item?.birthday))
-            .utc()
-            .format('DD/MM/YYYY HH:mm')}
+          secondText={moment(Number(item?.birthday)).utc().format('DD/MM/YYYY HH:mm')}
           onPressBack={() => setShowMandala(false)}
         />
       </AnimatedProfileBox>
@@ -144,7 +142,7 @@ ProfileCard.propTypes = {
   onMoveTop: PropTypes.func.isRequired,
   showHelperInitial: PropTypes.bool.isRequired,
   showHelperFinal: PropTypes.bool.isRequired,
-  tutorialDone: PropTypes.bool.isRequired
+  tutorialDone: PropTypes.bool.isRequired,
 };
 
 export default ProfileCard;

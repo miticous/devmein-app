@@ -8,15 +8,15 @@ export const headerStyle = {
   height: 90,
   shadowRadius: 40,
   shadowOffset: {
-    height: 8
-  }
+    height: 8,
+  },
 };
 export const headerTitleStyle = {
   fontStyle: 'normal',
   fontWeight: 'bold',
   letterSpacing: 2,
   fontSize: 18,
-  lineHeight: 18
+  lineHeight: 18,
 };
 export const bottomTabBar = {
   style: {
@@ -30,13 +30,13 @@ export const bottomTabBar = {
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 20,
     shadowColor: 'black',
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   tabStyle: {
-    margin: 8
+    margin: 8,
   },
   labelStyle: {
     color: '#D25890',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 };

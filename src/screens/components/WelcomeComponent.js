@@ -62,7 +62,7 @@ const WelcomeComponent = ({ onPressSignUp, onPressLogin }) => (
 
 WelcomeComponent.propTypes = {
   onPressSignUp: PropTypes.func.isRequired,
-  onPressLogin: PropTypes.func.isRequired
+  onPressLogin: PropTypes.func.isRequired,
 };
 
 export default WelcomeComponent;

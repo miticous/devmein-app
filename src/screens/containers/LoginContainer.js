@@ -9,24 +9,18 @@ import Icon from '../../assets/components/Icon';
 
 yup.setLocale({
   mixed: {
-    default: 'Verifique os valores informados'
+    default: 'Verifique os valores informados',
   },
   string: {
     // eslint-disable-next-line no-template-curly-in-string
     min: 'Deve conter no mínimo ${min} caracteres',
-    matches: 'Verifique os valores informados'
-  }
+    matches: 'Verifique os valores informados',
+  },
 });
 
 const formLoginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email()
-    .required('Digite um email válido'),
-  password: yup
-    .string()
-    .min(6)
-    .required('Digite uma senha válida')
+  email: yup.string().email().required('Digite um email válido'),
+  password: yup.string().min(6).required('Digite uma senha válida'),
 });
 
 const onSubmitForm = async ({
@@ -35,7 +29,7 @@ const onSubmitForm = async ({
   rememberPassword,
   setFieldError,
   navigation,
-  setIsLoading
+  setIsLoading,
 }) => {
   try {
     await login({ email, password, setFieldError, navigation, setIsLoading });
@@ -43,7 +37,7 @@ const onSubmitForm = async ({
     if (rememberPassword) {
       return AsyncStorage.multiSet([
         ['@jintou:storedEmail', email],
-        ['@jintou:storedPassword', password]
+        ['@jintou:storedPassword', password],
       ]);
     }
 
@@ -61,7 +55,7 @@ const LoginContainer = ({ navigation }) => {
 
   const formLoginInitialSchema = {
     email: '',
-    password: ''
+    password: '',
   };
 
   React.useLayoutEffect(() => {
@@ -70,12 +64,12 @@ const LoginContainer = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
-      )
+      ),
     });
   }, []);
 
   useEffect(() => {
-    AsyncStorage.multiGet(['@jintou:storedEmail', '@jintou:storedPassword']).then(res => {
+    AsyncStorage.multiGet(['@jintou:storedEmail', '@jintou:storedPassword']).then((res) => {
       const email = res?.[0]?.[1];
       const password = res?.[1]?.[1];
 
@@ -106,8 +100,8 @@ LoginContainer.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
-    pop: PropTypes.func.isRequired
-  }).isRequired
+    pop: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default LoginContainer;

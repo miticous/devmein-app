@@ -83,7 +83,7 @@ const onPressResumeBox = ({ pageX, onPressNext, onPressPrev, isScrolling }) => {
 const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPrev }) => {
   const [fullScreen, setFullScreen] = React.useState({
     visible: false,
-    initialIndex: 0
+    initialIndex: 0,
   });
 
   const [isScrolling, setIsScrolling] = React.useState(false);
@@ -114,12 +114,12 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
         </DetailsBoxHeader>
         <DetailsBoxSubtitle>{texts?.[activeIndex]?.subtitle}</DetailsBoxSubtitle>
         <DetailsBoxResumeBox
-          onTouchEnd={e =>
+          onTouchEnd={(e) =>
             onPressResumeBox({
               pageX: e?.nativeEvent?.pageX,
               onPressNext,
               onPressPrev,
-              isScrolling
+              isScrolling,
             })
           }
           showsVerticalScrollIndicator={false}
@@ -148,12 +148,12 @@ ProfileDetailsBox.propTypes = {
     PropTypes.shape({
       title: PropTypes.string.isRequired,
       subtitle: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired
-    })
+      text: PropTypes.string.isRequired,
+    }),
   ).isRequired,
   activeIndex: PropTypes.number.isRequired,
   onPressNext: PropTypes.func.isRequired,
-  onPressPrev: PropTypes.func.isRequired
+  onPressPrev: PropTypes.func.isRequired,
 };
 
 export default ProfileDetailsBox;

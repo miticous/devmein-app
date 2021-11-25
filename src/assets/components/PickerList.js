@@ -23,15 +23,15 @@ const ItemText = styled.Text`
 `;
 
 const normalizeData = ({ data, itemsIdKey, itemsTitleKey }) => {
-  const newData = data?.map(item => ({
+  const newData = data?.map((item) => ({
     id: item[itemsIdKey],
-    title: item[itemsTitleKey]
+    title: item[itemsTitleKey],
   }));
   return newData;
 };
 
 const isItemChecked = ({ item, checkedItemId }) =>
-  checkedItemId?.some(checked => checked === item.id);
+  checkedItemId?.some((checked) => checked === item.id);
 
 const renderList = ({
   data,
@@ -41,7 +41,7 @@ const renderList = ({
   itemsIdKey,
   itemsTitleKey,
   multipleChoices,
-  hasError
+  hasError,
 }) => {
   const normalizedData = normalizeData({ data, itemsIdKey, itemsTitleKey });
 
@@ -74,7 +74,7 @@ const PickerList = ({
   onPressItem,
   referencedInputName,
   multipleChoices,
-  hasError
+  hasError,
 }) => (
   <>
     {data && data?.length && (
@@ -87,7 +87,7 @@ const PickerList = ({
           itemsTitleKey,
           onPressItem,
           multipleChoices,
-          hasError
+          hasError,
         })}
       </Container>
     )}
@@ -96,7 +96,7 @@ const PickerList = ({
 
 PickerList.defaultProps = {
   hasError: false,
-  checkedItemId: null
+  checkedItemId: null,
 };
 
 PickerList.propTypes = {
@@ -107,7 +107,7 @@ PickerList.propTypes = {
   onPressItem: PropTypes.func.isRequired,
   referencedInputName: PropTypes.string.isRequired,
   multipleChoices: PropTypes.bool.isRequired,
-  hasError: PropTypes.bool
+  hasError: PropTypes.bool,
 };
 
 export default PickerList;

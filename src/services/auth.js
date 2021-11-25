@@ -12,8 +12,8 @@ export const logout = async ({ navigation }) => {
     return navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'Welcome' }]
-      })
+        routes: [{ name: 'Welcome' }],
+      }),
     );
   } catch (error) {
     return DropDownHolder.show('error', '', 'Erro desconhecido');
@@ -25,25 +25,28 @@ export const login = async ({ email, password, navigation, setFieldError, setIsL
     setIsLoading(true);
 
     const {
-      data: { token, profileStatus, _id }
+      data: { token, profileStatus, _id },
     } = await axios({
       method: 'post',
       url: `${Config.API_BASE_URL}/users/login`,
       data: {
         email,
-        password
-      }
+        password,
+      },
     });
 
-    await AsyncStorage.multiSet([['@jintou:token', token], ['@jintou:userId', _id]]);
+    await AsyncStorage.multiSet([
+      ['@jintou:token', token],
+      ['@jintou:userId', _id],
+    ]);
     if (profileStatus === 'COMPLETED') {
       return navigation.replace('Tabs');
     }
     return navigation.replace('CreateProfile');
   } catch ({
     response: {
-      data: { error }
-    }
+      data: { error },
+    },
   }) {
     setIsLoading(false);
     setFieldError('password', 'Usuário e/ou senha inválidos');
@@ -60,15 +63,15 @@ export const signUp = async ({ email, password, navigation }) => {
       url: `${Config.API_BASE_URL}/users`,
       data: {
         email,
-        password
-      }
+        password,
+      },
     });
     DropDownHolder.show('success', '', 'Usuário criado com sucesso');
     return navigation.replace('Login');
   } catch ({
     response: {
-      data: { error }
-    }
+      data: { error },
+    },
   }) {
     return DropDownHolder.show('error', '', 'Usuario ja existe');
   }
@@ -79,7 +82,7 @@ export const validate = async ({ navigation, token }) => {
     const { data } = await axios({
       method: 'get',
       url: `${Config.API_BASE_URL}/users/auth`,
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (data === 'COMPLETED') {

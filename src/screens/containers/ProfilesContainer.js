@@ -16,8 +16,8 @@ const onMoveTop = async ({ setTutorialDone, tutorialDone, like, id }) => {
 
   await like({
     variables: {
-      userLikedId: id
-    }
+      userLikedId: id,
+    },
   });
 };
 
@@ -29,8 +29,8 @@ const onMoveBottom = async ({ setTutorialDone, tutorialDone, unlike, id }) => {
 
   await unlike({
     variables: {
-      userUnlikedId: id
-    }
+      userUnlikedId: id,
+    },
   });
 };
 
@@ -52,26 +52,26 @@ const ProfilesContainer = ({ navigation, route }) => {
 
   const { data: profileQuery } = useQuery(GET_PROFILE, {
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-first',
   });
 
   const { data: cachedData } = client.cache;
 
   const { data, loading: loadingQuery } = useQuery(GET_PROFILES, {
     variables: {
-      searchType: route?.params?.searchType
+      searchType: route?.params?.searchType,
     },
-    skip: !cachedData?.data?.ROOT_QUERY?.geoLocationSent
+    skip: !cachedData?.data?.ROOT_QUERY?.geoLocationSent,
   });
 
   const [like] = useMutation(LIKE, {
     variables: {
-      type: route?.params?.searchType
+      type: route?.params?.searchType,
     },
     onCompleted: ({ likeSomeone }) => {
       if (likeSomeone?.name) {
         Alert.alert('Novo match!', `Você deu match com ${likeSomeone?.name}`, [
-          { text: 'OK', onPress: () => navigation.navigate('Home') }
+          { text: 'OK', onPress: () => navigation.navigate('Home') },
         ]);
       }
     },
@@ -81,13 +81,13 @@ const ProfilesContainer = ({ navigation, route }) => {
       }
       return false;
     },
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
 
   const [unlike] = useMutation(UNLIKE, {
     variables: {
-      type: route?.params?.searchType
-    }
+      type: route?.params?.searchType,
+    },
   });
 
   React.useEffect(() => {
@@ -105,8 +105,8 @@ const ProfilesContainer = ({ navigation, route }) => {
       setShowHelperFinal={setShowHelperFinal}
       userProfile={profileQuery?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
-      onMoveTop={id => onMoveTop({ tutorialDone, like, id, setTutorialDone })}
-      onMoveBottom={id => onMoveBottom({ tutorialDone, unlike, id, setTutorialDone })}
+      onMoveTop={(id) => onMoveTop({ tutorialDone, like, id, setTutorialDone })}
+      onMoveBottom={(id) => onMoveBottom({ tutorialDone, unlike, id, setTutorialDone })}
     />
   );
 };
@@ -114,13 +114,13 @@ const ProfilesContainer = ({ navigation, route }) => {
 ProfilesContainer.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
-      searchType: PropTypes.string.isRequired
-    })
-  }).isRequired
+      searchType: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
 };
 
 export default ProfilesContainer;

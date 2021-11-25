@@ -36,7 +36,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
         {data[0] ? (
           <Image
             source={{
-              uri: data[0]
+              uri: data[0],
             }}
             resizeMode="cover"
           />
@@ -53,7 +53,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
         {data[1] ? (
           <Image
             source={{
-              uri: data[1]
+              uri: data[1],
             }}
             resizeMode="cover"
           />
@@ -70,7 +70,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
         {data[2] ? (
           <Image
             source={{
-              uri: data[2]
+              uri: data[2],
             }}
             resizeMode="cover"
           />
@@ -89,7 +89,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
         {data[3] ? (
           <Image
             source={{
-              uri: data[3]
+              uri: data[3],
             }}
             resizeMode="cover"
           />
@@ -106,7 +106,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
         {data[4] ? (
           <Image
             source={{
-              uri: data[4]
+              uri: data[4],
             }}
             resizeMode="cover"
           />
@@ -123,7 +123,7 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
         {data[5] ? (
           <Image
             source={{
-              uri: data[5]
+              uri: data[5],
             }}
             resizeMode="cover"
           />
@@ -141,13 +141,13 @@ const ImageGrid = ({ data, onPressImage, onPressRemove }) => (
 );
 
 ImageGrid.defaultProps = {
-  data: []
+  data: [],
 };
 
 ImageGrid.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string.isRequired),
   onPressImage: PropTypes.func.isRequired,
-  onPressRemove: PropTypes.func.isRequired
+  onPressRemove: PropTypes.func.isRequired,
 };
 
 export default ImageGrid;

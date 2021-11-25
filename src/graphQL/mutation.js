@@ -1,19 +1,19 @@
 import gql from 'graphql-tag';
 
 export const ADD_PROFILE_IMAGE = gql`
-  mutation($file: String!) {
+  mutation ($file: String!) {
     addProfileImage(file: $file)
   }
 `;
 
 export const REMOVE_PROFILE_IMAGE = gql`
-  mutation($imageId: String!) {
+  mutation ($imageId: String!) {
     removeProfileImage(imageId: $imageId)
   }
 `;
 
 export const EDIT_PROFILE = gql`
-  mutation(
+  mutation (
     $name: String!
     $birthday: String!
     $eyes: String
@@ -47,7 +47,7 @@ export const EDIT_PROFILE = gql`
 `;
 
 export const CREATE_PROFILE = gql`
-  mutation(
+  mutation (
     $name: String!
     $birthday: String!
     $eyes: String
@@ -102,7 +102,7 @@ export const CREATE_PROFILE = gql`
 `;
 
 export const LIKE = gql`
-  mutation($userLikedId: String!, $type: String!) {
+  mutation ($userLikedId: String!, $type: String!) {
     likeSomeone(userLikedId: $userLikedId, type: $type) {
       name
       images {
@@ -114,19 +114,19 @@ export const LIKE = gql`
 `;
 
 export const UNLIKE = gql`
-  mutation($userUnlikedId: String!, $type: String!) {
+  mutation ($userUnlikedId: String!, $type: String!) {
     unlikeSomeone(userUnlikedId: $userUnlikedId, type: $type)
   }
 `;
 
 export const SEND_GEOLOCATION = gql`
-  mutation($latitude: String!, $longitude: String!) {
+  mutation ($latitude: String!, $longitude: String!) {
     sendGeoLocation(latitude: $latitude, longitude: $longitude)
   }
 `;
 
 export const SEND_MESSAGE = gql`
-  mutation($matchId: String!, $message: String!) {
+  mutation ($matchId: String!, $message: String!) {
     sendMessage(matchId: $matchId, message: $message) {
       participant {
         _id

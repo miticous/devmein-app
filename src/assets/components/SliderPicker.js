@@ -45,14 +45,14 @@ const SliderPicker = ({ onChangeSliderValues, fieldRef, label, startRange, endRa
       min={18}
       max={100}
       markerOffsetY={6}
-      onValuesChangeFinish={sliderValues => onChangeSliderValues({ sliderValues, fieldRef })}
+      onValuesChangeFinish={(sliderValues) => onChangeSliderValues({ sliderValues, fieldRef })}
       containerStyle={{ alignItems: 'center' }}
       sliderLength={Dimensions.get('window').width - 40}
       selectedStyle={{ backgroundColor: COLORS.primaryColor }}
       trackStyle={{
         height: 16,
         borderRadius: 8,
-        backgroundColor: COLORS.grayLight
+        backgroundColor: COLORS.grayLight,
       }}
     />
   </Container>
@@ -60,7 +60,7 @@ const SliderPicker = ({ onChangeSliderValues, fieldRef, label, startRange, endRa
 
 SliderPicker.defaultProps = {
   startRange: 18,
-  endRange: 26
+  endRange: 26,
 };
 
 SliderPicker.propTypes = {
@@ -68,7 +68,7 @@ SliderPicker.propTypes = {
   fieldRef: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   startRange: PropTypes.number,
-  endRange: PropTypes.number
+  endRange: PropTypes.number,
 };
 
 export default SliderPicker;

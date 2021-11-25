@@ -24,7 +24,7 @@ const Tabs = () => (
     tabBarOptions={{
       style: bottomTabBar.style,
       tabStyle: bottomTabBar.tabStyle,
-      labelStyle: bottomTabBar.labelStyle
+      labelStyle: bottomTabBar.labelStyle,
     }}
   >
     <Tab.Screen
@@ -35,7 +35,7 @@ const Tabs = () => (
         tabBarIcon: ({ focused }) => (
           <TabIcon focused={focused} icon="Love" backgroundColor="#ffe3f0" color="#D25890" />
         ),
-        tabBarLabel: () => false
+        tabBarLabel: () => false,
       }}
     />
     <Tab.Screen
@@ -51,7 +51,7 @@ const Tabs = () => (
             color="#75396F"
           />
         ),
-        tabBarLabel: () => false
+        tabBarLabel: () => false,
       }}
     />
     <Tab.Screen
@@ -68,7 +68,7 @@ const Tabs = () => (
             color="#1CCB00"
           />
         ),
-        tabBarLabel: () => false
+        tabBarLabel: () => false,
       }}
     />
   </Tab.Navigator>
@@ -89,7 +89,7 @@ const Routes = () => (
         title: 'LOGIN',
         headerStyle,
         headerTitleStyle,
-        gestureEnabled: false
+        gestureEnabled: false,
       }}
     />
     <Stack.Screen
@@ -104,7 +104,7 @@ const Routes = () => (
         title: 'CADASTRO',
         headerStyle,
         headerTitleStyle,
-        gestureEnabled: false
+        gestureEnabled: false,
       }}
     />
     <Stack.Screen
@@ -114,7 +114,7 @@ const Routes = () => (
         title: 'CADASTRO',
         headerStyle,
         headerTitleStyle,
-        gestureEnabled: false
+        gestureEnabled: false,
       }}
     />
     <Stack.Screen
@@ -123,7 +123,7 @@ const Routes = () => (
       options={{
         title: 'SEU PERFIL',
         headerStyle,
-        headerTitleStyle
+        headerTitleStyle,
       }}
     />
     <Stack.Screen
@@ -132,7 +132,7 @@ const Routes = () => (
       options={{
         title: 'EDITAR PERFIL',
         headerStyle,
-        headerTitleStyle
+        headerTitleStyle,
       }}
     />
     <Stack.Screen
@@ -142,12 +142,12 @@ const Routes = () => (
         title: 'JIÀNTOU',
         headerStyle: {
           ...headerStyle,
-          backgroundColor: '#75396F'
+          backgroundColor: '#75396F',
         },
         headerTitleStyle: {
           ...headerTitleStyle,
-          color: 'white'
-        }
+          color: 'white',
+        },
       }}
     />
   </Stack.Navigator>

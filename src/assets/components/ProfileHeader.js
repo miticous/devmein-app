@@ -51,7 +51,7 @@ ProfileHeader.propTypes = {
   imageSource: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired,
 };
 
 export default ProfileHeader;

@@ -37,5 +37,5 @@ export const COLORS = {
 
   success: '#18BB66',
   warning: '#F5A623',
-  error: '#D50000'
+  error: '#D50000',
 };

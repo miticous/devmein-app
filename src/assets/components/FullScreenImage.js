@@ -111,7 +111,7 @@ const FullScreenImage = ({ images, initialIndex, onPressExit }) => {
 FullScreenImage.propTypes = {
   images: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   initialIndex: PropTypes.number.isRequired,
-  onPressExit: PropTypes.func.isRequired
+  onPressExit: PropTypes.func.isRequired,
 };
 
 export default FullScreenImage;

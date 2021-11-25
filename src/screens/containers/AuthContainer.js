@@ -9,13 +9,13 @@ import ModalLoading from '../../assets/components/ModalLoading';
 const AuthContainer = ({ navigation }) => {
   useEffect(() => {
     AsyncStorage.getItem('@jintou:token')
-      .then(token => {
+      .then((token) => {
         if (!token) {
           return navigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{ name: 'Welcome' }]
-            })
+              routes: [{ name: 'Welcome' }],
+            }),
           );
         }
         return validate({ navigation, token });
@@ -34,8 +34,8 @@ AuthContainer.propTypes = {
   navigation: PropTypes.shape({
     replace: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired
-  }).isRequired
+    dispatch: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default AuthContainer;
