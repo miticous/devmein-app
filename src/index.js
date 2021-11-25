@@ -14,8 +14,9 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import SplashScreen from 'react-native-splash-screen';
 import codePush from 'react-native-code-push';
-import Routes from './routes';
+import { View } from 'react-native';
 import DropDownHolder from './helpers/DropDownHolder';
+import Routes from './routes';
 
 require('./config/reactotronConfig');
 
@@ -40,7 +41,10 @@ const wsLink = new WebSocketLink({
 const link = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
-    return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
   },
   wsLink,
   httpLink,
@@ -58,7 +62,11 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
         ),
     );
   if (networkError)
-    DropDownHolder.show('error', '', 'O Jintou encontrou um problema ao conectar-se ao servidor');
+    DropDownHolder.show(
+      'error',
+      '',
+      'O Jintou encontrou um problema ao conectar-se ao servidor',
+    );
 });
 
 const authLink = setContext(async (_, { headers }) => {
@@ -84,7 +92,9 @@ const client = new ApolloClient({
   assumeImmutableResults: false,
 });
 
-const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+};
 
 const App = () => {
   React.useEffect(() => {
@@ -96,7 +106,7 @@ const App = () => {
       <NavigationContainer>
         <Routes />
         <DropdownAlert
-          ref={(ref) => DropDownHolder.setDropDown(ref)}
+          ref={ref => DropDownHolder.setDropDown(ref)}
           closeInterval={3000}
           translucent={false}
           activeStatusBarStyle="light-content"

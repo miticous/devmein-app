@@ -2,17 +2,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import { COLORS } from '../../assets/styles/colors';
+import { View } from 'react-native';
+import {
+  BOTTOM_TAB_HEIGHT,
+  BOTTOM_TAB_HEIGHT_TOTAL,
+  HEADER_HEIGHT,
+} from 'assets/styles';
+import { colors } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import ProfileCard from '../../assets/components/ProfileCard';
-import { StatusBarHeight } from '../../helpers/StatusBarHeight';
+import {
+  getBottomSafeArea,
+  StatusBarHeight,
+} from '../../helpers/StatusBarHeight';
 
 const Container = styled.View`
   flex: 1;
   position: relative;
   padding-top: ${StatusBarHeight}px;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
 `;
 
 const renderProfiles = ({
@@ -27,7 +36,7 @@ const renderProfiles = ({
   showHelperFinal,
   tutorialDone,
 }) =>
-  profiles?.map((item) => (
+  profiles?.map(item => (
     <ProfileCard
       userProfile={userProfile}
       onMoveBottom={onMoveBottom}

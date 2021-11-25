@@ -4,12 +4,13 @@ import styled from 'styled-components/native';
 import { View } from 'react-native';
 import { not, isEmpty } from 'ramda';
 import { useField } from 'formik';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 
 const Container = styled.TouchableOpacity`
   border-radius: 23px;
-  border-color: ${COLORS.primaryColor};
-  background-color: ${({ active }) => (active ? COLORS.primaryColor : COLORS.white)};
+  border-color: ${colors.primaryColor};
+  background-color: ${({ active }) =>
+    active ? colors.primaryColor : colors.white};
   border-width: 2px;
   overflow: hidden;
   margin: 8px 0px;
@@ -25,14 +26,14 @@ const Label = styled.Text`
   letter-spacing: -0.3px;
   line-height: 22px;
   text-align: center;
-  color: ${({ active }) => (active ? COLORS.white : COLORS.primaryColor)};
+  color: ${({ active }) => (active ? colors.white : colors.primaryColor)};
   font-weight: bold;
   letter-spacing: 3px;
 `;
 
 const renderOptions = ({ options, activeId, onSelect }) => {
   if (not(isEmpty(options))) {
-    return options.map((option) => {
+    return options.map(option => {
       const { label, id } = option;
       const isActive = activeId === id;
 
@@ -56,7 +57,7 @@ const ButtonPicker = ({ options, name }) => {
       {renderOptions({
         options,
         activeId: field.value,
-        onSelect: (value) => helpers.setValue(value),
+        onSelect: value => helpers.setValue(value),
       })}
     </View>
   );

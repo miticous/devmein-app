@@ -13,13 +13,14 @@ const Container = styled.TouchableOpacity`
 `;
 const ImageBox = styled.View`
   flex: 1;
+  justify-content: flex-end;
 `;
 const Image = styled.Image`
   width: 100%;
   height: 100%;
 `;
 const InfoBox = styled.View`
-  flex: 3;
+  flex: 5;
 `;
 const Info = styled.Text`
   font-style: normal;
@@ -41,9 +42,10 @@ const ProfileHeader = ({ imageSource, name, icon, onPress }) => (
     </ImageBox>
     <InfoBox>
       <Info>{name}</Info>
-      <Icon name={icon} width={74} height={23} />
     </InfoBox>
-    <ButtonRight>{/* <Icon name="Config" width={40} height={40} /> */}</ButtonRight>
+    <ButtonRight>
+      <Icon name="Config" width={40} height={40} />
+    </ButtonRight>
   </Container>
 );
 

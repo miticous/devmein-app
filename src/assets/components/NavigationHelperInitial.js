@@ -58,10 +58,14 @@ const NavigationHelperInitial = () => {
     <>
       {show && (
         <NavigationHelperBox onPress={() => setShow(false)}>
-          <NavigationHelperTitle>Toque nos lados para navegar</NavigationHelperTitle>
+          <NavigationHelperTitle>
+            Toque nos lados para navegar
+          </NavigationHelperTitle>
           <NavigationHelperContent>
             <NavigationHelperContentSide>
-              <NavigationHelperContentText>Anterior</NavigationHelperContentText>
+              <NavigationHelperContentText>
+                Anterior
+              </NavigationHelperContentText>
             </NavigationHelperContentSide>
             <NavigationHelperContentMiddle>
               <NavigationHelperMiddle />

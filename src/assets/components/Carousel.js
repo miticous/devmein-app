@@ -48,7 +48,7 @@ const Carousel = ({ data, onPressItem }) => (
   <Container>
     <FlatList
       data={data}
-      keyExtractor={(item) => item?._id}
+      keyExtractor={item => item?._id}
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ paddingLeft: 20 }}
@@ -67,8 +67,7 @@ const Carousel = ({ data, onPressItem }) => (
                 height: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}
-            >
+              }}>
               <CircledItem size={83} color="white">
                 <CircledItem size={70}>
                   <Image
@@ -83,7 +82,11 @@ const Carousel = ({ data, onPressItem }) => (
           </CircledItem>
           <IconArea alone={item?.type !== 'BOTH'}>
             <FirstIcon alone={item?.type !== 'BOTH'}>
-              <Icon name={item?.type !== 'BOTH' ? item?.type : 'LOVE'} width={35} height={35} />
+              <Icon
+                name={item?.type !== 'BOTH' ? item?.type : 'LOVE'}
+                width={35}
+                height={35}
+              />
             </FirstIcon>
             {item?.type === 'BOTH' && (
               <SecondIcon>

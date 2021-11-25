@@ -2,6 +2,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { colors } from 'assets/styles/colors';
 import ProfilesContainer from './screens/containers/ProfilesContainer';
 import AuthContainer from './screens/containers/AuthContainer';
 import LoginContainer from './screens/containers/LoginContainer';
@@ -25,15 +26,19 @@ const Tabs = () => (
       style: bottomTabBar.style,
       tabStyle: bottomTabBar.tabStyle,
       labelStyle: bottomTabBar.labelStyle,
-    }}
-  >
+    }}>
     <Tab.Screen
       name="Love"
       component={ProfilesContainer}
       initialParams={{ searchType: 'LOVE' }}
       options={{
         tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} icon="Love" backgroundColor="#ffe3f0" color="#D25890" />
+          <TabIcon
+            focused={focused}
+            icon="Love"
+            backgroundColor="#ffe3f0"
+            color="#D25890"
+          />
         ),
         tabBarLabel: () => false,
       }}
@@ -47,8 +52,8 @@ const Tabs = () => (
             focused={focused}
             icon="Home"
             label="Home"
-            backgroundColor="#e6d8e5"
-            color="#75396F"
+            backgroundColor={colors.primaryColor}
+            color={colors.white}
           />
         ),
         tabBarLabel: () => false,
@@ -76,7 +81,11 @@ const Tabs = () => (
 
 const Routes = () => (
   <Stack.Navigator initialRouteName="Auth">
-    <Stack.Screen name="Auth" component={AuthContainer} options={{ headerShown: false }} />
+    <Stack.Screen
+      name="Auth"
+      component={AuthContainer}
+      options={{ headerShown: false }}
+    />
     <Stack.Screen
       name="Welcome"
       component={WelcomeContainer}

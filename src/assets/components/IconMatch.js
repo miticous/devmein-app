@@ -44,7 +44,11 @@ const IconMatch = ({ image, iconOne, iconTwo, small }) => (
       </ContentIconOne>
       {iconTwo && (
         <ContentIconTwo>
-          <Icon name="FRIENDSHIP" width={small ? 20 : 35} height={small ? 20 : 35} />
+          <Icon
+            name="FRIENDSHIP"
+            width={small ? 20 : 35}
+            height={small ? 20 : 35}
+          />
         </ContentIconTwo>
       )}
     </Content>

@@ -1,24 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 import Icon from './Icon';
 import CircledItem from './CircledItem';
 import NavigationHelperInitial from './NavigationHelperInitial';
 import NavigationHelperFinal from './NavigationHelperFinal';
-import { SCREEN_HEIGHT } from '../styles';
 
 const Container = styled.View`
+  flex: 1;
+  position: relative;
   border-radius: 24px;
   overflow: hidden;
-  height: ${SCREEN_HEIGHT * 0.68}px;
   border: 1px solid #e0e0e0;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
 `;
 const ImageArea = styled.View`
-  position: relative;
   flex: 2;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
 `;
 const Image = styled.Image`
   width: 100%;
@@ -26,16 +25,10 @@ const Image = styled.Image`
 `;
 const AboutArea = styled.View`
   flex: 1;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
 `;
 const About = styled.View`
   padding: 8px 20px;
-`;
-const Zodiac = styled.View`
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 1;
 `;
 const Mandala = styled.TouchableOpacity`
   position: absolute;
@@ -74,7 +67,6 @@ const ButtonNext = styled.TouchableOpacity`
 `;
 
 const ProfileBox = ({
-  sign,
   image,
   name,
   residence,
@@ -91,12 +83,9 @@ const ProfileBox = ({
     {!tutorialDone && showHelperFinal && <NavigationHelperFinal />}
     {!tutorialDone && showHelperInitial && <NavigationHelperInitial />}
     <ImageArea>
-      <Zodiac>
-        <Icon name={sign} width={74} height={23} />
-      </Zodiac>
       <Image source={{ uri: image }} resizeMode="cover" />
       <Mandala onPress={onPressMandala}>
-        <CircledItem size={60} color={COLORS.white}>
+        <CircledItem size={60} color={colors.white}>
           <Icon name="Mandala" width={50} height={50} />
         </CircledItem>
       </Mandala>
@@ -142,7 +131,6 @@ ProfileBox.defaultProps = {
 };
 
 ProfileBox.propTypes = {
-  sign: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   residence: PropTypes.string.isRequired,

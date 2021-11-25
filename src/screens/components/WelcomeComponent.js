@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import WelcomeImage from '../../assets/images/welcome.png';
-import JintouImage from '../../assets/images/jintou.png';
 import DefaultButton from '../../assets/components/DefaultButton';
 
 const Container = styled.View`
@@ -46,7 +44,11 @@ const WelcomeComponent = ({ onPressSignUp, onPressLogin }) => (
   <Container>
     <Content>
       <Body>
-        <DefaultButton text="FAZER MEU CADASTRO" inverted action={onPressSignUp} />
+        <DefaultButton
+          text="FAZER MEU CADASTRO"
+          inverted
+          action={onPressSignUp}
+        />
         <DefaultButton text="JÁ TENHO UMA CONTA" action={onPressLogin} />
       </Body>
     </Content>

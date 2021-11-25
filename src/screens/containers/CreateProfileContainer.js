@@ -14,7 +14,11 @@ import {
   onPressImage,
   onPressTextsCardItem,
 } from './ProfileEditionContainer';
-import { CREATE_PROFILE, ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE } from '../../graphQL/mutation';
+import {
+  CREATE_PROFILE,
+  ADD_PROFILE_IMAGE,
+  REMOVE_PROFILE_IMAGE,
+} from '../../graphQL/mutation';
 import { GET_PROFILE_CREATION } from '../../graphQL/query';
 
 const formInitialValues = {
@@ -57,7 +61,11 @@ const onSubmitForm = async ({
 }) => {
   try {
     if (activeItemIndex === 8 && profile?.images?.length === 0) {
-      return DropDownHolder.show('warn', '', 'Adiciona uma imagem aí vai... Não custa nada!');
+      return DropDownHolder.show(
+        'warn',
+        '',
+        'Adiciona uma imagem aí vai... Não custa nada!',
+      );
     }
     if (activeItemIndex === 7) {
       return await createProfile({
@@ -98,39 +106,53 @@ const CreateProfileContainer = ({ navigation }) => {
 
   const { data, loading: queryLoading } = useQuery(GET_PROFILE_CREATION);
 
-  const [createProfile, { loading: mutationLoading }] = useMutation(CREATE_PROFILE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
-    onCompleted: () => {
-      if (activeItemIndex === 7) {
-        return setActiveItemIndex(activeItemIndex + 1);
-      }
-      if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
-        return navigation.replace('Tabs');
-      }
-      return false;
+  const [createProfile, { loading: mutationLoading }] = useMutation(
+    CREATE_PROFILE,
+    {
+      onError: () => DropDownHolder.show('error', '', 'Falha ao criar perfil'),
+      onCompleted: () => {
+        if (activeItemIndex === 7) {
+          return setActiveItemIndex(activeItemIndex + 1);
+        }
+        if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
+          return navigation.replace('Tabs');
+        }
+        return false;
+      },
+      refetchQueries: [{ query: GET_PROFILE_CREATION }],
     },
-    refetchQueries: [{ query: GET_PROFILE_CREATION }],
-  });
+  );
 
-  const [addProfileImage, { loading: loadingAddImage }] = useMutation(ADD_PROFILE_IMAGE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao adicionar image'),
-    refetchQueries: [{ query: GET_PROFILE_CREATION }],
-  });
+  const [addProfileImage, { loading: loadingAddImage }] = useMutation(
+    ADD_PROFILE_IMAGE,
+    {
+      onError: () =>
+        DropDownHolder.show('error', '', 'Falha ao adicionar image'),
+      refetchQueries: [{ query: GET_PROFILE_CREATION }],
+    },
+  );
 
-  const [removeProfileImage, { loading: loadingRemoveImage }] = useMutation(REMOVE_PROFILE_IMAGE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao remover imagem'),
-    refetchQueries: [{ query: GET_PROFILE_CREATION }],
-  });
+  const [removeProfileImage, { loading: loadingRemoveImage }] = useMutation(
+    REMOVE_PROFILE_IMAGE,
+    {
+      onError: () =>
+        DropDownHolder.show('error', '', 'Falha ao remover imagem'),
+      refetchQueries: [{ query: GET_PROFILE_CREATION }],
+    },
+  );
 
   const formSchema = yup.object().shape({
-    name: yup.string().min(4).required('Seu nome nao pode conter menos de 4 caracteres'),
+    name: yup
+      .string()
+      .min(4)
+      .required('Seu nome nao pode conter menos de 4 caracteres'),
     eye: yup.string().min(3),
     birthdate: yup.string().when('_', {
       is: () => activeItemIndex > 2,
       then: yup
         .string()
         .min(10, 'Ops! Digite data de nascimento.')
-        .test('TST', 'error', (values) => moment(values, 'DD/MM/YYYY').isValid())
+        .test('TST', 'error', values => moment(values, 'DD/MM/YYYY').isValid())
         .required('Digite uma data válida'),
     }),
     birthtime: yup.string().when('_', {
@@ -138,13 +160,13 @@ const CreateProfileContainer = ({ navigation }) => {
       then: yup
         .string()
         .min(5, 'Ops! Digite hora de nascimento.')
-        .test('TST', 'error', (values) => moment(values, 'HH:mm').isValid())
+        .test('TST', 'error', values => moment(values, 'HH:mm').isValid())
         .required('Digite uma hora válida'),
     }),
     birthplace: yup.object().shape({
       placeId: yup.string(),
       description: yup.string().when('placeId', {
-        is: (val) => val?.length > 0 || activeItemIndex > 2,
+        is: val => val?.length > 0 || activeItemIndex > 2,
         then: yup
           .string()
           .min(3)
@@ -217,10 +239,11 @@ const CreateProfileContainer = ({ navigation }) => {
           {activeItemIndex > 0 && (
             <TouchableOpacity
               onPress={() =>
-                formRef?.current?.isValid ? setActiveItemIndex(activeItemIndex - 1) : false
+                formRef?.current?.isValid
+                  ? setActiveItemIndex(activeItemIndex - 1)
+                  : false
               }
-              style={{ paddingHorizontal: 20 }}
-            >
+              style={{ paddingHorizontal: 20 }}>
               <Icon name="Back" width={40} height={40} />
             </TouchableOpacity>
           )}
@@ -246,7 +269,9 @@ const CreateProfileContainer = ({ navigation }) => {
     <CreateProfileComponent
       formRef={formRef}
       user={data?.user}
-      onPressTextsCardItem={({ cardItem }) => onPressTextsCardItem({ cardItem, formRef })}
+      onPressTextsCardItem={({ cardItem }) =>
+        onPressTextsCardItem({ cardItem, formRef })
+      }
       profile={data?.profile || null}
       onSubmitForm={() =>
         onSubmitForm({
@@ -260,9 +285,17 @@ const CreateProfileContainer = ({ navigation }) => {
         })
       }
       onChangeInput={({ inputRef, text }) =>
-        onChangeInput({ fieldRef: inputRef, setSugestions, text, formRef, sugestions })
+        onChangeInput({
+          fieldRef: inputRef,
+          setSugestions,
+          text,
+          formRef,
+          sugestions,
+        })
       }
-      isLoading={mutationLoading || queryLoading || loadingAddImage || loadingRemoveImage}
+      isLoading={
+        mutationLoading || queryLoading || loadingAddImage || loadingRemoveImage
+      }
       sugestions={sugestions}
       onPressSugestion={({ item, referencedInputName }) =>
         onPressSugestion({
@@ -276,7 +309,7 @@ const CreateProfileContainer = ({ navigation }) => {
         formRef?.current?.setFieldValue(fieldRef, [...sliderValues])
       }
       onPressImage={() => onPressImage({ addProfileImage })}
-      onPressRemoveImage={(index) =>
+      onPressRemoveImage={index =>
         removeProfileImage({
           variables: {
             imageId: data?.profile?.images[index]._id,
@@ -284,7 +317,7 @@ const CreateProfileContainer = ({ navigation }) => {
         })
       }
       formInitialValues={formInitialValues}
-      onPressInputButton={(field) => onPressInputButton({ formRef, field })}
+      onPressInputButton={field => onPressInputButton({ formRef, field })}
       formSchema={formSchema}
       activeItemIndex={activeItemIndex}
       switcherRef={switcherRef}

@@ -13,7 +13,9 @@ const Container = styled.View`
 `;
 
 const ButtonCheck = ({ checked }) => (
-  <Container>{checked && <Icon name="CheckedCleaned" width={14} height={14} />}</Container>
+  <Container>
+    {checked && <Icon name="CheckedCleaned" width={14} height={14} />}
+  </Container>
 );
 
 ButtonCheck.defaultProps = {

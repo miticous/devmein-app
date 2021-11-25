@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 import Icon from './Icon';
 import FullScreenImage from './FullScreenImage';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles';
 
 const Container = styled.View`
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
   border-radius: 24px;
   overflow: hidden;
   height: ${SCREEN_HEIGHT * 0.68}px;
@@ -80,7 +80,13 @@ const onPressResumeBox = ({ pageX, onPressNext, onPressPrev, isScrolling }) => {
   return onPressPrev();
 };
 
-const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPrev }) => {
+const ProfileDetailsBox = ({
+  images,
+  texts,
+  activeIndex,
+  onPressNext,
+  onPressPrev,
+}) => {
   const [fullScreen, setFullScreen] = React.useState({
     visible: false,
     initialIndex: 0,
@@ -98,7 +104,10 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
           horizontal
           data={images}
           renderItem={({ item, index }) => (
-            <ImageBox onPress={() => setFullScreen({ initialIndex: index, visible: true })}>
+            <ImageBox
+              onPress={() =>
+                setFullScreen({ initialIndex: index, visible: true })
+              }>
               <Image source={{ uri: item?.image }} />
             </ImageBox>
           )}
@@ -112,9 +121,11 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
             {texts?.[activeIndex]?.title}
           </DetailsBoxTitle>
         </DetailsBoxHeader>
-        <DetailsBoxSubtitle>{texts?.[activeIndex]?.subtitle}</DetailsBoxSubtitle>
+        <DetailsBoxSubtitle>
+          {texts?.[activeIndex]?.subtitle}
+        </DetailsBoxSubtitle>
         <DetailsBoxResumeBox
-          onTouchEnd={(e) =>
+          onTouchEnd={e =>
             onPressResumeBox({
               pageX: e?.nativeEvent?.pageX,
               onPressNext,
@@ -124,8 +135,7 @@ const ProfileDetailsBox = ({ images, texts, activeIndex, onPressNext, onPressPre
           }
           showsVerticalScrollIndicator={false}
           onScrollBeginDrag={() => setIsScrolling(true)}
-          onScrollEndDrag={() => setIsScrolling(false)}
-        >
+          onScrollEndDrag={() => setIsScrolling(false)}>
           <DetailsBoxResume>{texts?.[activeIndex]?.text}</DetailsBoxResume>
         </DetailsBoxResumeBox>
       </DetailsBox>

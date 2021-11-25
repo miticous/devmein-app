@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import Icon from './Icon';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 
 const Container = styled.View`
   margin: 12px 0px;
@@ -11,7 +11,7 @@ const ContentItem = styled.TouchableOpacity`
   justify-content: center;
   height: 45px;
   padding: 0px 20px;
-  border-top-color: ${({ hasError }) => (hasError ? COLORS.error : '#e0e0e0')};
+  border-top-color: ${({ hasError }) => (hasError ? colors.error : '#e0e0e0')};
   border-top-width: 1px;
 `;
 const ItemText = styled.Text`
@@ -19,11 +19,11 @@ const ItemText = styled.Text`
   font-weight: normal;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ checked }) => (checked ? '#27AE60' : COLORS.black)};
+  color: ${({ checked }) => (checked ? '#27AE60' : colors.black)};
 `;
 
 const normalizeData = ({ data, itemsIdKey, itemsTitleKey }) => {
-  const newData = data?.map((item) => ({
+  const newData = data?.map(item => ({
     id: item[itemsIdKey],
     title: item[itemsTitleKey],
   }));
@@ -31,7 +31,7 @@ const normalizeData = ({ data, itemsIdKey, itemsTitleKey }) => {
 };
 
 const isItemChecked = ({ item, checkedItemId }) =>
-  checkedItemId?.some((checked) => checked === item.id);
+  checkedItemId?.some(checked => checked === item.id);
 
 const renderList = ({
   data,
@@ -54,8 +54,7 @@ const renderList = ({
       <ContentItem
         key={item?.id}
         hasError={hasError}
-        onPress={() => onPressItem({ item: data[index], referencedInputName })}
-      >
+        onPress={() => onPressItem({ item: data[index], referencedInputName })}>
         <ItemText checked={checked}>
           {checked && <Icon name="Checked" width={12} height={9} />}
           {checked && '   '}

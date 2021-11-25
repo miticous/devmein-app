@@ -9,7 +9,7 @@ import ModalLoading from '../../assets/components/ModalLoading';
 const AuthContainer = ({ navigation }) => {
   useEffect(() => {
     AsyncStorage.getItem('@jintou:token')
-      .then((token) => {
+      .then(token => {
         if (!token) {
           return navigation.dispatch(
             CommonActions.reset({

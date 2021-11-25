@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 
 const Container = styled.View``;
 const LabelArea = styled.View`
@@ -26,9 +26,15 @@ const Text = styled.Text`
   letter-spacing: 2px;
   text-transform: uppercase;
   line-height: 14px;
-  color: ${COLORS.grayDark};
+  color: ${colors.grayDark};
 `;
-const SliderPicker = ({ onChangeSliderValues, fieldRef, label, startRange, endRange }) => (
+const SliderPicker = ({
+  onChangeSliderValues,
+  fieldRef,
+  label,
+  startRange,
+  endRange,
+}) => (
   <Container>
     <LabelArea>
       <Label>{label}</Label>
@@ -45,14 +51,16 @@ const SliderPicker = ({ onChangeSliderValues, fieldRef, label, startRange, endRa
       min={18}
       max={100}
       markerOffsetY={6}
-      onValuesChangeFinish={(sliderValues) => onChangeSliderValues({ sliderValues, fieldRef })}
+      onValuesChangeFinish={sliderValues =>
+        onChangeSliderValues({ sliderValues, fieldRef })
+      }
       containerStyle={{ alignItems: 'center' }}
       sliderLength={Dimensions.get('window').width - 40}
-      selectedStyle={{ backgroundColor: COLORS.primaryColor }}
+      selectedStyle={{ backgroundColor: colors.primaryColor }}
       trackStyle={{
         height: 16,
         borderRadius: 8,
-        backgroundColor: COLORS.grayLight,
+        backgroundColor: colors.grayLight,
       }}
     />
   </Container>

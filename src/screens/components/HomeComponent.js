@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 import moment from 'moment';
-import { COLORS } from '../../assets/styles/colors';
+import { colors } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import Carousel from '../../assets/components/Carousel';
@@ -14,7 +14,7 @@ import { StatusBarHeight } from '../../helpers/StatusBarHeight';
 const Container = styled.View`
   flex: 1;
   padding-top: ${StatusBarHeight}px;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
 `;
 const Content = styled.View`
   border-top-color: #e0e0e0;
@@ -30,7 +30,7 @@ const Title = styled.Text`
 `;
 
 const normalizeCarouselData = ({ matches }) =>
-  matches?.map((match) => ({
+  matches?.map(match => ({
     _id: match?._id,
     image: match?.profileMatched?.images?.[0].image,
     name: match?.profileMatched?.name,
@@ -53,11 +53,14 @@ const HomeComponent = ({
       icon={userProfile?.astral?.zodiac}
     />
     <Content>
-      <Title>Novas flechadas e amizades</Title>
-      <Carousel data={normalizeCarouselData({ matches })} onPressItem={onPressCarouselItem} />
+      <Title>New geeks</Title>
+      <Carousel
+        data={normalizeCarouselData({ matches })}
+        onPressItem={onPressCarouselItem}
+      />
     </Content>
     <Content>
-      <Title>Seus chats</Title>
+      <Title>Your chats</Title>
       <FlatList
         data={matches}
         renderItem={({ item }) => (
@@ -66,9 +69,9 @@ const HomeComponent = ({
               <ChatCard
                 onPress={() => onPressCarouselItem(item)}
                 image={item?.profileMatched?.images?.[0]?.image}
-                subtitle={`${moment(item?.lastMessage?.lastMessage).format(' HH:mm')}  ${
-                  item?.lastMessage?.text
-                }`}
+                subtitle={`${moment(item?.lastMessage?.lastMessage).format(
+                  ' HH:mm',
+                )}  ${item?.lastMessage?.text}`}
                 title={item?.profileMatched?.name}
                 warns={
                   item?.unreadMessages > 0 &&

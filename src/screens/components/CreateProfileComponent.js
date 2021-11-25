@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, KeyboardAvoidingView, Platform, FlatList, Text } from 'react-native';
+import {
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  FlatList,
+  Text,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { COLORS } from '../../assets/styles/colors';
+import { colors } from '../../assets/styles/colors';
 import { SCREEN_WIDTH } from '../../assets/styles';
 import { SwitcherItem, Switcher } from '../../assets/components/Switcher';
 import TextInput from '../../assets/components/TextInput';
@@ -17,7 +23,7 @@ import AstralTextCard from '../../assets/components/AstralTextCard';
 import { checkTextAvalability, isTextChecked } from './ProfileEditionComponent';
 
 const Content = styled.View`
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
   flex: 1;
 `;
 const SwitcherContainer = styled.View``;
@@ -29,7 +35,7 @@ const StepActive = styled.View`
   overflow: hidden;
   position: relative;
   z-index: 1;
-  background-color: ${COLORS.success};
+  background-color: ${colors.success};
 `;
 const StepArea = styled.View`
   height: 6px;
@@ -58,10 +64,10 @@ const InnerSubtitle = styled.Text`
   margin: 20px;
 `;
 const TextAlert = styled.Text`
-  color: ${COLORS.error};
+  color: ${colors.error};
 `;
 const TextInfo = styled.Text`
-  color: ${COLORS.textSecondaryColor};
+  color: ${colors.textSecondaryColor};
   margin-top: 20px;
 `;
 const Separator = styled.View`
@@ -112,16 +118,20 @@ const CreateProfileComponent = ({
   onPressTextsCardItem,
 }) => {
   const switcherButtonTitle =
-    activeItemIndex === switcherRef?.current?.childrensAmount - 1 ? 'FINALIZAR' : 'PRÓXIMO PASSO';
+    activeItemIndex === switcherRef?.current?.childrensAmount - 1
+      ? 'FINALIZAR'
+      : 'PRÓXIMO PASSO';
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: COLORS.lighter }}
-      behavior={`${Platform.OS === 'ios' ? 'padding' : 'height'}`}
-    >
+      style={{ flex: 1, backgroundColor: colors.lighter }}
+      behavior={`${Platform.OS === 'ios' ? 'padding' : 'height'}`}>
       <View style={{ height: 6, width: SCREEN_WIDTH }}>
         <StepActive
-          width={`${((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) * 100}%`}
+          width={`${
+            ((activeItemIndex + 1) / switcherRef?.current?.childrensAmount) *
+            100
+          }%`}
         />
         <StepArea />
       </View>
@@ -132,16 +142,17 @@ const CreateProfileComponent = ({
             innerRef={formRef}
             initialValues={formInitialValues}
             onSubmit={onSubmitForm}
-            validateOnChange
-          >
+            validateOnChange>
             {({ setFieldTouched, values, errors, ...props }) => (
-              <Switcher {...props} activeIndex={activeItemIndex} ref={switcherRef}>
+              <Switcher
+                {...props}
+                activeIndex={activeItemIndex}
+                ref={switcherRef}>
                 <SwitcherItem
                   title="Vamos começar"
                   subtitle="Insira seus dados abaixo"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <TextInput
                     name="name"
                     label="Meu nome é"
@@ -165,8 +176,7 @@ const CreateProfileComponent = ({
                 <SwitcherItem
                   containerFluid={false}
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <ContainerFluid>
                     <TextInput
                       name="residence.description"
@@ -193,8 +203,7 @@ const CreateProfileComponent = ({
                   containerFluid={false}
                   subtitle="Quanto mais você compartilha, mais fácil é de alguém se interessar"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <ContainerFluid>
                     <TextInput
                       name="graduation.class"
@@ -225,8 +234,7 @@ const CreateProfileComponent = ({
                   title="Mapa astral"
                   subtitle="Com esses dados, seu mapa astral será calculado para que o Jiàntou funcione"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <BirthdayInputArea>
                     <TextInput
                       name="birthdate"
@@ -246,16 +254,20 @@ const CreateProfileComponent = ({
                     />
                   </BirthdayInputArea>
                   <TextAlert>
-                    Atenção! Para que todos os dados referentes ao seu mapa astral apareça
-                    corretamente é necessário que a{' '}
-                    <Text style={{ fontWeight: 'bold' }}>hora de seu nascimento</Text> esteja a mais
-                    exata possível; uma vez que esteja incorreta as informações sobre você serão
-                    totalmente incoerentes.
+                    Atenção! Para que todos os dados referentes ao seu mapa
+                    astral apareça corretamente é necessário que a{' '}
+                    <Text style={{ fontWeight: 'bold' }}>
+                      hora de seu nascimento
+                    </Text>{' '}
+                    esteja a mais exata possível; uma vez que esteja incorreta
+                    as informações sobre você serão totalmente incoerentes.
                   </TextAlert>
                   <TextInfo>
                     Você pode encontrar na sua{' '}
-                    <Text style={{ fontWeight: 'bold' }}>certidão de nascimento</Text> ou contatando
-                    seus familiares
+                    <Text style={{ fontWeight: 'bold' }}>
+                      certidão de nascimento
+                    </Text>{' '}
+                    ou contatando seus familiares
                   </TextInfo>
                   <TextInput
                     name="birthplace.description"
@@ -279,8 +291,7 @@ const CreateProfileComponent = ({
                   title="Me identifico como"
                   subtitle="Fique à vontade"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <PickerList
                     data={SexTypes}
                     hasError={errors.genre}
@@ -295,8 +306,7 @@ const CreateProfileComponent = ({
                   title="Orientação sexual"
                   subtitle="Fique à vontade, escolha quantas quiser"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <PickerList
                     hasError={errors.sexualOrientations}
                     data={SexualOrientationTypes}
@@ -312,8 +322,7 @@ const CreateProfileComponent = ({
                   title="Amor"
                   subtitle="Quem você procura no campo do amor?"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <PickerList
                     hasError={errors.searchLoveGenre}
                     data={SearchGenre}
@@ -336,8 +345,7 @@ const CreateProfileComponent = ({
                   title="Amizades"
                   subtitle="E pra bater um papo?"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <PickerList
                     hasError={errors.searchFriendGenre}
                     data={SearchGenre}
@@ -359,10 +367,9 @@ const CreateProfileComponent = ({
                   title="Arrasa na foto"
                   subtitle="Envie fotos que te representam!"
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <ImageGrid
-                    data={profile?.images?.map((image) => image?.image)}
+                    data={profile?.images?.map(image => image?.image)}
                     onPressImage={onPressImage}
                     onPressRemove={onPressRemoveImage}
                   />
@@ -372,8 +379,7 @@ const CreateProfileComponent = ({
                   subtitle="Com a leitura do seu Mapa astral, nós já sabemos muuuuito sobre você. Agora só precisa escolher o que você quer compartilhar publicamente:"
                   containerFluid={false}
                   onPressSubmit={onPressSwitcherButton}
-                  buttonTitle={switcherButtonTitle}
-                >
+                  buttonTitle={switcherButtonTitle}>
                   <InnerTitle>O que os astros dizem</InnerTitle>
                   <InnerSubtitle>
                     Escolha os tópicos que as pessoas irão ver no seu perfil
@@ -401,7 +407,9 @@ const CreateProfileComponent = ({
 
                       return (
                         <AstralTextCard
-                          onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
+                          onPressCard={() =>
+                            onPressTextsCardItem({ cardItem: item?.type })
+                          }
                           title={item?.title}
                           subtitle={item?.text}
                           checked={isItemChecked}

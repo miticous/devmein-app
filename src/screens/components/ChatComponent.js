@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { SCREEN_HEIGHT } from '../../assets/styles';
-import { COLORS } from '../../assets/styles/colors';
+import { colors } from '../../assets/styles/colors';
 import IconMatch from '../../assets/components/IconMatch';
 import Icon from '../../assets/components/Icon';
 import { getUserAge } from '../../helpers/AgeCalculator';
@@ -20,7 +20,7 @@ const Content = styled.View`
 const ChatBox = styled.View`
   height: ${SCREEN_HEIGHT * 0.8}px;
   margin: -135px 20px;
-  background-color: ${COLORS.white};
+  background-color: ${colors.white};
   border-radius: 24px;
   box-shadow: 0px 8px 24px rgba(117, 57, 111, 0.24);
 `;
@@ -107,7 +107,7 @@ const Button = styled.TouchableOpacity`
 `;
 
 const renderMessages = ({ messages, userProfile, receiverTimedMessage }) =>
-  messages?.map((message) => {
+  messages?.map(message => {
     const mySelf = message?.senderId === userProfile?._id;
 
     return (
@@ -163,8 +163,7 @@ const ChatComponent = ({
         <Body
           ref={messagesBodyRef}
           showsVerticalScrollIndicator={false}
-          onContentSizeChange={onLayout}
-        >
+          onContentSizeChange={onLayout}>
           {renderMessages({ messages, userProfile, receiverTimedMessage })}
         </Body>
         <Footer>

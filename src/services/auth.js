@@ -20,7 +20,13 @@ export const logout = async ({ navigation }) => {
   }
 };
 
-export const login = async ({ email, password, navigation, setFieldError, setIsLoading }) => {
+export const login = async ({
+  email,
+  password,
+  navigation,
+  setFieldError,
+  setIsLoading,
+}) => {
   try {
     setIsLoading(true);
 

@@ -1,20 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView, ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components/native';
-import { COLORS } from '../../assets/styles/colors';
+import { getBottomSafeArea } from 'helpers/StatusBarHeight';
+import { colors } from '../../assets/styles/colors';
 import DefaultButton from '../../assets/components/DefaultButton';
 import ProfileBox from '../../assets/components/ProfileBox';
 import Mandala from '../../assets/components/Mandala';
-import { onPressDetailsNext, onPressDetailsPrev } from '../../assets/components/ProfileCard';
+import {
+  onPressDetailsNext,
+  onPressDetailsPrev,
+} from '../../assets/components/ProfileCard';
 import ProfileDetailsBox from '../../assets/components/ProfileDetailsBox';
 import { checkTextAvalability } from './ProfileEditionComponent';
 
 const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
   const _texts = texts.reduce((accumulator, text) => {
     if (plan === 'JUPITER') {
-      const shouldAddText = shownTexts?.some((_text) => _text === text?.type);
+      const shouldAddText = shownTexts?.some(_text => _text === text?.type);
 
       if (shouldAddText) {
         return [...accumulator, text];
@@ -23,7 +27,10 @@ const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
     }
 
     if (plan === 'MERCURIO') {
-      const isAvailableText = checkTextAvalability({ plan, textType: text?.type });
+      const isAvailableText = checkTextAvalability({
+        plan,
+        textType: text?.type,
+      });
 
       if (isAvailableText) {
         return [...accumulator, text];
@@ -39,9 +46,16 @@ const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
 
 const Container = styled.View`
   margin: 20px;
+  flex: 1;
 `;
 
-const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLogout }) => {
+const ProfileComponent = ({
+  loading,
+  profile,
+  user,
+  onPressEditButton,
+  onPressLogout,
+}) => {
   const [showMandala, setShowMandala] = React.useState(false);
   const [activeTextsIndex, setActiveTextsIndex] = React.useState(0);
   const [showProfileDetails, setShowProfileDetails] = React.useState(false);
@@ -53,7 +67,11 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
   const { class: graduationClass } = profile?.graduation?.class ?? {};
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: COLORS.backgroundColor }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: colors.backgroundColor,
+      }}>
       {loading && <ActivityIndicator size="large" />}
       <Container>
         {profile && (
@@ -96,12 +114,13 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
                 graduation={`${graduationClass} @${profile?.graduation?.description}`}
               />
             )}
-
             <Mandala
               image={profile?.astral?.mandala}
               visible={showMandala}
               thirtyText={profile?.birthplace?.description}
-              secondText={moment(Number(profile?.birthday)).utc().format('DD/MM/YYYY HH:mm')}
+              secondText={moment(Number(profile?.birthday))
+                .utc()
+                .format('DD/MM/YYYY HH:mm')}
               onPressBack={() => setShowMandala(false)}
             />
           </>
@@ -109,7 +128,7 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
         <DefaultButton text="EDITAR PERFIL" action={onPressEditButton} />
         <DefaultButton text="Sair" action={onPressLogout} inverted />
       </Container>
-    </ScrollView>
+    </View>
   );
 };
 

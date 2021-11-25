@@ -19,7 +19,7 @@ import { Platform } from 'react-native';
 
 const ImagePicker = {
   show: (options, { onError, onSuccess }) =>
-    RNImagePicker.launchImageLibrary(options, (response) => {
+    RNImagePicker.launchImageLibrary(options, response => {
       if (response.error) {
         return onError();
       }
@@ -28,7 +28,9 @@ const ImagePicker = {
       }
 
       const path =
-        Platform.OS === 'ios' ? response.assets[0].uri.replace('file://', '') : response.uri;
+        Platform.OS === 'ios'
+          ? response.assets[0].uri.replace('file://', '')
+          : response.uri;
 
       return onSuccess({ path, file: response.assets[0].base64 });
     }),

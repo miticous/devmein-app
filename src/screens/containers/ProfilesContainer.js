@@ -105,8 +105,10 @@ const ProfilesContainer = ({ navigation, route }) => {
       setShowHelperFinal={setShowHelperFinal}
       userProfile={profileQuery?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
-      onMoveTop={(id) => onMoveTop({ tutorialDone, like, id, setTutorialDone })}
-      onMoveBottom={(id) => onMoveBottom({ tutorialDone, unlike, id, setTutorialDone })}
+      onMoveTop={id => onMoveTop({ tutorialDone, like, id, setTutorialDone })}
+      onMoveBottom={id =>
+        onMoveBottom({ tutorialDone, unlike, id, setTutorialDone })
+      }
     />
   );
 };

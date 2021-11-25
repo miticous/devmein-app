@@ -12,8 +12,12 @@ const Container = styled.View`
 const CircledItem = ({ children, size, color, containerStyle, testID }) => (
   <Container
     testID={testID}
-    style={{ ...containerStyle, width: size, height: size, backgroundColor: color }}
-  >
+    style={{
+      ...containerStyle,
+      width: size,
+      height: size,
+      backgroundColor: color,
+    }}>
     {children}
   </Container>
 );

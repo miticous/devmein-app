@@ -9,7 +9,9 @@ import ProfileDetailsBox from './ProfileDetailsBox';
 import ProfileBox from './ProfileBox';
 import Mandala from './Mandala';
 
-const Content = styled.View``;
+const Content = styled.View`
+  margin: 0 20px;
+`;
 
 const getUsersDistance = ({ coordinates, userLocation }) => {
   if (
@@ -34,7 +36,9 @@ export const onPressDetailsPrev = ({
   setShowProfileDetails,
   setActiveTextsIndex,
 }) =>
-  activeTextsIndex === 0 ? setShowProfileDetails(false) : setActiveTextsIndex(activeTextsIndex - 1);
+  activeTextsIndex === 0
+    ? setShowProfileDetails(false)
+    : setActiveTextsIndex(activeTextsIndex - 1);
 
 export const onPressDetailsNext = ({
   activeTextsIndex,
@@ -76,8 +80,7 @@ const ProfileCard = ({
     <Content>
       <AnimatedProfileBox
         onMoveBottom={() => onMoveBottom(item?._id)}
-        onMoveTop={() => onMoveTop(item?._id)}
-      >
+        onMoveTop={() => onMoveTop(item?._id)}>
         {showProfileDetails && (
           <ProfileDetailsBox
             images={item?.images}
@@ -118,14 +121,19 @@ const ProfileCard = ({
               coordinates: item?.loc?.coordinates,
               userLocation: userProfile?.loc?.coordinates,
             })}km, ${item?.residence?.description}`}
-            graduation={graduationClass && `${graduationClass} @${item?.graduation?.description}`}
+            graduation={
+              graduationClass &&
+              `${graduationClass} @${item?.graduation?.description}`
+            }
           />
         )}
         <Mandala
           image={item?.astral?.mandala}
           visible={showMandala}
           thirtyText={item?.birthplace?.description}
-          secondText={moment(Number(item?.birthday)).utc().format('DD/MM/YYYY HH:mm')}
+          secondText={moment(Number(item?.birthday))
+            .utc()
+            .format('DD/MM/YYYY HH:mm')}
           onPressBack={() => setShowMandala(false)}
         />
       </AnimatedProfileBox>

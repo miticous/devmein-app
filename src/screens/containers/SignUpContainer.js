@@ -39,7 +39,9 @@ const SignUpContainer = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
+        <TouchableOpacity
+          onPress={() => navigation.pop()}
+          style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
       ),
@@ -51,7 +53,7 @@ const SignUpContainer = ({ navigation }) => {
       formRef={formRef}
       formLoginSchema={formSchema}
       formLoginInitialSchema={{ ...formInitialSchema }}
-      onPressSignUp={async (values) => signUp({ ...values, navigation })}
+      onPressSignUp={async values => signUp({ ...values, navigation })}
       onPressCreate={() => formRef?.current?.submitForm()}
     />
   );

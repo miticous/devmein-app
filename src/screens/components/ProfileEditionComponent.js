@@ -4,17 +4,22 @@ import styled from 'styled-components/native';
 import { Formik } from 'formik';
 import { FlatList } from 'react-native';
 import ImageGrid from '../../assets/components/ImageGrid';
-import { COLORS } from '../../assets/styles/colors';
+import { colors } from '../../assets/styles/colors';
 import ModalLoading from '../../assets/components/ModalLoading';
 import TextInput from '../../assets/components/TextInput';
 import PickerList from '../../assets/components/PickerList';
 import AstralTextCard from '../../assets/components/AstralTextCard';
 
-export const MercurioPlanTexts = ['EMOTION', 'INSTINCT', 'INTELLECT', 'PERSONALITY'];
+export const MercurioPlanTexts = [
+  'EMOTION',
+  'INSTINCT',
+  'INTELLECT',
+  'PERSONALITY',
+];
 
 export const checkTextAvalability = ({ plan, textType }) => {
   if (plan === 'MERCURIO') {
-    const isAvailableText = MercurioPlanTexts.some((_plan) => _plan === textType);
+    const isAvailableText = MercurioPlanTexts.some(_plan => _plan === textType);
 
     return isAvailableText;
   }
@@ -27,19 +32,21 @@ export const checkTextAvalability = ({ plan, textType }) => {
 };
 
 export const isTextChecked = ({ checkedItems, textType }) => {
-  const _isTextChecked = checkedItems?.some((checkedItem) => checkedItem === textType);
+  const _isTextChecked = checkedItems?.some(
+    checkedItem => checkedItem === textType,
+  );
 
   return _isTextChecked;
 };
 
 const Container = styled.ScrollView`
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
 `;
 const Content = styled.View`
   padding: 0px 20px;
   margin-bottom: ${({ detached }) => (detached ? '0px' : '20px')};
   padding-bottom: ${({ detached }) => (detached ? '20px' : '0px')};
-  background-color: ${({ detached }) => (detached ? '#F8F1F8' : COLORS.white)};
+  background-color: ${({ detached }) => (detached ? '#F8F1F8' : colors.white)};
 `;
 const Separator = styled.View`
   height: 2px;
@@ -66,7 +73,7 @@ const ProfileEditionComponent = ({
   <Container nestedScrollEnabled keyboardShouldPersistTaps="always">
     <Content>
       <ImageGrid
-        data={profile?.images?.map((image) => image?.image)}
+        data={profile?.images?.map(image => image?.image)}
         onPressImage={onPressImage}
         onPressRemove={onPressRemove}
       />
@@ -76,12 +83,15 @@ const ProfileEditionComponent = ({
       validationSchema={formSchema}
       innerRef={formRef}
       onSubmit={onSubmitForm}
-      validateOnChange
-    >
+      validateOnChange>
       {({ values }) => (
         <>
           <Content>
-            <TextInput name="name" label="Meu nome é" onPressButton={onPressInputButton} />
+            <TextInput
+              name="name"
+              label="Meu nome é"
+              onPressButton={onPressInputButton}
+            />
             <TextInput
               name="eyes"
               label="A cor dos meus olhos é"
@@ -173,11 +183,16 @@ const ProfileEditionComponent = ({
               const isItemChecked =
                 user?.plan === 'MERCURIO'
                   ? isItemAvailable
-                  : isTextChecked({ textType: item?.type, checkedItems: values.shownTexts });
+                  : isTextChecked({
+                      textType: item?.type,
+                      checkedItems: values.shownTexts,
+                    });
 
               return (
                 <AstralTextCard
-                  onPressCard={() => onPressTextsCardItem({ cardItem: item?.type })}
+                  onPressCard={() =>
+                    onPressTextsCardItem({ cardItem: item?.type })
+                  }
                   title={item?.title}
                   subtitle={item?.text}
                   checked={isItemChecked}
