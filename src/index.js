@@ -19,6 +19,8 @@ import DropDownHolder from './helpers/DropDownHolder';
 
 require('./config/reactotronConfig');
 
+console.disableYellowBox = true;
+
 const cache = new InMemoryCache({ addTypename: false });
 const httpLink = new HttpLink({
   uri: `${Config.API_BASE_URL}/graphql`,

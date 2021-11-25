@@ -29,7 +29,6 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
       pan.setOffset({
         y: pan.y._value,
       });
-      pan.setValue({ y: 0 });
     },
     onPanResponderMove: Animated.event([null, { dy: pan.y }]),
     onPanResponderRelease: (_, gesture) => {
@@ -41,7 +40,10 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
         onMoveBottom();
         return setShown(false);
       }
-      return pan.setValue({ y: 0 });
+      return Animated.spring(pan, {
+        toValue: { x: 0, y: 0 },
+        friction: 5,
+      }).start();
     },
   });
 

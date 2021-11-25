@@ -2,51 +2,45 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
-import Geolocation from '@react-native-community/geolocation';
-import { AppState, Alert, Platform } from 'react-native';
+import RNLocation from 'react-native-location';
+import { AppState } from 'react-native';
 import { SEND_GEOLOCATION } from '../../graphQL/mutation';
 import { GET_HOME, GET_PROFILE } from '../../graphQL/query';
 import HomeComponent from '../components/HomeComponent';
 
-const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) => {
-  Geolocation.getCurrentPosition(
-    ({ coords: { latitude, longitude } }) => {
-      const hasGeoLocationUpdated =
-        geoLocation?.latitude !== latitude || geoLocation?.longitude !== longitude;
-
-      if (!geoLocation?.sent || hasGeoLocationUpdated) {
-        sendGeoLocation({
-          variables: {
-            latitude: latitude.toString(),
-            longitude: longitude.toString(),
-          },
-        });
-
-        return setGeoLocation({ latitude, longitude });
-      }
-
-      return false;
+const controlUserLocation = async ({ sendGeoLocation, geoLocation, setGeoLocation }) => {
+  const hasPermission = await RNLocation.checkPermission({
+    ios: 'whenInUse',
+    android: {
+      detail: 'coarse',
     },
-    ({ PERMISSION_DENIED }) => {
-      if (PERMISSION_DENIED === 1) {
-        setGeoLocation({ latitude: null, longitude: null, sent: false });
+  });
 
-        if (Platform.OS === 'ios') {
-          Geolocation.requestAuthorization();
-        }
+  if (!hasPermission) {
+    await RNLocation.requestPermission({
+      ios: 'whenInUse',
+      android: {
+        detail: 'fine',
+      },
+    });
+  }
+  const { latitude, longitude } = await RNLocation.getLatestLocation({ timeout: 10000 });
 
-        return Alert.alert(
-          'Não foi possível obter sua localização, voce deve ativá-la para usar o jiantou',
-        );
-      }
-      return false;
-    },
-    {
-      maximumAge: 0,
-      timeout: 10000,
-      enableHighAccuracy: false,
-    },
-  );
+  const hasGeoLocationUpdated =
+    geoLocation?.latitude !== latitude || geoLocation?.longitude !== longitude;
+
+  if (!geoLocation?.sent || hasGeoLocationUpdated) {
+    sendGeoLocation({
+      variables: {
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+      },
+    });
+
+    return setGeoLocation({ latitude, longitude });
+  }
+
+  return false;
 };
 
 const HomeContainer = ({ navigation }) => {
