@@ -71,12 +71,12 @@ const Separator = styled.View`
 const SexTypes = [
   { id: 'WOMAN', description: 'Mulher' },
   { id: 'MAN', description: 'Homem' },
-  { id: 'HUMAN', description: 'Outro' }
+  { id: 'HUMAN', description: 'Outro' },
 ];
 const SearchGenre = [
   { id: 'WOMAN', description: 'Mulher' },
   { id: 'MAN', description: 'Homem' },
-  { id: 'ALL', description: 'Todos' }
+  { id: 'ALL', description: 'Todos' },
 ];
 const SexualOrientationTypes = [
   { id: 'HETERO', description: 'Hétero' },
@@ -88,7 +88,7 @@ const SexualOrientationTypes = [
   { id: 'PANSEXUAL', description: 'Pansexual' },
   { id: 'QUEER', description: 'Queer' },
   { id: 'QUESTIONING', description: 'Questionando' },
-  { id: 'OTHER', description: 'Outro' }
+  { id: 'OTHER', description: 'Outro' },
 ];
 
 const CreateProfileComponent = ({
@@ -109,7 +109,7 @@ const CreateProfileComponent = ({
   onPressRemoveImage,
   profile,
   user,
-  onPressTextsCardItem
+  onPressTextsCardItem,
 }) => {
   const switcherButtonTitle =
     activeItemIndex === switcherRef?.current?.childrensAmount - 1 ? 'FINALIZAR' : 'PRÓXIMO PASSO';
@@ -362,7 +362,7 @@ const CreateProfileComponent = ({
                   buttonTitle={switcherButtonTitle}
                 >
                   <ImageGrid
-                    data={profile?.images?.map(image => image?.image)}
+                    data={profile?.images?.map((image) => image?.image)}
                     onPressImage={onPressImage}
                     onPressRemove={onPressRemoveImage}
                   />
@@ -384,19 +384,19 @@ const CreateProfileComponent = ({
                     ItemSeparatorComponent={() => <Separator />}
                     contentContainerStyle={{
                       paddingHorizontal: 20,
-                      height: 300
+                      height: 300,
                     }}
                     renderItem={({ item }) => {
                       const isItemAvailable = checkTextAvalability({
                         plan: user?.plan,
-                        textType: item?.type
+                        textType: item?.type,
                       });
                       const isItemChecked =
                         user?.plan === 'MERCURIO'
                           ? isItemAvailable
                           : isTextChecked({
                               textType: item?.type,
-                              checkedItems: values.shownTexts
+                              checkedItems: values.shownTexts,
                             });
 
                       return (
@@ -423,18 +423,18 @@ CreateProfileComponent.defaultProps = {
   profile: {
     images: [
       {
-        image: ''
-      }
-    ]
-  }
+        image: '',
+      },
+    ],
+  },
 };
 CreateProfileComponent.propTypes = {
   profile: PropTypes.shape({
     images: PropTypes.arrayOf(
       PropTypes.shape({
-        image: PropTypes.string
-      })
-    )
+        image: PropTypes.string,
+      }),
+    ),
   }),
   onPressSwitcherButton: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -452,7 +452,7 @@ CreateProfileComponent.propTypes = {
   onPressImage: PropTypes.func.isRequired,
   onPressRemoveImage: PropTypes.func.isRequired,
   user: PropTypes.shape({}).isRequired,
-  onPressTextsCardItem: PropTypes.func.isRequired
+  onPressTextsCardItem: PropTypes.func.isRequired,
 };
 
 export default CreateProfileComponent;

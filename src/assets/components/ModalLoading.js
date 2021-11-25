@@ -12,7 +12,7 @@ const ModalLoading = ({ visible }) => (
           alignItems: 'center',
           flex: 1,
           backgroundColor: COLORS.shadowBackground,
-          marginTop: 22
+          marginTop: 22,
         }}
       >
         <View style={{ backgroundColor: COLORS.white, borderRadius: 10, padding: 30 }}>
@@ -24,7 +24,7 @@ const ModalLoading = ({ visible }) => (
 );
 
 ModalLoading.propTypes = {
-  visible: PropTypes.bool.isRequired
+  visible: PropTypes.bool.isRequired,
 };
 
 export default ModalLoading;

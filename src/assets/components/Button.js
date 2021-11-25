@@ -42,14 +42,14 @@ const Button = ({ text, action, buttonLoading, disabled }) => (
 Button.defaultProps = {
   disabled: false,
   buttonLoading: false,
-  action: () => false
+  action: () => false,
 };
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   action: PropTypes.func,
   disabled: PropTypes.bool,
-  buttonLoading: PropTypes.bool
+  buttonLoading: PropTypes.bool,
 };
 
 export default Button;

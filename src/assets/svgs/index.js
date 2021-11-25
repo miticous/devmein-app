@@ -15,7 +15,7 @@ export default {
     ),
     height: '12px',
     width: '12px',
-    viewBox: '0 0 12 12'
+    viewBox: '0 0 12 12',
   },
   Plus: {
     svg: (
@@ -30,7 +30,7 @@ export default {
     ),
     height: '19px',
     width: '19px',
-    viewBox: '0 0 19 19'
+    viewBox: '0 0 19 19',
   },
   BigX: {
     svg: (
@@ -47,7 +47,7 @@ export default {
     ),
     height: '90px',
     width: '90px',
-    viewBox: '0 0 90 90'
+    viewBox: '0 0 90 90',
   },
   LoventThat: {
     svg: (
@@ -74,7 +74,7 @@ export default {
     ),
     height: '47px',
     width: '41px',
-    viewBox: '0 0 47 51'
+    viewBox: '0 0 47 51',
   },
   BigHearth: {
     svg: (
@@ -91,7 +91,7 @@ export default {
     ),
     height: '98px',
     width: '97px',
-    viewBox: '0 0 98 97'
+    viewBox: '0 0 98 97',
   },
   LoveThat: {
     svg: (
@@ -118,7 +118,7 @@ export default {
     ),
     height: '40px',
     width: '51px',
-    viewBox: '0 0 40 51'
+    viewBox: '0 0 40 51',
   },
   HandTouch: {
     svg: (
@@ -143,7 +143,7 @@ export default {
     ),
     height: '40px',
     width: '46px',
-    viewBox: '0 0 40 46'
+    viewBox: '0 0 40 46',
   },
   ArrowHearth: {
     svg: (
@@ -172,7 +172,7 @@ export default {
     ),
     height: '16px',
     width: '20px',
-    viewBox: '0 0 16 20'
+    viewBox: '0 0 16 20',
   },
   ArrowBackNoCircle: {
     svg: (
@@ -187,7 +187,7 @@ export default {
     ),
     height: '6px',
     width: '14px',
-    viewBox: '0 0 6 14'
+    viewBox: '0 0 6 14',
   },
   ArrowFowardNoCircle: {
     svg: (
@@ -202,7 +202,7 @@ export default {
     ),
     height: '7px',
     width: '12px',
-    viewBox: '0 0 7 12'
+    viewBox: '0 0 7 12',
   },
   CircledArrowFoward: {
     svg: (
@@ -221,7 +221,7 @@ export default {
     ),
     height: '40px',
     width: '40px',
-    viewBox: '0 0 40 40'
+    viewBox: '0 0 40 40',
   },
   ArrowFoward: {
     svg: (
@@ -236,7 +236,7 @@ export default {
     ),
     height: '6px',
     width: '10px',
-    viewBox: '0 0 6 10'
+    viewBox: '0 0 6 10',
   },
   FRIENDSHIP: {
     svg: (
@@ -252,7 +252,7 @@ export default {
     ),
     height: '29px',
     width: '29px',
-    viewBox: '0 0 29 29'
+    viewBox: '0 0 29 29',
   },
   LOVE: {
     svg: (
@@ -268,7 +268,7 @@ export default {
     ),
     height: '28px',
     width: '29px',
-    viewBox: '0 0 28 29'
+    viewBox: '0 0 28 29',
   },
   Love: {
     svg: (
@@ -283,7 +283,7 @@ export default {
     ),
     height: '22px',
     width: '21px',
-    viewBox: '0 0 22 21'
+    viewBox: '0 0 22 21',
   },
   Friendship: {
     svg: (
@@ -297,7 +297,7 @@ export default {
     ),
     height: '22px',
     width: '21px',
-    viewBox: '0 0 22 21'
+    viewBox: '0 0 22 21',
   },
   Home: {
     svg: (
@@ -311,7 +311,7 @@ export default {
     ),
     height: '20px',
     width: '20px',
-    viewBox: '0 0 20 20'
+    viewBox: '0 0 20 20',
   },
   Location: {
     svg: (
@@ -326,7 +326,7 @@ export default {
     ),
     height: '16px',
     width: '19px',
-    viewBox: '0 0 16 19'
+    viewBox: '0 0 16 19',
   },
   Checked: {
     svg: (
@@ -341,7 +341,7 @@ export default {
     ),
     height: '12px',
     width: '9px',
-    viewBox: '0 0 12 9'
+    viewBox: '0 0 12 9',
   },
   Remove: {
     svg: (
@@ -357,7 +357,7 @@ export default {
     ),
     height: '40px',
     width: '40px',
-    viewBox: '0 0 40 40'
+    viewBox: '0 0 40 40',
   },
   Save: {
     svg: (
@@ -376,7 +376,7 @@ export default {
     ),
     height: 40,
     width: 40,
-    viewBox: '0 0 40 40'
+    viewBox: '0 0 40 40',
   },
   Close: {
     svg: (
@@ -392,7 +392,7 @@ export default {
     ),
     height: '40px',
     width: '40px',
-    viewBox: '0 0 40 40'
+    viewBox: '0 0 40 40',
   },
   virgo: {
     svg: (
@@ -413,7 +413,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   taurus: {
     svg: (
@@ -434,7 +434,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   pisces: {
     svg: (
@@ -455,7 +455,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   sagittarius: {
     svg: (
@@ -476,7 +476,7 @@ export default {
     ),
     height: '85px',
     width: '22px',
-    viewBox: '0 0 85 22'
+    viewBox: '0 0 85 22',
   },
   libra: {
     svg: (
@@ -499,7 +499,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   leo: {
     svg: (
@@ -520,7 +520,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   gemini: {
     svg: (
@@ -541,7 +541,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   scorpio: {
     svg: (
@@ -562,7 +562,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   capricorn: {
     svg: (
@@ -589,7 +589,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   cancer: {
     svg: (
@@ -612,7 +612,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   aries: {
     svg: (
@@ -633,7 +633,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   aquarius: {
     svg: (
@@ -656,7 +656,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   Graduation: {
     svg: (
@@ -677,7 +677,7 @@ export default {
     ),
     height: 16,
     width: 16,
-    viewBox: '0 0 16 16'
+    viewBox: '0 0 16 16',
   },
   Occupation: {
     svg: (
@@ -690,7 +690,7 @@ export default {
     ),
     height: 16,
     width: 14,
-    viewBox: '0 0 16 14'
+    viewBox: '0 0 16 14',
   },
   // Location: {
   //   svg: (
@@ -776,7 +776,7 @@ export default {
     ),
     height: '38px',
     width: '38px',
-    viewBox: '0 0 38 38'
+    viewBox: '0 0 38 38',
   },
   BullZodiac: {
     svg: (
@@ -796,7 +796,7 @@ export default {
     ),
     height: '74px',
     width: '23px',
-    viewBox: '0 0 74 23'
+    viewBox: '0 0 74 23',
   },
   Back: {
     svg: (
@@ -812,7 +812,7 @@ export default {
     ),
     height: '40px',
     width: '40px',
-    viewBox: '0 0 40 40'
+    viewBox: '0 0 40 40',
   },
   Config: {
     svg: (
@@ -828,7 +828,7 @@ export default {
     ),
     height: '40px',
     width: '40px',
-    viewBox: '0 0 40 40'
+    viewBox: '0 0 40 40',
   },
   ArrowLove: {
     svg: (
@@ -905,6 +905,6 @@ export default {
     ),
     height: '512px',
     width: '512px',
-    viewBox: '0 0 512 512'
-  }
+    viewBox: '0 0 512 512',
+  },
 };

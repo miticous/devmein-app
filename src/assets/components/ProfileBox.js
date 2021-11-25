@@ -84,7 +84,7 @@ const ProfileBox = ({
   showHelperInitial,
   showHelperFinal,
   tutorialDone,
-  onPressMandala
+  onPressMandala,
 }) => (
   <Container>
     <ButtonNext onPress={onPressNext} />
@@ -138,7 +138,7 @@ const ProfileBox = ({
 
 ProfileBox.defaultProps = {
   occupation: null,
-  graduation: null
+  graduation: null,
 };
 
 ProfileBox.propTypes = {
@@ -152,7 +152,7 @@ ProfileBox.propTypes = {
   showHelperInitial: PropTypes.bool.isRequired,
   showHelperFinal: PropTypes.bool.isRequired,
   tutorialDone: PropTypes.bool.isRequired,
-  onPressMandala: PropTypes.func.isRequired
+  onPressMandala: PropTypes.func.isRequired,
 };
 
 export default ProfileBox;

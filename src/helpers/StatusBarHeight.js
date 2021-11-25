@@ -17,5 +17,5 @@ const isIPhoneX = () =>
 export const StatusBarHeight = Platform.select({
   ios: isIPhoneX() ? 44 : 20,
   android: 0,
-  default: 0
+  default: 0,
 });

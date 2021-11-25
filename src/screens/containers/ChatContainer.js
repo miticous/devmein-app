@@ -17,22 +17,22 @@ const ChatContainer = ({ navigation, route: { params } }) => {
 
   const { data: profileData, profileLoading } = useQuery(GET_PROFILE, {
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-first',
   });
 
   const { data, loading: chatLoading } = useQuery(GET_CHAT, {
     variables: {
-      matchId: match?._id
-    }
+      matchId: match?._id,
+    },
   });
   const [sendMessage, { loading: mutationLoading }] = useMutation(SEND_MESSAGE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao enviar/receber mensagens')
+    onError: () => DropDownHolder.show('error', '', 'Falha ao enviar/receber mensagens'),
   });
 
   const { data: subscriptionData } = useSubscription(CHAT_SUB, {
     variables: {
-      matchId: match?._id
-    }
+      matchId: match?._id,
+    },
   });
 
   React.useLayoutEffect(() => {
@@ -41,7 +41,7 @@ const ChatContainer = ({ navigation, route: { params } }) => {
         <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
-      )
+      ),
     });
   }, []);
 
@@ -53,15 +53,15 @@ const ChatContainer = ({ navigation, route: { params } }) => {
       messages={subscriptionData?.newMessage?.messages || data?.chat?.messages}
       inputValue={inputValue}
       participant={subscriptionData?.newMessage?.participant || data?.chat?.participant || match}
-      onChangeInput={text => setInputValue(text)}
+      onChangeInput={(text) => setInputValue(text)}
       messagesBodyRef={messagesBodyRef}
       onLayout={() => messagesBodyRef?.current.scrollToEnd({ animated: true })}
       onSubmit={() => {
         sendMessage({
           variables: {
             matchId: match._id,
-            message: inputValue
-          }
+            message: inputValue,
+          },
         });
         setInputValue('');
       }}

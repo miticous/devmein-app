@@ -84,7 +84,7 @@ const Mandala = ({ image, visible, onPressBack, secondText, thirtyText }) => (
 Mandala.propTypes = {
   image: PropTypes.string.isRequired,
   visible: PropTypes.bool.isRequired,
-  onPressBack: PropTypes.func.isRequired
+  onPressBack: PropTypes.func.isRequired,
 };
 
 export default Mandala;

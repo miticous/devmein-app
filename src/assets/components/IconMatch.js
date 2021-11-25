@@ -34,7 +34,7 @@ const IconMatch = ({ image, iconOne, iconTwo, small }) => (
       <CircledItem size={small ? 40 : 85}>
         <Image
           source={{
-            uri: image
+            uri: image,
           }}
           resizeMode="cover"
         />
@@ -53,14 +53,14 @@ const IconMatch = ({ image, iconOne, iconTwo, small }) => (
 
 IconMatch.defaultProps = {
   iconTwo: false,
-  small: false
+  small: false,
 };
 
 IconMatch.propTypes = {
   image: PropTypes.string.isRequired,
   iconOne: PropTypes.string.isRequired,
   iconTwo: PropTypes.string,
-  small: PropTypes.bool
+  small: PropTypes.bool,
 };
 
 export default IconMatch;

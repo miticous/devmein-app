@@ -30,14 +30,14 @@ const DefaultButton = ({ text, action, disabled, inverted }) => (
 DefaultButton.defaultProps = {
   disabled: false,
   action: () => false,
-  inverted: false
+  inverted: false,
 };
 
 DefaultButton.propTypes = {
   text: PropTypes.string.isRequired,
   action: PropTypes.func,
   disabled: PropTypes.bool,
-  inverted: PropTypes.bool
+  inverted: PropTypes.bool,
 };
 
 export default DefaultButton;

@@ -18,8 +18,8 @@ const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) =
         sendGeoLocation({
           variables: {
             latitude: latitude.toString(),
-            longitude: longitude.toString()
-          }
+            longitude: longitude.toString(),
+          },
         });
 
         return setGeoLocation({ latitude, longitude });
@@ -36,7 +36,7 @@ const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) =
         }
 
         return Alert.alert(
-          'Não foi possível obter sua localização, voce deve ativá-la para usar o jiantou'
+          'Não foi possível obter sua localização, voce deve ativá-la para usar o jiantou',
         );
       }
       return false;
@@ -44,8 +44,8 @@ const controlUserLocation = ({ sendGeoLocation, geoLocation, setGeoLocation }) =
     {
       maximumAge: 0,
       timeout: 10000,
-      enableHighAccuracy: false
-    }
+      enableHighAccuracy: false,
+    },
   );
 };
 
@@ -53,31 +53,31 @@ const HomeContainer = ({ navigation }) => {
   const [geoLocation, setGeoLocation] = useState({
     latitude: null,
     longitude: null,
-    sent: false
+    sent: false,
   });
   const client = useApolloClient();
 
   const { data: profileQuery, loading: loadingProfileQuery } = useQuery(GET_PROFILE, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-first',
-    skip: !geoLocation?.sent
+    skip: !geoLocation?.sent,
   });
 
   const { data: homeQuery } = useQuery(GET_HOME, {
     notifyOnNetworkStatusChange: true,
     skip: !geoLocation?.sent,
-    pollInterval: 15000
+    pollInterval: 15000,
   });
 
   const [sendGeoLocation] = useMutation(SEND_GEOLOCATION, {
     onCompleted: () => {
       client.cache.writeData({
         data: {
-          geoLocationSent: true
-        }
+          geoLocationSent: true,
+        },
       });
       return setGeoLocation({ ...geoLocation, sent: true });
-    }
+    },
   });
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const HomeContainer = ({ navigation }) => {
   const appState = React.useRef(AppState.currentState);
   const [, setAppStateVisible] = React.useState(appState.current);
 
-  const _handleAppStateChange = nextAppState => {
+  const _handleAppStateChange = (nextAppState) => {
     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
       controlUserLocation({ sendGeoLocation, geoLocation, setGeoLocation });
     }
@@ -108,7 +108,7 @@ const HomeContainer = ({ navigation }) => {
     <HomeComponent
       isProfilesLoading={loadingProfileQuery}
       matches={homeQuery?.matches}
-      onPressCarouselItem={item => navigation.navigate('Chat', { match: item })}
+      onPressCarouselItem={(item) => navigation.navigate('Chat', { match: item })}
       userProfile={profileQuery?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveBottom={() => false}
@@ -119,13 +119,13 @@ const HomeContainer = ({ navigation }) => {
 HomeContainer.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
-      searchType: PropTypes.string.isRequired
-    })
-  }).isRequired
+      searchType: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
 };
 
 export default HomeContainer;

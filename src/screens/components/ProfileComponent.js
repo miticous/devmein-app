@@ -14,7 +14,7 @@ import { checkTextAvalability } from './ProfileEditionComponent';
 const filterAvailableTexts = ({ plan, texts, shownTexts }) => {
   const _texts = texts.reduce((accumulator, text) => {
     if (plan === 'JUPITER') {
-      const shouldAddText = shownTexts?.some(_text => _text === text?.type);
+      const shouldAddText = shownTexts?.some((_text) => _text === text?.type);
 
       if (shouldAddText) {
         return [...accumulator, text];
@@ -48,7 +48,7 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
   const filteredTexts = filterAvailableTexts({
     plan: user?.plan,
     texts: profile?.astral?.texts,
-    shownTexts: profile?.shownTexts
+    shownTexts: profile?.shownTexts,
   });
   const { class: graduationClass } = profile?.graduation?.class ?? {};
 
@@ -69,14 +69,14 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
                     setActiveTextsIndex,
                     texts: filteredTexts,
                     setShowProfileDetails,
-                    tutorialDone: true
+                    tutorialDone: true,
                   })
                 }
                 onPressPrev={() =>
                   onPressDetailsPrev({
                     activeTextsIndex,
                     setShowProfileDetails,
-                    setActiveTextsIndex
+                    setActiveTextsIndex,
                   })
                 }
               />
@@ -101,9 +101,7 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
               image={profile?.astral?.mandala}
               visible={showMandala}
               thirtyText={profile?.birthplace?.description}
-              secondText={moment(Number(profile?.birthday))
-                .utc()
-                .format('DD/MM/YYYY HH:mm')}
+              secondText={moment(Number(profile?.birthday)).utc().format('DD/MM/YYYY HH:mm')}
               onPressBack={() => setShowMandala(false)}
             />
           </>
@@ -116,7 +114,7 @@ const ProfileComponent = ({ loading, profile, user, onPressEditButton, onPressLo
 };
 
 ProfileComponent.defaultProps = {
-  profile: null
+  profile: null,
 };
 
 ProfileComponent.propTypes = {
@@ -124,7 +122,7 @@ ProfileComponent.propTypes = {
   profile: PropTypes.shape({}),
   user: PropTypes.shape({}).isRequired,
   onPressEditButton: PropTypes.func.isRequired,
-  onPressLogout: PropTypes.func.isRequired
+  onPressLogout: PropTypes.func.isRequired,
 };
 
 export default ProfileComponent;

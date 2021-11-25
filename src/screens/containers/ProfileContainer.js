@@ -19,7 +19,7 @@ const ProfileContainer = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
-      )
+      ),
     });
   }, [navigation]);
 
@@ -40,8 +40,8 @@ ProfileContainer.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     pop: PropTypes.func.isRequired,
-    setOptions: PropTypes.func.isRequired
-  }).isRequired
+    setOptions: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default ProfileContainer;

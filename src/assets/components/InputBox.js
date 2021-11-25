@@ -65,7 +65,7 @@ const styledInput = {
   fontSize: 20,
   letterSpacing: -0.3,
   lineHeight: 22,
-  color: COLORS.textPrimaryColor
+  color: COLORS.textPrimaryColor,
 };
 
 const InputBox = ({
@@ -89,7 +89,7 @@ const InputBox = ({
   editable,
   keyboardType,
   autoCompleteType,
-  textContentType
+  textContentType,
 }) => (
   <Container>
     <InputContainer error={hasError} valid={isValid} height={height}>
@@ -108,7 +108,7 @@ const InputBox = ({
                 returnKeyType={returnKeyType}
                 editable={editable}
                 options={{
-                  mask
+                  mask,
                 }}
                 placeholder={placeholder}
                 onSubmitEditing={onSubmitEditing}
@@ -159,7 +159,7 @@ InputBox.defaultProps = {
   editable: true,
   keyboardType: 'default',
   autoCompleteType: undefined,
-  textContentType: undefined
+  textContentType: undefined,
 };
 
 InputBox.propTypes = {
@@ -183,7 +183,7 @@ InputBox.propTypes = {
   editable: PropTypes.bool,
   keyboardType: PropTypes.string,
   autoCompleteType: PropTypes.string,
-  textContentType: PropTypes.string
+  textContentType: PropTypes.string,
 };
 
 export default InputBox;

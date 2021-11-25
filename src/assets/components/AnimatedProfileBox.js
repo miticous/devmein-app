@@ -27,7 +27,7 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
     },
     onPanResponderGrant: () => {
       pan.setOffset({
-        y: pan.y._value
+        y: pan.y._value,
       });
       pan.setValue({ y: 0 });
     },
@@ -42,7 +42,7 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
         return setShown(false);
       }
       return pan.setValue({ y: 0 });
-    }
+    },
   });
 
   return (
@@ -52,9 +52,9 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
           style={{
             opacity: pan.y.interpolate({
               inputRange: [-100, 0, 100],
-              outputRange: [0.8, 1, 0.8]
+              outputRange: [0.8, 1, 0.8],
             }),
-            transform: [{ translateY: pan.y }]
+            transform: [{ translateY: pan.y }],
           }}
           {...panResponder.panHandlers}
         >
@@ -68,7 +68,7 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
 AnimatedProfileBox.propTypes = {
   children: PropTypes.shape({}).isRequired,
   onMoveTop: PropTypes.func.isRequired,
-  onMoveBottom: PropTypes.func.isRequired
+  onMoveBottom: PropTypes.func.isRequired,
 };
 
 export default AnimatedProfileBox;

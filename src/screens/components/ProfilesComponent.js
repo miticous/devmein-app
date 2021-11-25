@@ -25,9 +25,9 @@ const renderProfiles = ({
   setShowHelperFinal,
   showHelperInitial,
   showHelperFinal,
-  tutorialDone
+  tutorialDone,
 }) =>
-  profiles?.map(item => (
+  profiles?.map((item) => (
     <ProfileCard
       userProfile={userProfile}
       onMoveBottom={onMoveBottom}
@@ -54,7 +54,7 @@ const ProfilesComponent = ({
   setShowHelperFinal,
   showHelperInitial,
   showHelperFinal,
-  tutorialDone
+  tutorialDone,
 }) => (
   <Container>
     <ProfileHeader
@@ -75,7 +75,7 @@ const ProfilesComponent = ({
       setShowHelperFinal,
       showHelperInitial,
       showHelperFinal,
-      tutorialDone
+      tutorialDone,
     })}
     {isProfilesLoading && <ModalLoading visible={isProfilesLoading} />}
   </Container>
@@ -93,7 +93,7 @@ ProfilesComponent.propTypes = {
   onPressShowDetails: PropTypes.func.isRequired,
   showHelperInitial: PropTypes.bool.isRequired,
   showHelperFinal: PropTypes.bool.isRequired,
-  tutorialDone: PropTypes.bool.isRequired
+  tutorialDone: PropTypes.bool.isRequired,
 };
 
 export default ProfilesComponent;

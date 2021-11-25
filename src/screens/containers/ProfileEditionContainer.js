@@ -17,7 +17,7 @@ const imagePickerOptions = {
   maxWidth: 200,
   selectionLimit: 0,
   mediaType: 'photo',
-  includeBase64: true
+  includeBase64: true,
   // title: 'Selecione uma foto',
   // storageOptions: {
   //   skipBackup: true,
@@ -36,14 +36,14 @@ export const onPressImage = async ({ addProfileImage }) => {
     onSuccess: ({ file }) =>
       addProfileImage({
         variables: {
-          file
-        }
-      })
+          file,
+        },
+      }),
   });
 };
 
 const updateSelectedTexts = ({ item, texts }) => {
-  const isItemAlreadyAdded = texts?.some(text => text === item);
+  const isItemAlreadyAdded = texts?.some((text) => text === item);
 
   if (isItemAlreadyAdded)
     return texts?.reduce((accumulator, text) => {
@@ -60,15 +60,18 @@ const updateSelectedTexts = ({ item, texts }) => {
 export const onPressTextsCardItem = ({ formRef, cardItem }) =>
   formRef?.current?.setValues({
     ...formRef.current.values,
-    shownTexts: updateSelectedTexts({ item: cardItem, texts: formRef?.current?.values?.shownTexts })
+    shownTexts: updateSelectedTexts({
+      item: cardItem,
+      texts: formRef?.current?.values?.shownTexts,
+    }),
   });
 
 const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   try {
     await editProfile({
       variables: {
-        ...formRef.current.values
-      }
+        ...formRef.current.values,
+      },
     });
 
     return navigation.pop();
@@ -84,10 +87,10 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
         ...formRef.current.values,
         birthplace: {
           description: sugestion?.label,
-          placeId: sugestion?.id
-        }
+          placeId: sugestion?.id,
+        },
       },
-      true
+      true,
     );
 
     setSugestions(null);
@@ -102,10 +105,10 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
         graduation: {
           ...formRef.current.values.graduation,
           description: sugestion?.label,
-          placeId: sugestion?.id
-        }
+          placeId: sugestion?.id,
+        },
       },
-      true
+      true,
     );
 
     setSugestions(null);
@@ -119,10 +122,10 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
         ...formRef.current.values,
         residence: {
           description: sugestion?.label,
-          placeId: sugestion?.id
-        }
+          placeId: sugestion?.id,
+        },
       },
-      true
+      true,
     );
 
     setSugestions(null);
@@ -131,21 +134,21 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
   }
 
   if (fieldRef === 'sexualOrientation') {
-    const sexualOrientations = formRef.current.values.sexualOrientations;
+    const { sexualOrientations } = formRef.current.values;
 
     const isSexualOrientationChecked = sexualOrientations?.some(
-      orientation => orientation === sugestion?.id
+      (orientation) => orientation === sugestion?.id,
     );
 
     if (isSexualOrientationChecked) {
       return formRef.current.setFieldValue('sexualOrientations', [
-        ...sexualOrientations.filter(orientation => orientation !== sugestion?.id)
+        ...sexualOrientations.filter((orientation) => orientation !== sugestion?.id),
       ]);
     }
 
     return formRef.current.setFieldValue(
       'sexualOrientations',
-      sexualOrientations?.length > 0 ? [...sexualOrientations, sugestion?.id] : [sugestion?.id]
+      sexualOrientations?.length > 0 ? [...sexualOrientations, sugestion?.id] : [sugestion?.id],
     );
   }
 
@@ -168,7 +171,7 @@ export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, su
   if (text.length > 3) {
     const result = await getCitiesByName({
       name: text,
-      type: fieldRef === 'graduation.description' ? 'establishment' : '(cities)'
+      type: fieldRef === 'graduation.description' ? 'establishment' : '(cities)',
     });
 
     setSugestions({ ...sugestions, [fieldRef]: result && result?.length > 0 ? result : null });
@@ -188,17 +191,17 @@ const ProfileEditionContainer = ({ navigation }) => {
 
   const {
     data: { profile, user },
-    loading: loadingQuery
+    loading: loadingQuery,
   } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
 
   const [editProfile, { loading: loadingMutationEdit }] = useMutation(EDIT_PROFILE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao salvar edição'),
-    refetchQueries: [{ query: GET_PROFILE }]
+    refetchQueries: [{ query: GET_PROFILE }],
   });
 
   const [addProfileImage, { loading: loadingMutationAdd }] = useMutation(ADD_PROFILE_IMAGE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao adicionar image'),
-    refetchQueries: [{ query: GET_PROFILE }]
+    refetchQueries: [{ query: GET_PROFILE }],
   });
 
   const [removeProfileImage, { loading: loadingMutationRemove }] = useMutation(
@@ -206,8 +209,8 @@ const ProfileEditionContainer = ({ navigation }) => {
     {
       onCompleted: () => false,
       onError: () => DropDownHolder.show('error', '', 'Falha ao remover imagem'),
-      refetchQueries: [{ query: GET_PROFILE }]
-    }
+      refetchQueries: [{ query: GET_PROFILE }],
+    },
   );
 
   React.useLayoutEffect(() => {
@@ -224,19 +227,16 @@ const ProfileEditionContainer = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
           <Icon name="Close" width={40} height={40} />
         </TouchableOpacity>
-      )
+      ),
     });
   }, [navigation]);
 
   const formSchema = yup.object().shape({
-    name: yup
-      .string()
-      .min(4)
-      .required('Seu nome nao pode conter menos de 4 caracteres'),
+    name: yup.string().min(4).required('Seu nome nao pode conter menos de 4 caracteres'),
     birthday: yup
       .string()
       .min(16, 'Ops! Digite data e hora de nascimento.')
-      .test('TST', 'error', values => moment(values, 'DD/MM/YYYY HH:mm').isValid())
+      .test('TST', 'error', (values) => moment(values, 'DD/MM/YYYY HH:mm').isValid())
       .required('Digite uma data válida'),
     birthplace: yup.object().shape({
       description: yup
@@ -252,7 +252,7 @@ const ProfileEditionContainer = ({ navigation }) => {
 
           return false;
         }),
-      placeId: yup.string().required()
+      placeId: yup.string().required(),
     }),
     graduation: yup.object().shape({
       description: yup
@@ -269,7 +269,7 @@ const ProfileEditionContainer = ({ navigation }) => {
             return true;
           }
           return false;
-        })
+        }),
     }),
     residence: yup.object().shape({
       description: yup
@@ -286,17 +286,15 @@ const ProfileEditionContainer = ({ navigation }) => {
             return true;
           }
           return false;
-        })
-    })
+        }),
+    }),
   });
 
   return (
     <ProfileEditionComponent
       formInitialSchema={{
         ...profile,
-        birthday: moment(Number(profile.birthday))
-          .utc()
-          .format('DD/MM/YYYY HH:mm')
+        birthday: moment(Number(profile.birthday)).utc().format('DD/MM/YYYY HH:mm'),
       }}
       user={user}
       onPressTextsCardItem={({ cardItem }) => onPressTextsCardItem({ cardItem, formRef })}
@@ -307,7 +305,7 @@ const ProfileEditionContainer = ({ navigation }) => {
         onSubmitForm({
           formRef,
           editProfile,
-          navigation
+          navigation,
         })
       }
       onPressSugestion={({ item, referencedInputName }) =>
@@ -315,7 +313,7 @@ const ProfileEditionContainer = ({ navigation }) => {
           setSugestions: () => false,
           sugestion: item,
           fieldRef: referencedInputName,
-          formRef
+          formRef,
         })
       }
       onChangeInput={({ text, inputRef }) =>
@@ -325,19 +323,19 @@ const ProfileEditionContainer = ({ navigation }) => {
           inputRef,
           fieldRef: inputRef,
           formRef,
-          sugestions
+          sugestions,
         })
       }
       sugestions={sugestions}
       loading={loadingQuery || loadingMutationAdd || loadingMutationRemove || loadingMutationEdit}
-      onPressRemove={index =>
+      onPressRemove={(index) =>
         removeProfileImage({
           variables: {
-            imageId: profile?.images[index]._id
-          }
+            imageId: profile?.images[index]._id,
+          },
         })
       }
-      onPressInputButton={field => onPressInputButton({ field, formRef })}
+      onPressInputButton={(field) => onPressInputButton({ field, formRef })}
       onPressImage={() => onPressImage({ addProfileImage })}
     />
   );
@@ -346,8 +344,8 @@ const ProfileEditionContainer = ({ navigation }) => {
 ProfileEditionContainer.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
-    pop: PropTypes.func.isRequired
-  }).isRequired
+    pop: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default ProfileEditionContainer;

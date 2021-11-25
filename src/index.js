@@ -21,7 +21,7 @@ require('./config/reactotronConfig');
 
 const cache = new InMemoryCache({ addTypename: false });
 const httpLink = new HttpLink({
-  uri: `${Config.API_BASE_URL}/graphql`
+  uri: `${Config.API_BASE_URL}/graphql`,
 });
 
 const wsLink = new WebSocketLink({
@@ -30,9 +30,9 @@ const wsLink = new WebSocketLink({
     reconnect: true,
     lazy: true,
     connectionParams: async () => ({
-      token: await AsyncStorage.getItem('@jintou:token')
-    })
-  }
+      token: await AsyncStorage.getItem('@jintou:token'),
+    }),
+  },
 });
 
 const link = split(
@@ -41,7 +41,7 @@ const link = split(
     return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
   },
   wsLink,
-  httpLink
+  httpLink,
 );
 
 const linkError = onError(({ graphQLErrors, networkError }) => {
@@ -52,8 +52,8 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
         DropDownHolder.show(
           'error',
           '',
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
     );
   if (networkError)
     DropDownHolder.show('error', '', 'O Jintou encontrou um problema ao conectar-se ao servidor');
@@ -64,8 +64,8 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ''
-    }
+      authorization: token ? `Bearer ${token}` : '',
+    },
   };
 });
 
@@ -76,10 +76,10 @@ const client = new ApolloClient({
   version: '1.3',
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: 'cache-and-network'
-    }
+      fetchPolicy: 'cache-and-network',
+    },
   },
-  assumeImmutableResults: false
+  assumeImmutableResults: false,
 });
 
 const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
@@ -94,7 +94,7 @@ const App = () => {
       <NavigationContainer>
         <Routes />
         <DropdownAlert
-          ref={ref => DropDownHolder.setDropDown(ref)}
+          ref={(ref) => DropDownHolder.setDropDown(ref)}
           closeInterval={3000}
           translucent={false}
           activeStatusBarStyle="light-content"

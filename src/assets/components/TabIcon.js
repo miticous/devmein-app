@@ -32,7 +32,7 @@ BottomTab.propTypes = {
   focused: PropTypes.bool.isRequired,
   icon: PropTypes.string.isRequired,
   backgroundColor: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired
+  color: PropTypes.string.isRequired,
 };
 
 export default BottomTab;

@@ -35,7 +35,7 @@ const SignUpComponent = ({
   formLoginSchema,
   onPressSignUp,
   formRef,
-  onPressCreate
+  onPressCreate,
 }) => (
   <Container>
     <Header>
@@ -82,7 +82,7 @@ SignUpComponent.propTypes = {
   formLoginSchema: PropTypes.shape({}).isRequired,
   onPressSignUp: PropTypes.func.isRequired,
   formRef: PropTypes.shape({}).isRequired,
-  onPressCreate: PropTypes.func.isRequired
+  onPressCreate: PropTypes.func.isRequired,
 };
 
 export default SignUpComponent;

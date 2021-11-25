@@ -38,7 +38,7 @@ const Switcher = React.forwardRef((props, ref) => {
   const SCROLL_TO_POSITION = ITEM_SIZE + ITEM_POSITION;
 
   useImperativeHandle(ref, () => ({
-    childrensAmount: React.Children.count(children)
+    childrensAmount: React.Children.count(children),
   }));
 
   const [scrollToIndex] = useState(new Animated.Value(SCROLL_TO_POSITION));
@@ -46,9 +46,9 @@ const Switcher = React.forwardRef((props, ref) => {
   useLayoutEffect(
     () =>
       Animated.spring(scrollToIndex, {
-        toValue: SCROLL_TO_POSITION
+        toValue: SCROLL_TO_POSITION,
       }).start(),
-    [activeIndex, scrollToIndex]
+    [activeIndex, scrollToIndex],
   );
 
   return (
@@ -58,7 +58,7 @@ const Switcher = React.forwardRef((props, ref) => {
           style={{
             width: SWITCHER_SIZE,
             flexDirection: 'row',
-            transform: [{ translateX: scrollToIndex }]
+            transform: [{ translateX: scrollToIndex }],
           }}
         >
           {children}
@@ -74,7 +74,7 @@ const SwitcherItem = ({
   subtitle,
   containerFluid,
   buttonTitle,
-  onPressSubmit
+  onPressSubmit,
 }) => (
   <SwitcherItemContainer width={SCREEN_WIDTH}>
     {title && subtitle && (
@@ -94,20 +94,20 @@ Switcher.propTypes = {
   children: PropTypes.shape({}).isRequired,
   activeIndex: PropTypes.number.isRequired,
   onPressSubmit: PropTypes.func.isRequired,
-  buttonTitle: PropTypes.string.isRequired
+  buttonTitle: PropTypes.string.isRequired,
 };
 
 SwitcherItem.defaultProps = {
   containerFluid: true,
   title: null,
-  subtitle: null
+  subtitle: null,
 };
 
 SwitcherItem.propTypes = {
   containerFluid: PropTypes.bool,
   children: PropTypes.shape({}).isRequired,
   title: PropTypes.string,
-  subtitle: PropTypes.string
+  subtitle: PropTypes.string,
 };
 
 export { Switcher, SwitcherItem };

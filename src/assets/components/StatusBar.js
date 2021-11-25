@@ -17,12 +17,12 @@ const StatusBar = ({ color, barStyle }) => (
 );
 
 StatusBar.defaultProps = {
-  barStyle: 'light-content'
+  barStyle: 'light-content',
 };
 
 StatusBar.propTypes = {
   color: PropTypes.string.isRequired,
-  barStyle: PropTypes.string
+  barStyle: PropTypes.string,
 };
 
 export default StatusBar;

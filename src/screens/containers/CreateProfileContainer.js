@@ -12,7 +12,7 @@ import {
   onPressSugestion,
   onPressInputButton,
   onPressImage,
-  onPressTextsCardItem
+  onPressTextsCardItem,
 } from './ProfileEditionContainer';
 import { CREATE_PROFILE, ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE } from '../../graphQL/mutation';
 import { GET_PROFILE_CREATION } from '../../graphQL/query';
@@ -20,7 +20,7 @@ import { GET_PROFILE_CREATION } from '../../graphQL/query';
 const formInitialValues = {
   name: '',
   searchLoveAgeRange: [18, 26],
-  searchFriendAgeRange: [18, 26]
+  searchFriendAgeRange: [18, 26],
 };
 
 const normalizeFormValues = ({ formRef, data }) => {
@@ -32,20 +32,16 @@ const normalizeFormValues = ({ formRef, data }) => {
       ...user,
       birthplace: {
         placeId: profile?.birthplace?.placeId,
-        description: profile?.birthplace?.description
+        description: profile?.birthplace?.description,
       },
       searchLoveGenre: user?.configs?.love?.genre,
       searchLoveAgeRange: user?.configs?.love?.range,
       searchFriendGenre: user?.configs?.friendShip?.genre,
       searchFriendAgeRange: user?.configs?.friendShip?.range,
-      birthdate: moment(Number(profile?.birthday))
-        .utc()
-        .format('DD/MM/YYYY'),
-      birthtime: moment(Number(profile?.birthday))
-        .utc()
-        .format('HH:mm')
+      birthdate: moment(Number(profile?.birthday)).utc().format('DD/MM/YYYY'),
+      birthtime: moment(Number(profile?.birthday)).utc().format('HH:mm'),
     },
-    true
+    true,
   );
 };
 
@@ -57,7 +53,7 @@ const onSubmitForm = async ({
   setActiveItemIndex,
   switcherRef,
   createProfile,
-  profile
+  profile,
 }) => {
   try {
     if (activeItemIndex === 8 && profile?.images?.length === 0) {
@@ -69,10 +65,10 @@ const onSubmitForm = async ({
           ...formRef?.current?.values,
           birthday: convertToDateTimePattern({
             date: formRef?.current?.values?.birthdate,
-            time: formRef?.current?.values?.birthtime
+            time: formRef?.current?.values?.birthtime,
           }),
-          profileStatus: 'CREATION'
-        }
+          profileStatus: 'CREATION',
+        },
       });
     }
     if (activeItemIndex === switcherRef.current.childrensAmount - 1) {
@@ -81,10 +77,10 @@ const onSubmitForm = async ({
           ...formRef?.current?.values,
           birthday: convertToDateTimePattern({
             date: formRef?.current?.values?.birthdate,
-            time: formRef?.current?.values?.birthtime
+            time: formRef?.current?.values?.birthtime,
           }),
-          profileStatus: 'COMPLETED'
-        }
+          profileStatus: 'COMPLETED',
+        },
       });
     }
     return setActiveItemIndex(activeItemIndex + 1);
@@ -113,45 +109,42 @@ const CreateProfileContainer = ({ navigation }) => {
       }
       return false;
     },
-    refetchQueries: [{ query: GET_PROFILE_CREATION }]
+    refetchQueries: [{ query: GET_PROFILE_CREATION }],
   });
 
   const [addProfileImage, { loading: loadingAddImage }] = useMutation(ADD_PROFILE_IMAGE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao adicionar image'),
-    refetchQueries: [{ query: GET_PROFILE_CREATION }]
+    refetchQueries: [{ query: GET_PROFILE_CREATION }],
   });
 
   const [removeProfileImage, { loading: loadingRemoveImage }] = useMutation(REMOVE_PROFILE_IMAGE, {
     onError: () => DropDownHolder.show('error', '', 'Falha ao remover imagem'),
-    refetchQueries: [{ query: GET_PROFILE_CREATION }]
+    refetchQueries: [{ query: GET_PROFILE_CREATION }],
   });
 
   const formSchema = yup.object().shape({
-    name: yup
-      .string()
-      .min(4)
-      .required('Seu nome nao pode conter menos de 4 caracteres'),
+    name: yup.string().min(4).required('Seu nome nao pode conter menos de 4 caracteres'),
     eye: yup.string().min(3),
     birthdate: yup.string().when('_', {
       is: () => activeItemIndex > 2,
       then: yup
         .string()
         .min(10, 'Ops! Digite data de nascimento.')
-        .test('TST', 'error', values => moment(values, 'DD/MM/YYYY').isValid())
-        .required('Digite uma data válida')
+        .test('TST', 'error', (values) => moment(values, 'DD/MM/YYYY').isValid())
+        .required('Digite uma data válida'),
     }),
     birthtime: yup.string().when('_', {
       is: () => activeItemIndex > 2,
       then: yup
         .string()
         .min(5, 'Ops! Digite hora de nascimento.')
-        .test('TST', 'error', values => moment(values, 'HH:mm').isValid())
-        .required('Digite uma hora válida')
+        .test('TST', 'error', (values) => moment(values, 'HH:mm').isValid())
+        .required('Digite uma hora válida'),
     }),
     birthplace: yup.object().shape({
       placeId: yup.string(),
       description: yup.string().when('placeId', {
-        is: val => val?.length > 0 || activeItemIndex > 2,
+        is: (val) => val?.length > 0 || activeItemIndex > 2,
         then: yup
           .string()
           .min(3)
@@ -163,8 +156,8 @@ const CreateProfileContainer = ({ navigation }) => {
               return false;
             }
             return true;
-          })
-      })
+          }),
+      }),
     }),
     graduation: yup.object().shape({
       placeId: yup.string().nullable(),
@@ -178,7 +171,7 @@ const CreateProfileContainer = ({ navigation }) => {
           }
           return true;
         })
-        .nullable()
+        .nullable(),
     }),
     residence: yup.object().shape({
       placeId: yup.string().nullable(),
@@ -192,32 +185,29 @@ const CreateProfileContainer = ({ navigation }) => {
           }
           return true;
         })
-        .nullable()
+        .nullable(),
     }),
     genre: yup.string().when('_', {
       is: () => activeItemIndex > 3,
-      then: yup.string().required()
+      then: yup.string().required(),
     }),
     sexualOrientations: yup
       .array()
       .of(yup.string())
       .when('_', {
         is: () => activeItemIndex > 4,
-        then: yup
-          .array()
-          .of(yup.string())
-          .required()
+        then: yup.array().of(yup.string()).required(),
       }),
     searchLoveGenre: yup.string().when('_', {
       is: () => activeItemIndex > 5,
-      then: yup.string().required()
+      then: yup.string().required(),
     }),
     searchLoveAgeRange: yup.array().required(),
     searchFriendGenre: yup.string().when('_', {
       is: () => activeItemIndex > 6,
-      then: yup.string().required()
+      then: yup.string().required(),
     }),
-    searchFriendAgeRange: yup.array().required()
+    searchFriendAgeRange: yup.array().required(),
   });
 
   React.useLayoutEffect(() => {
@@ -235,7 +225,7 @@ const CreateProfileContainer = ({ navigation }) => {
             </TouchableOpacity>
           )}
         </>
-      )
+      ),
     });
   }, [activeItemIndex]);
 
@@ -266,7 +256,7 @@ const CreateProfileContainer = ({ navigation }) => {
           switcherRef,
           createProfile,
           navigation,
-          profile: data?.profile
+          profile: data?.profile,
         })
       }
       onChangeInput={({ inputRef, text }) =>
@@ -279,22 +269,22 @@ const CreateProfileContainer = ({ navigation }) => {
           setSugestions: () => false,
           sugestion: item,
           fieldRef: referencedInputName,
-          formRef
+          formRef,
         })
       }
       onChangeSliderValues={({ sliderValues, fieldRef }) =>
         formRef?.current?.setFieldValue(fieldRef, [...sliderValues])
       }
       onPressImage={() => onPressImage({ addProfileImage })}
-      onPressRemoveImage={index =>
+      onPressRemoveImage={(index) =>
         removeProfileImage({
           variables: {
-            imageId: data?.profile?.images[index]._id
-          }
+            imageId: data?.profile?.images[index]._id,
+          },
         })
       }
       formInitialValues={formInitialValues}
-      onPressInputButton={field => onPressInputButton({ formRef, field })}
+      onPressInputButton={(field) => onPressInputButton({ formRef, field })}
       formSchema={formSchema}
       activeItemIndex={activeItemIndex}
       switcherRef={switcherRef}
@@ -307,8 +297,8 @@ const CreateProfileContainer = ({ navigation }) => {
 CreateProfileContainer.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired
-  }).isRequired
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default CreateProfileContainer;

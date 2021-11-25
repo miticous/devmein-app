@@ -22,7 +22,7 @@ CircledItem.defaultProps = {
   containerStyle: {},
   children: <></>,
   testID: undefined,
-  color: null
+  color: null,
 };
 
 CircledItem.propTypes = {
@@ -30,7 +30,7 @@ CircledItem.propTypes = {
   size: PropTypes.number.isRequired,
   containerStyle: PropTypes.shape({}),
   testID: PropTypes.string,
-  color: PropTypes.string
+  color: PropTypes.string,
 };
 
 export default CircledItem;
