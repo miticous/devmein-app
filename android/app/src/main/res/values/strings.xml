@@ -1,4 +1,3 @@
 <resources>
-    <string name="app_name">jintou</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">8X6p67eph6-P1lLqtaGtTtCwP9SdPHsbD9wVF</string>
+    <string name="app_name">devmein</string>
 </resources>
