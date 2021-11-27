@@ -37,3 +37,8 @@ react-native run-ios/android
 ### License 📓
 
 - See [LICENSE](/LICENSE)
+
+### Contribution
+```sh
+murilo.medeiros.works@gmail.ocm
+```
