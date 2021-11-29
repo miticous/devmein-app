@@ -131,11 +131,16 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.devmein"
+        applicationId "br.com.devmein"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+        manifestPlaceholders = [
+            auth0Domain: project.env.get("AUTH0_HOST"),
+            auth0Scheme: "${applicationId}"]
+        ]
     }
     splits {
         abi {
