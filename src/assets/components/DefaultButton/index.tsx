@@ -1,15 +1,17 @@
 import React from 'react';
 import { DefaultButtomProps } from './index.type';
-import { Container, Label } from './styles';
+import { Container, Title } from './styles';
 
 const DefaultButton: React.FC<DefaultButtomProps> = ({
-  text,
+  title,
   action,
   disabled,
   inverted,
+  Icon,
 }) => (
   <Container onPress={() => (disabled ? false : action())} inverted={inverted}>
-    <Label inverted={inverted}>{text?.toUpperCase()}</Label>
+    <Title inverted={inverted}>{title?.toUpperCase()}</Title>
+    {Icon && Icon}
   </Container>
 );
 

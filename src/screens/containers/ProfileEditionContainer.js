@@ -7,7 +7,7 @@ import moment from 'moment';
 import ProfileEditionComponent from '../components/ProfileEditionComponent';
 import Icon from '../../assets/components/Icon';
 import ImagePicker from '../../assets/components/ImagePicker';
-import DropDownHolder from '../../helpers/DropDownHolder';
+import DropDownHolder from '../../utils/DropDownHolder';
 import { GET_PROFILE } from '../../graphQL/query';
 import {
   ADD_PROFILE_IMAGE,

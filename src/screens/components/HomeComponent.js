@@ -9,7 +9,7 @@ import ModalLoading from '../../assets/components/ModalLoading';
 import ProfileHeader from '../../assets/components/ProfileHeader';
 import Carousel from '../../assets/components/Carousel';
 import ChatCard from '../../assets/components/ChatCard';
-import { StatusBarHeight } from '../../helpers/StatusBarHeight';
+import { StatusBarHeight } from '../../utils/StatusBarHeight';
 
 const Container = styled.View`
   flex: 1;

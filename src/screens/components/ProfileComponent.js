@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ScrollView, ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components/native';
-import { getBottomSafeArea } from 'helpers/StatusBarHeight';
+import { getBottomSafeArea } from 'utils/StatusBarHeight';
 import { colors } from '../../assets/styles/colors';
 import DefaultButton from '../../assets/components/DefaultButton';
 import ProfileBox from '../../assets/components/ProfileBox';

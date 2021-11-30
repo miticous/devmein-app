@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
 import ChatComponent from '../components/ChatComponent';
-import DropDownHolder from '../../helpers/DropDownHolder';
+import DropDownHolder from '../../utils/DropDownHolder';
 import { GET_PROFILE, GET_CHAT } from '../../graphQL/query';
 import { SEND_MESSAGE } from '../../graphQL/mutation';
 

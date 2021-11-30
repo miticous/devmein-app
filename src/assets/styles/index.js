@@ -1,4 +1,4 @@
-import { getBottomSafeArea } from 'helpers/StatusBarHeight';
+import { getBottomSafeArea } from 'utils/StatusBarHeight';
 import { Dimensions } from 'react-native';
 import { colors } from './colors';
 

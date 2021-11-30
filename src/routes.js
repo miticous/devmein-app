@@ -14,7 +14,7 @@ import ProfileEditionContainer from './screens/containers/ProfileEditionContaine
 import TabIcon from './assets/components/TabIcon';
 import HomeContainer from './screens/containers/HomeContainer';
 import ChatContainer from './screens/containers/ChatContainer';
-import WelcomeContainer from './screens/containers/WelcomeContainer';
+import WelcomeContainer from './screens/containers/Welcome';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

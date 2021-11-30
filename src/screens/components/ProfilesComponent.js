@@ -15,7 +15,7 @@ import ProfileCard from '../../assets/components/ProfileCard';
 import {
   getBottomSafeArea,
   StatusBarHeight,
-} from '../../helpers/StatusBarHeight';
+} from '../../utils/StatusBarHeight';
 
 const Container = styled.View`
   flex: 1;

@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import * as yup from 'yup';
 import moment from 'moment';
 import CreateProfileComponent from '../components/CreateProfileComponent';
-import DropDownHolder from '../../helpers/DropDownHolder';
+import DropDownHolder from '../../utils/DropDownHolder';
 import Icon from '../../assets/components/Icon';
 import {
   onChangeInput,

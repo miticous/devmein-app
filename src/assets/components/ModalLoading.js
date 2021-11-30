@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Modal, ActivityIndicator } from 'react-native';
-import { StatusBarHeight } from 'helpers/StatusBarHeight';
+import { StatusBarHeight } from 'utils/StatusBarHeight';
 import { colors } from '../styles/colors';
 
 const ModalLoading = ({ visible }) => (

@@ -14,9 +14,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import SplashScreen from 'react-native-splash-screen';
 import codePush from 'react-native-code-push';
-import { View } from 'react-native';
-import Auth0 from 'react-native-auth0';
-import DropDownHolder from './helpers/DropDownHolder';
+import DropDownHolder from './utils/DropDownHolder';
 import Routes from './routes';
 
 require('./config/reactotronConfig');
@@ -100,29 +98,6 @@ const codePushOptions = {
 const App = () => {
   React.useEffect(() => {
     SplashScreen.hide();
-
-    const auth0 = new Auth0({
-      domain: Config.AUTH0_HOST,
-      clientId: Config.AUTH0_CLIENT_ID,
-      connection: 'github',
-    });
-
-    auth0.webAuth
-      .authorize({ scope: 'openid profile email' })
-      .then(credentials =>
-        // Successfully authenticated
-        // Store the accessToken
-        console.tron.log(credentials),
-      )
-      .catch(error => console.log(error));
-    // auth0.webAuth
-    //   .clearSession({})
-    //   .then(success => {
-    //     Alert.alert('Logged out!');
-    //   })
-    //   .catch(error => {
-    //     console.log('Log out cancelled');
-    //   });
   }, []);
 
   return (

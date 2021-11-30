@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import Config from 'react-native-config';
 
-import DropDownHolder from '../helpers/DropDownHolder';
+import DropDownHolder from '../utils/DropDownHolder';
 
 export const logout = async ({ navigation }) => {
   try {

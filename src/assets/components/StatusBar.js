@@ -3,7 +3,7 @@ import { StatusBar as RNStatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { colors } from '../styles/colors';
-import { StatusBarHeight } from '../../helpers/StatusBarHeight';
+import { StatusBarHeight } from '../../utils/StatusBarHeight';
 
 const Container = styled.View`
   background-color: ${({ color }) => color || colors.backgroundColor};

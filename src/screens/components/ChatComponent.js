@@ -4,7 +4,7 @@ import { SCREEN_HEIGHT } from '../../assets/styles';
 import { colors } from '../../assets/styles/colors';
 import IconMatch from '../../assets/components/IconMatch';
 import Icon from '../../assets/components/Icon';
-import { getUserAge } from '../../helpers/AgeCalculator';
+import { getUserAge } from '../../utils/AgeCalculator';
 
 const Container = styled.View`
   flex: 1;

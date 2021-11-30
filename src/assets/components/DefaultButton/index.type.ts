@@ -1,10 +1,13 @@
+import React from 'react';
+
 export type UIModifiers = {
   inverted?: boolean;
 };
 
 export type DefaultButtomProps = {
-  text: string;
+  title: string;
   action: () => void;
-  disabled: boolean;
-  inverted: boolean;
+  disabled?: boolean;
+  inverted?: boolean;
+  Icon?: React.ReactElement;
 };
