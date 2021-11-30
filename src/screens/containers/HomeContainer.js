@@ -8,7 +8,11 @@ import { SEND_GEOLOCATION } from '../../graphQL/mutation';
 import { GET_HOME, GET_PROFILE } from '../../graphQL/query';
 import HomeComponent from '../components/HomeComponent';
 
-const controlUserLocation = async ({ sendGeoLocation, geoLocation, setGeoLocation }) => {
+const controlUserLocation = async ({
+  sendGeoLocation,
+  geoLocation,
+  setGeoLocation,
+}) => {
   const hasPermission = await RNLocation.checkPermission({
     ios: 'whenInUse',
     android: {
@@ -24,7 +28,9 @@ const controlUserLocation = async ({ sendGeoLocation, geoLocation, setGeoLocatio
       },
     });
   }
-  const { latitude, longitude } = await RNLocation.getLatestLocation({ timeout: 10000 });
+  const { latitude, longitude } = await RNLocation.getLatestLocation({
+    timeout: 10000,
+  });
 
   const hasGeoLocationUpdated =
     geoLocation?.latitude !== latitude || geoLocation?.longitude !== longitude;
@@ -51,11 +57,14 @@ const HomeContainer = ({ navigation }) => {
   });
   const client = useApolloClient();
 
-  const { data: profileQuery, loading: loadingProfileQuery } = useQuery(GET_PROFILE, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-first',
-    skip: !geoLocation?.sent,
-  });
+  const { data: profileQuery, loading: loadingProfileQuery } = useQuery(
+    GET_PROFILE,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-first',
+      skip: !geoLocation?.sent,
+    },
+  );
 
   const { data: homeQuery } = useQuery(GET_HOME, {
     notifyOnNetworkStatusChange: true,
@@ -81,8 +90,11 @@ const HomeContainer = ({ navigation }) => {
   const appState = React.useRef(AppState.currentState);
   const [, setAppStateVisible] = React.useState(appState.current);
 
-  const _handleAppStateChange = (nextAppState) => {
-    if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+  const _handleAppStateChange = nextAppState => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
       controlUserLocation({ sendGeoLocation, geoLocation, setGeoLocation });
     }
 
@@ -102,7 +114,7 @@ const HomeContainer = ({ navigation }) => {
     <HomeComponent
       isProfilesLoading={loadingProfileQuery}
       matches={homeQuery?.matches}
-      onPressCarouselItem={(item) => navigation.navigate('Chat', { match: item })}
+      onPressCarouselItem={item => navigation.navigate('Chat', { match: item })}
       userProfile={profileQuery?.profile}
       onPressHeaderLeft={() => navigation.navigate('Profile')}
       onMoveBottom={() => false}

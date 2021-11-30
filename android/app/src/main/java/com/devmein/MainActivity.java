@@ -1,4 +1,4 @@
-package com.devmein;
+package br.com.devmein;
 
 import com.facebook.react.ReactActivity;
 

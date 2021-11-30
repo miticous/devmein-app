@@ -7,9 +7,13 @@ import moment from 'moment';
 import ProfileEditionComponent from '../components/ProfileEditionComponent';
 import Icon from '../../assets/components/Icon';
 import ImagePicker from '../../assets/components/ImagePicker';
-import DropDownHolder from '../../helpers/DropDownHolder';
+import DropDownHolder from '../../utils/DropDownHolder';
 import { GET_PROFILE } from '../../graphQL/query';
-import { ADD_PROFILE_IMAGE, REMOVE_PROFILE_IMAGE, EDIT_PROFILE } from '../../graphQL/mutation';
+import {
+  ADD_PROFILE_IMAGE,
+  REMOVE_PROFILE_IMAGE,
+  EDIT_PROFILE,
+} from '../../graphQL/mutation';
 import { getCitiesByName } from '../../services/google-apis';
 
 const imagePickerOptions = {
@@ -43,7 +47,7 @@ export const onPressImage = async ({ addProfileImage }) => {
 };
 
 const updateSelectedTexts = ({ item, texts }) => {
-  const isItemAlreadyAdded = texts?.some((text) => text === item);
+  const isItemAlreadyAdded = texts?.some(text => text === item);
 
   if (isItemAlreadyAdded)
     return texts?.reduce((accumulator, text) => {
@@ -80,7 +84,12 @@ const onSubmitForm = async ({ formRef, editProfile, navigation }) => {
   }
 };
 
-export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }) => {
+export const onPressSugestion = ({
+  sugestion,
+  formRef,
+  setSugestions,
+  fieldRef,
+}) => {
   if (fieldRef === 'birthplace.description') {
     formRef.current.setValues(
       {
@@ -137,25 +146,35 @@ export const onPressSugestion = ({ sugestion, formRef, setSugestions, fieldRef }
     const { sexualOrientations } = formRef.current.values;
 
     const isSexualOrientationChecked = sexualOrientations?.some(
-      (orientation) => orientation === sugestion?.id,
+      orientation => orientation === sugestion?.id,
     );
 
     if (isSexualOrientationChecked) {
       return formRef.current.setFieldValue('sexualOrientations', [
-        ...sexualOrientations.filter((orientation) => orientation !== sugestion?.id),
+        ...sexualOrientations.filter(
+          orientation => orientation !== sugestion?.id,
+        ),
       ]);
     }
 
     return formRef.current.setFieldValue(
       'sexualOrientations',
-      sexualOrientations?.length > 0 ? [...sexualOrientations, sugestion?.id] : [sugestion?.id],
+      sexualOrientations?.length > 0
+        ? [...sexualOrientations, sugestion?.id]
+        : [sugestion?.id],
     );
   }
 
   return formRef.current.setFieldValue(fieldRef, sugestion?.id);
 };
 
-export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, sugestions }) => {
+export const onChangeInput = async ({
+  setSugestions,
+  text,
+  fieldRef,
+  formRef,
+  sugestions,
+}) => {
   if (fieldRef === 'birthplace.description') {
     formRef.current.setFieldValue('birthplace.placeId', null);
   }
@@ -171,10 +190,14 @@ export const onChangeInput = async ({ setSugestions, text, fieldRef, formRef, su
   if (text.length > 3) {
     const result = await getCitiesByName({
       name: text,
-      type: fieldRef === 'graduation.description' ? 'establishment' : '(cities)',
+      type:
+        fieldRef === 'graduation.description' ? 'establishment' : '(cities)',
     });
 
-    setSugestions({ ...sugestions, [fieldRef]: result && result?.length > 0 ? result : null });
+    setSugestions({
+      ...sugestions,
+      [fieldRef]: result && result?.length > 0 ? result : null,
+    });
 
     return true;
   }
@@ -194,21 +217,29 @@ const ProfileEditionContainer = ({ navigation }) => {
     loading: loadingQuery,
   } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
 
-  const [editProfile, { loading: loadingMutationEdit }] = useMutation(EDIT_PROFILE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao salvar edição'),
-    refetchQueries: [{ query: GET_PROFILE }],
-  });
+  const [editProfile, { loading: loadingMutationEdit }] = useMutation(
+    EDIT_PROFILE,
+    {
+      onError: () => DropDownHolder.show('error', '', 'Falha ao salvar edição'),
+      refetchQueries: [{ query: GET_PROFILE }],
+    },
+  );
 
-  const [addProfileImage, { loading: loadingMutationAdd }] = useMutation(ADD_PROFILE_IMAGE, {
-    onError: () => DropDownHolder.show('error', '', 'Falha ao adicionar image'),
-    refetchQueries: [{ query: GET_PROFILE }],
-  });
+  const [addProfileImage, { loading: loadingMutationAdd }] = useMutation(
+    ADD_PROFILE_IMAGE,
+    {
+      onError: () =>
+        DropDownHolder.show('error', '', 'Falha ao adicionar image'),
+      refetchQueries: [{ query: GET_PROFILE }],
+    },
+  );
 
   const [removeProfileImage, { loading: loadingMutationRemove }] = useMutation(
     REMOVE_PROFILE_IMAGE,
     {
       onCompleted: () => false,
-      onError: () => DropDownHolder.show('error', '', 'Falha ao remover imagem'),
+      onError: () =>
+        DropDownHolder.show('error', '', 'Falha ao remover imagem'),
       refetchQueries: [{ query: GET_PROFILE }],
     },
   );
@@ -218,13 +249,14 @@ const ProfileEditionContainer = ({ navigation }) => {
       headerRight: () => (
         <TouchableOpacity
           style={{ paddingHorizontal: 20 }}
-          onPress={() => formRef.current.submitForm()}
-        >
+          onPress={() => formRef.current.submitForm()}>
           <Icon name="Save" width={40} height={40} />
         </TouchableOpacity>
       ),
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
+        <TouchableOpacity
+          onPress={() => navigation.pop()}
+          style={{ paddingHorizontal: 20 }}>
           <Icon name="Close" width={40} height={40} />
         </TouchableOpacity>
       ),
@@ -232,11 +264,16 @@ const ProfileEditionContainer = ({ navigation }) => {
   }, [navigation]);
 
   const formSchema = yup.object().shape({
-    name: yup.string().min(4).required('Seu nome nao pode conter menos de 4 caracteres'),
+    name: yup
+      .string()
+      .min(4)
+      .required('Seu nome nao pode conter menos de 4 caracteres'),
     birthday: yup
       .string()
       .min(16, 'Ops! Digite data e hora de nascimento.')
-      .test('TST', 'error', (values) => moment(values, 'DD/MM/YYYY HH:mm').isValid())
+      .test('TST', 'error', values =>
+        moment(values, 'DD/MM/YYYY HH:mm').isValid(),
+      )
       .required('Digite uma data válida'),
     birthplace: yup.object().shape({
       description: yup
@@ -294,10 +331,14 @@ const ProfileEditionContainer = ({ navigation }) => {
     <ProfileEditionComponent
       formInitialSchema={{
         ...profile,
-        birthday: moment(Number(profile.birthday)).utc().format('DD/MM/YYYY HH:mm'),
+        birthday: moment(Number(profile.birthday))
+          .utc()
+          .format('DD/MM/YYYY HH:mm'),
       }}
       user={user}
-      onPressTextsCardItem={({ cardItem }) => onPressTextsCardItem({ cardItem, formRef })}
+      onPressTextsCardItem={({ cardItem }) =>
+        onPressTextsCardItem({ cardItem, formRef })
+      }
       formRef={formRef}
       formSchema={formSchema}
       profile={profile}
@@ -327,15 +368,20 @@ const ProfileEditionContainer = ({ navigation }) => {
         })
       }
       sugestions={sugestions}
-      loading={loadingQuery || loadingMutationAdd || loadingMutationRemove || loadingMutationEdit}
-      onPressRemove={(index) =>
+      loading={
+        loadingQuery ||
+        loadingMutationAdd ||
+        loadingMutationRemove ||
+        loadingMutationEdit
+      }
+      onPressRemove={index =>
         removeProfileImage({
           variables: {
             imageId: profile?.images[index]._id,
           },
         })
       }
-      onPressInputButton={(field) => onPressInputButton({ field, formRef })}
+      onPressInputButton={field => onPressInputButton({ field, formRef })}
       onPressImage={() => onPressImage({ addProfileImage })}
     />
   );

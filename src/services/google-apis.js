@@ -6,7 +6,7 @@ const getCitiesByName = async ({ name, type }) => {
 
   const sessionToken = '12381247512';
 
-  await new Promise((resolve) =>
+  await new Promise(resolve =>
     setTimeout(() => {
       resolve();
     }, 1000),
@@ -21,11 +21,14 @@ const getCitiesByName = async ({ name, type }) => {
       url: encodeURI(url),
     });
 
-    const normalizedPreditionsData = predictions.map((predict) => {
+    const normalizedPreditionsData = predictions.map(predict => {
       const { description, place_id: placeId, terms } = predict;
 
       return {
-        label: type === 'establishment' ? `${terms[0]?.value}, ${terms[4]?.value}` : description,
+        label:
+          type === 'establishment'
+            ? `${terms[0]?.value}, ${terms[4]?.value}`
+            : description,
         id: placeId,
       };
     });
@@ -36,7 +39,13 @@ const getCitiesByName = async ({ name, type }) => {
   }
 };
 
-const getCitieById = async ({ placeId, state, setState, setLoading, label }) => {
+const getCitieById = async ({
+  placeId,
+  state,
+  setState,
+  setLoading,
+  label,
+}) => {
   const key = Config.MAPS_API_KEY;
 
   setLoading(true);

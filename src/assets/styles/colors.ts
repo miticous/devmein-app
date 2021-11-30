@@ -1,13 +1,12 @@
-export const COLORS = {
-  // ========== PRIMARY COLORS ============= //
-
-  primaryColor: '#75396F',
+export const colors = {
+  // ========== PRIMARY colors ============= //
+  primaryColor: '#24292F',
 
   secondaryColor: '#A84F7E',
 
   tertiaryColor: '#74396F',
 
-  // ========== UI COLORS ============= //
+  // ========== UI colors ============= //
 
   textPrimaryColor: '#444444',
   textSecondaryColor: '#8F8F8F',
@@ -20,7 +19,7 @@ export const COLORS = {
   grayDark: '#828282',
   grayLight: '#E0E0E0',
 
-  // ========== CUSTOM CARDS COLORS ============= //
+  // ========== CUSTOM CARDS colors ============= //
 
   video: '#f39c12',
   news: '#c0392b',
@@ -33,7 +32,7 @@ export const COLORS = {
   budget: '#e55039',
   promotion: '#1E2D3D',
 
-  // ========== MESSAGE COLORS ============= //
+  // ========== MESSAGE colors ============= //
 
   success: '#18BB66',
   warning: '#F5A623',

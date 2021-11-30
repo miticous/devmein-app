@@ -1,11 +1,17 @@
+import { getBottomSafeArea } from 'utils/StatusBarHeight';
 import { Dimensions } from 'react-native';
-import { COLORS } from './colors';
+import { colors } from './colors';
 
 export const SCREEN_WIDTH = Dimensions.get('screen').width;
 export const SCREEN_HEIGHT = Dimensions.get('screen').height;
+export const BOTTOM_TAB_HEIGHT = SCREEN_HEIGHT * 0.07;
+export const BOTTOM_TAB_HEIGHT_TOTAL =
+  BOTTOM_TAB_HEIGHT + 10 + getBottomSafeArea;
+export const HEADER_HEIGHT = 100;
+
 export const headerStyle = {
-  backgroundColor: COLORS.backgroundColor,
-  height: 90,
+  backgroundColor: colors.backgroundColor,
+  height: HEADER_HEIGHT,
   shadowRadius: 40,
   shadowOffset: {
     height: 8,
@@ -21,12 +27,12 @@ export const headerTitleStyle = {
 export const bottomTabBar = {
   style: {
     position: 'absolute',
-    marginBottom: 30,
+    marginBottom: getBottomSafeArea + 10,
     right: 20,
     left: 20,
-    height: 60,
+    height: BOTTOM_TAB_HEIGHT,
     borderRadius: 32,
-    backgroundColor: COLORS.white,
+    backgroundColor: colors.white,
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 20,
     shadowColor: 'black',

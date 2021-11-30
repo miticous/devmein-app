@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 import Icon from './Icon';
 import { SCREEN_HEIGHT } from '../styles';
 
@@ -9,7 +9,7 @@ const Content = styled.View`
   width: 100%;
   position: absolute;
   z-index: 10;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
   border-radius: 24px;
   height: ${SCREEN_HEIGHT * 0.68}px;
   overflow: hidden;

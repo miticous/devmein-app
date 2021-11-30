@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
-import { COLORS } from '../../assets/styles/colors';
+import { colors } from '../../assets/styles/colors';
 import TextInput from '../../assets/components/TextInput';
 import ButtonCheck from '../../assets/components/ButtonCheck';
 import DefaultButton from '../../assets/components/DefaultButton';
@@ -11,7 +11,7 @@ import ModalLoading from '../../assets/components/ModalLoading';
 
 const Container = styled.ScrollView`
   flex: 1;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
   padding: 0px 20px;
 `;
 const Header = styled.View`
@@ -72,8 +72,9 @@ const LoginComponent = ({
         initialValues={formLoginInitialSchema}
         validationSchema={formLoginSchema}
         validateOnChange
-        onSubmit={async (values, actions) => onSubmitForm({ ...values, ...actions })}
-      >
+        onSubmit={async (values, actions) =>
+          onSubmitForm({ ...values, ...actions })
+        }>
         {({ setFieldValue }) => (
           <>
             <TextInput
@@ -82,7 +83,7 @@ const LoginComponent = ({
               name="email"
               textType="emailAddress"
               keyboardType="email-address"
-              onPressButton={(field) => setFieldValue(field, '')}
+              onPressButton={field => setFieldValue(field, '')}
             />
             <TextInput
               label="Senha"
@@ -90,7 +91,7 @@ const LoginComponent = ({
               secure
               name="password"
               textType="password"
-              onPressButton={(field) => setFieldValue(field, '')}
+              onPressButton={field => setFieldValue(field, '')}
             />
             <RememberPasswordBox onPress={onPressRememberButton}>
               <ButtonCheck checked={rememberPassword} />

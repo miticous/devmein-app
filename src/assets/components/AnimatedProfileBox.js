@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, PanResponder } from 'react-native';
 import styled from 'styled-components/native';
+import { SCREEN_HEIGHT } from 'assets/styles';
 
 const Container = styled.View`
   position: absolute;
   width: 100%;
-  padding: 0px 20px;
-  top: 20px;
+  height: ${SCREEN_HEIGHT * 0.7 + 45}px;
+  justify-content: center;
 `;
-const ChildrenBox = styled.View``;
+const ChildrenBox = styled.View`
+  height: ${SCREEN_HEIGHT * 0.7}px;
+  justify-content: center;
+`;
 
 const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
   const [shown, setShown] = useState(true);
@@ -58,8 +62,7 @@ const AnimatedProfileBox = ({ children, onMoveTop, onMoveBottom }) => {
             }),
             transform: [{ translateY: pan.y }],
           }}
-          {...panResponder.panHandlers}
-        >
+          {...panResponder.panHandlers}>
           <ChildrenBox>{children}</ChildrenBox>
         </Animated.View>
       )}

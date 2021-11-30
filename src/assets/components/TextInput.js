@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { useField } from 'formik';
 import styled from 'styled-components/native';
 import VMasker from 'vanilla-masker';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 import Icon from './Icon';
 
-const maskedDate = (text) => VMasker.toPattern(text, '99/99/9999');
-const maskedTime = (text) => VMasker.toPattern(text, '99:99');
+const maskedDate = text => VMasker.toPattern(text, '99/99/9999');
+const maskedTime = text => VMasker.toPattern(text, '99:99');
 
 const Container = styled.View`
   margin: 5px 1px;
 `;
 const Content = styled.View`
-  background-color: ${COLORS.white};
+  background-color: ${colors.white};
   padding: 10px;
   min-height: 50px;
   border-width: 1px;
@@ -26,7 +26,8 @@ const ButtonArea = styled.TouchableOpacity`
   top: 10px;
 `;
 const RNTextInput = styled.TextInput`
-  color: ${({ isFocused }) => (isFocused ? COLORS.black : COLORS.textSecondaryColor)};
+  color: ${({ isFocused }) =>
+    isFocused ? colors.black : colors.textSecondaryColor};
 `;
 const LabelArea = styled.View`
   flex-direction: row;
@@ -52,7 +53,7 @@ const OptionalInput = styled.Text`
 
 const getBorderColor = ({ error, isFocused, touched }) => {
   if (error && (touched || isFocused)) {
-    return COLORS.error;
+    return colors.error;
   }
   if (isFocused && !error) {
     return '#828282';
@@ -69,7 +70,11 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
     return field.onChange(field.name)(maskedTime(text));
   }
 
-  if (field.name === 'email' || field.name === 'password' || field.name === 'confirmPassword') {
+  if (
+    field.name === 'email' ||
+    field.name === 'password' ||
+    field.name === 'confirmPassword'
+  ) {
     return field.onChange(field.name)(text.replace(/\s/g, ''));
   }
 
@@ -86,7 +91,7 @@ const onChangeText = ({ field, onChange, text, timer, setTimer }) => {
   );
 };
 
-const TextInput = (props) => {
+const TextInput = props => {
   const {
     placeholder,
     name,
@@ -108,22 +113,32 @@ const TextInput = (props) => {
     <Container style={containerStyle}>
       <LabelArea>
         <Label>{label}</Label>
-        <OptionalInputArea>{optional && <OptionalInput>OPCIONAL</OptionalInput>}</OptionalInputArea>
+        <OptionalInputArea>
+          {optional && <OptionalInput>OPCIONAL</OptionalInput>}
+        </OptionalInputArea>
       </LabelArea>
       <Content
-        borderColor={getBorderColor({ isFocused, error: meta.error, touched: meta?.touched })}
-      >
+        borderColor={getBorderColor({
+          isFocused,
+          error: meta.error,
+          touched: meta?.touched,
+        })}>
         <InputArea>
           <RNTextInput
             style={{ padding: 5 }}
             isFocused={isFocused}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => [setIsFocused(false), helpers?.setTouched(field?.name)]}
+            onBlur={() => [
+              setIsFocused(false),
+              helpers?.setTouched(field?.name),
+            ]}
             value={field.value}
             secureTextEntry={secure}
             textContentType={textType}
             keyboardType={keyboardType}
-            onChangeText={(text) => onChangeText({ field, onChange, text, timer, setTimer })}
+            onChangeText={text =>
+              onChangeText({ field, onChange, text, timer, setTimer })
+            }
             placeholder={placeholder}
           />
         </InputArea>

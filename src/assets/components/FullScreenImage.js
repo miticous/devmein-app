@@ -78,7 +78,9 @@ const FullScreenIndex = styled.View`
 const renderIndexes = ({ size, activeIndex }) =>
   Array(size)
     .fill(size)
-    .map((_, index) => <FullScreenIndex active={activeIndex === index} key={index.toString()} />);
+    .map((_, index) => (
+      <FullScreenIndex active={activeIndex === index} key={index.toString()} />
+    ));
 
 const FullScreenImage = ({ images, initialIndex, onPressExit }) => {
   const [activeIndex, setActiveIndex] = React.useState(initialIndex || 0);
@@ -87,11 +89,18 @@ const FullScreenImage = ({ images, initialIndex, onPressExit }) => {
     <>
       <Container>
         <ButtonNext
-          onPress={() => activeIndex + 1 !== images?.length && setActiveIndex(activeIndex + 1)}
+          onPress={() =>
+            activeIndex + 1 !== images?.length &&
+            setActiveIndex(activeIndex + 1)
+          }
         />
-        <ButtonPrev onPress={() => activeIndex !== 0 && setActiveIndex(activeIndex - 1)} />
+        <ButtonPrev
+          onPress={() => activeIndex !== 0 && setActiveIndex(activeIndex - 1)}
+        />
         <ImageBox>
-          <Image source={{ uri: images?.[activeIndex]?.image, cache: 'force-cache' }} />
+          <Image
+            source={{ uri: images?.[activeIndex]?.image, cache: 'force-cache' }}
+          />
         </ImageBox>
         <FullScreenControl>
           <FullScreenEmpty />

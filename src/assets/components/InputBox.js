@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from './Icon';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 
 const getInputColor = ({ error, valid }) => {
   if (error) {
@@ -65,7 +65,7 @@ const styledInput = {
   fontSize: 20,
   letterSpacing: -0.3,
   lineHeight: 22,
-  color: COLORS.textPrimaryColor,
+  color: colors.textPrimaryColor,
 };
 
 const InputBox = ({

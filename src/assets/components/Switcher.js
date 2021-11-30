@@ -59,8 +59,7 @@ const Switcher = React.forwardRef((props, ref) => {
             width: SWITCHER_SIZE,
             flexDirection: 'row',
             transform: [{ translateX: scrollToIndex }],
-          }}
-        >
+          }}>
           {children}
         </Animated.View>
       </View>

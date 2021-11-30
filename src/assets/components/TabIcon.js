@@ -5,7 +5,8 @@ import { View } from 'react-native';
 import Icon from './Icon';
 
 const TabIcon = styled.View`
-  background-color: ${({ focused, color }) => (focused ? color : 'transparent')};
+  background-color: ${({ focused, color }) =>
+    focused ? color : 'transparent'};
   border-radius: 24px;
   justify-content: ${({ focused }) => (focused ? 'flex-end' : 'center')};
   padding: 15px;

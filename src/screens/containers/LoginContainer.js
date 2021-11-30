@@ -41,7 +41,10 @@ const onSubmitForm = async ({
       ]);
     }
 
-    return AsyncStorage.multiRemove(['@jintou:storedEmail', '@jintou:storedPassword']);
+    return AsyncStorage.multiRemove([
+      '@jintou:storedEmail',
+      '@jintou:storedPassword',
+    ]);
   } catch (error) {
     return false;
   }
@@ -61,7 +64,9 @@ const LoginContainer = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
+        <TouchableOpacity
+          onPress={() => navigation.pop()}
+          style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
       ),
@@ -69,7 +74,10 @@ const LoginContainer = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.multiGet(['@jintou:storedEmail', '@jintou:storedPassword']).then((res) => {
+    AsyncStorage.multiGet([
+      '@jintou:storedEmail',
+      '@jintou:storedPassword',
+    ]).then(res => {
       const email = res?.[0]?.[1];
       const password = res?.[1]?.[1];
 
@@ -85,7 +93,14 @@ const LoginContainer = ({ navigation }) => {
       formRef={formRef}
       isLoading={isLoading}
       onSubmitForm={async ({ email, password, setFieldError }) =>
-        onSubmitForm({ email, password, rememberPassword, setFieldError, navigation, setIsLoading })
+        onSubmitForm({
+          email,
+          password,
+          rememberPassword,
+          setFieldError,
+          navigation,
+          setIsLoading,
+        })
       }
       onPressLogin={() => formRef?.current?.submitForm()}
       formLoginSchema={formLoginSchema}

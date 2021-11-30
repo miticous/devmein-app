@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 
 const Container = styled.TouchableOpacity`
   border-radius: 23px;
@@ -20,7 +20,7 @@ const Label = styled.Text`
   letter-spacing: -0.3px;
   line-height: 22px;
   text-align: center;
-  color: ${COLORS.white};
+  color: ${colors.white};
   font-weight: bold;
   letter-spacing: 3px;
 `;
@@ -30,10 +30,17 @@ const Button = ({ text, action, buttonLoading, disabled }) => (
     <LinearGradient
       start={{ x: 0.0, y: 0.5 }}
       end={{ x: 0.8, y: 1.0 }}
-      colors={[COLORS.primaryColor, COLORS.secondaryColor, COLORS.tertiaryColor]}
-    >
+      colors={[
+        colors.primaryColor,
+        colors.secondaryColor,
+        colors.tertiaryColor,
+      ]}>
       <Content>
-        {buttonLoading ? <ActivityIndicator color="white" /> : <Label>{text.toUpperCase()}</Label>}
+        {buttonLoading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Label>{text.toUpperCase()}</Label>
+        )}
       </Content>
     </LinearGradient>
   </Container>

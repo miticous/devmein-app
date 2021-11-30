@@ -16,14 +16,18 @@ const ProfileContainer = ({ navigation }) => {
         </TouchableOpacity>
       ),
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.pop()} style={{ paddingHorizontal: 20 }}>
+        <TouchableOpacity
+          onPress={() => navigation.pop()}
+          style={{ paddingHorizontal: 20 }}>
           <Icon name="Back" width={40} height={40} />
         </TouchableOpacity>
       ),
     });
   }, [navigation]);
 
-  const { data, loading: loadingQuery } = useQuery(GET_PROFILE, { fetchPolicy: 'cache-first' });
+  const { data, loading: loadingQuery } = useQuery(GET_PROFILE, {
+    fetchPolicy: 'cache-first',
+  });
 
   return (
     <ProfileComponent

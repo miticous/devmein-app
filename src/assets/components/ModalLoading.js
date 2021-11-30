@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Modal, ActivityIndicator } from 'react-native';
-import { COLORS } from '../styles/colors';
+import { StatusBarHeight } from 'utils/StatusBarHeight';
+import { colors } from '../styles/colors';
 
 const ModalLoading = ({ visible }) => (
   <View>
@@ -11,12 +12,16 @@ const ModalLoading = ({ visible }) => (
           justifyContent: 'center',
           alignItems: 'center',
           flex: 1,
-          backgroundColor: COLORS.shadowBackground,
-          marginTop: 22,
-        }}
-      >
-        <View style={{ backgroundColor: COLORS.white, borderRadius: 10, padding: 30 }}>
-          <ActivityIndicator size="large" color={COLORS.primaryColor} />
+          backgroundColor: colors.shadowBackground,
+          marginTop: StatusBarHeight,
+        }}>
+        <View
+          style={{
+            backgroundColor: colors.white,
+            borderRadius: 10,
+            padding: 30,
+          }}>
+          <ActivityIndicator size="large" color={colors.primaryColor} />
         </View>
       </View>
     </Modal>

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
-import { COLORS } from '../styles/colors';
+import { colors } from '../styles/colors';
 import { SCREEN_WIDTH } from '../styles';
 import Icon from './Icon';
 
 const Container = styled.TouchableOpacity`
   border-radius: 24px;
   margin-right: 5px;
-  background-color: ${COLORS.white};
+  background-color: ${colors.white};
   border: 4px solid ${({ checked }) => (checked ? '#16cb62' : '#E0E0E0')};
   width: ${SCREEN_WIDTH * 0.8}px;
 `;

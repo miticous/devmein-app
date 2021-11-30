@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 import { Formik } from 'formik';
-import { COLORS } from '../../assets/styles/colors';
+import { colors } from '../../assets/styles/colors';
 import TextInput from '../../assets/components/TextInput';
 import DefaultButton from '../../assets/components/DefaultButton';
 
 const Container = styled.KeyboardAvoidingView`
   flex: 1;
   justify-content: center;
-  background-color: ${COLORS.backgroundColor};
+  background-color: ${colors.backgroundColor};
   padding: 0px 20px;
 `;
 const Header = styled.View`
@@ -46,8 +46,9 @@ const SignUpComponent = ({
         innerRef={formRef}
         initialValues={formLoginInitialSchema}
         validationSchema={formLoginSchema}
-        onSubmit={async (values, actions) => onPressSignUp({ ...values, ...actions })}
-      >
+        onSubmit={async (values, actions) =>
+          onPressSignUp({ ...values, ...actions })
+        }>
         {() => (
           <>
             <TextInput
@@ -57,7 +58,13 @@ const SignUpComponent = ({
               textType="emailAddress"
               keyboardType="email-address"
             />
-            <TextInput label="Senha" optional={false} secure name="password" textType="password" />
+            <TextInput
+              label="Senha"
+              optional={false}
+              secure
+              name="password"
+              textType="password"
+            />
             <TextInput
               label="Senha"
               optional={false}
