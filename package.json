@@ -50,7 +50,7 @@
     "react-native-linear-gradient": "react-native-community/react-native-linear-gradient",
     "react-native-location": "^2.5.0",
     "react-native-masked-text": "^1.13.0",
-    "react-native-reanimated": "^1.7.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.0.0-beta.4",
     "react-native-splash-screen": "^3.2.0",
